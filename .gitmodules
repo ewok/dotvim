@@ -1,0 +1,3 @@
+[submodule "pack/filetypes/opt/ansible"]
+	path = pack/filetypes/opt/ansible
+	url = https://github.com/pearofducks/ansible-vim
