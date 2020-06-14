@@ -308,7 +308,7 @@ nnoremap L $
 " }}}
 " Filetypes --------------------------------------------------------------- {{{
 " -> Ansible/Yaml {{{
-" git clone https://github.com/pearofducks/ansible-vim pack/filetypes/opt/ansible
+" git submodule add https://github.com/pearofducks/ansible-vim pack/filetypes/opt/ansible
 augroup ft_ansible
     au!
     au BufNewFile,BufRead */\(playbooks\|roles\|tasks\|handlers\|defaults\|vars\)/*.\(yaml\|yml\) set filetype=yaml.ansible
@@ -343,7 +343,7 @@ augroup ft_ansible
 augroup END
 " }}}
 " -> CSV {{{
-" git clone https://github.com/chrisbra/csv.vim pack/filetypes/opt/csv
+" git submodule add https://github.com/chrisbra/csv.vim pack/filetypes/opt/csv
 augroup ft_csv
     au!
     au BufNewFile,BufRead *.csv set filetype=csv
@@ -426,8 +426,8 @@ augroup ft_logstash
 augroup END
 " }}}
 " -> Markdown {{{
-" git clone https://github.com/shime/vim-livedown pack/filetypes/opt/livedown
-" git clone https://github.com/gpanders/vim-medieval pack/filetypes/opt/medieval
+" git submodule add https://github.com/shime/vim-livedown pack/filetypes/opt/livedown
+" git submodule add https://github.com/gpanders/vim-medieval pack/filetypes/opt/medieval
 augroup ft_markdown
     au!
 
@@ -524,8 +524,8 @@ augroup ft_puppet
 augroup END
 " }}}
 " -> Rust {{{
-" git clone https://github.com/rust-lang/rust.vim pack/filetypes/opt/rust
-" git clone https://github.com/racer-rust/vim-racer pack/filetypes/opt/rust-racer
+" git submodule add https://github.com/rust-lang/rust.vim pack/filetypes/opt/rust
+" git submodule add https://github.com/racer-rust/vim-racer pack/filetypes/opt/rust-racer
 augroup ft_rust
     au!
 
@@ -678,7 +678,7 @@ augroup END
 " }}}
 
 " Colorscheme ------------------------------------------------------------- {{{
-" git clone https://github.com/KeitaNakamura/neodark.vim pack/ui/opt/neodark
+" git submodule add https://github.com/KeitaNakamura/neodark.vim pack/ui/opt/neodark
 
 let g:neodark#background = '#282c34'
 
@@ -699,7 +699,7 @@ let g:lightline = {
 
 " }}}
 " Plugins ----------------------------------------------------------------- {{{
-" git clone https://github.com/w0rp/ale pack/code/ale
+" git submodule add https://github.com/w0rp/ale pack/code/ale
 
 
 " Filetype plugins -------------------------------------------------------- {{{
@@ -1440,7 +1440,7 @@ let g:lightline = {
 """""" " }}}
 """""" "
 " -> VimWiki {{{
-" git clone https://github.com/vimwiki/vimwiki pack/ui/opt/vimwiki
+" git submodule add https://github.com/vimwiki/vimwiki pack/ui/opt/vimwiki
 function! LoadVimwiki()
     packadd vimwiki
 
