@@ -1182,9 +1182,9 @@ let g:lightline = {
 """""" set commentstring=#\ %s
 """""" " }}}
 """""" " -> Autocompletion {{{
-"""""" Plug 'deoplete-plugins/deoplete-tag'
-"""""" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"""""" git submodule add https://github.com/Shougo/deoplete.nvim pack/code/start/deoplete
 """""" let g:deoplete#enable_at_startup = 1
+"""""" git submodule add https://github.com/deoplete-plugins/deoplete-tag pack/code/start/deoplete-tag
 """""" 
 """""" "use <tab> for completion
 """""" function! TabWrap()
@@ -1212,7 +1212,11 @@ let g:lightline = {
 """""" inoremap <silent><expr> <C-Space> deoplete#manual_complete()
 """""" 
 """""" " Escape: exit autocompletion, go to Normal mode
-"""""" " inoremap <silent><expr> <Esc> pumvisible() ? "<C-e><Esc>" : "<Esc>"
+" """"" " inoremap <silent><expr> <Esc> pumvisible() ? "<C-e><Esc>" : "<Esc>"
+noremap <silent> <leader>d :call completor#do('definition')<CR>
+noremap <silent> <leader>c :call completor#do('doc')<CR>
+noremap <silent> <leader>f :call completor#do('format')<CR>
+noremap <silent> <leader>s :call completor#do('hover')<CR>
 """""" " }}}
 """""" " -> Snippets {{{
 """""" Plug 'Shougo/neosnippet.vim'
@@ -1907,12 +1911,12 @@ function! AfterVimEnter()
 "  call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy'])
 "  call deoplete#custom#source('ale', 'rank', 999)
 endfunction
-"""""" 
-"""""" " Load local vars {{{
-"""""" "
-"""""" try
-""""""     source ~/.vimrc.local
-"""""" catch
-""""""     " Ignoring
-"""""" endtry
-"""""" " }}}
+
+" Load local vars {{{
+"
+try
+    source ~/.vimrc.local
+catch
+    " Ignoring
+endtry
+" }}}

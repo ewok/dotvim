@@ -16,9 +16,12 @@
 [submodule "pack/ui/opt/neodark"]
 	path = pack/ui/opt/neodark
 	url = https://github.com/KeitaNakamura/neodark.vim
-[submodule "pack/code/ale"]
-	path = pack/code/ale
-	url = https://github.com/w0rp/ale
 [submodule "pack/ui/opt/vimwiki"]
 	path = pack/ui/opt/vimwiki
 	url = https://github.com/vimwiki/vimwiki
+[submodule "pack/code/start/completor"]
+	path = pack/code/start/completor
+	url = https://github.com/maralla/completor.vim.git
+[submodule "pack/code/opt/ale"]
+	path = pack/code/opt/ale
+	url = https://github.com/w0rp/ale
