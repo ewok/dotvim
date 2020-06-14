@@ -1,0 +1,13 @@
+g:neodark#background	neodark.txt	/*g:neodark#background*
+g:neodark#solid_vertsplit	neodark.txt	/*g:neodark#solid_vertsplit*
+g:neodark#terminal_transparent	neodark.txt	/*g:neodark#terminal_transparent*
+g:neodark#use_256color	neodark.txt	/*g:neodark#use_256color*
+g:neodark#use_custom_terminal_theme	neodark.txt	/*g:neodark#use_custom_terminal_theme*
+neodark	neodark.txt	/*neodark*
+neodark-airline	neodark.txt	/*neodark-airline*
+neodark-install	neodark.txt	/*neodark-install*
+neodark-lightline	neodark.txt	/*neodark-lightline*
+neodark-options	neodark.txt	/*neodark-options*
+neodark-statusline	neodark.txt	/*neodark-statusline*
+neodark-terminal	neodark.txt	/*neodark-terminal*
+neodark.txt	neodark.txt	/*neodark.txt*
