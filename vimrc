@@ -1,7 +1,4 @@
-" Something... ------------------------------------------------------------ {{{
-
-" }}}
-" Basic options ----------------------------------------------------------- {{{
+" Basic options {{{
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ","
 
@@ -202,7 +199,7 @@ endfunction
 " }}}
 " }}}
 
-" -> Leader Initialisation {{{
+" Leader Initialisation {{{
 " Define prefix dictionary
 let g:lmap =  {}
 let g:lmap.b = { 'name': '+Buffer' }
@@ -220,13 +217,13 @@ let g:lmap.y = { 'name': '+Yank' }
 let g:lmap.z = { 'name': '+Zeal' }
 " }}}
 
-" Keymaps ----------------------------------------------------------------- {{{
-" -> Tabs {{{
+" Keymaps {{{
+" Tabs {{{
 " map gr gT
 nnoremap <C-W>t :tabnew<CR>
 
 " }}}
-" -> Windows {{{
+" Windows {{{
 
 " Tmux?
 if exists('$TMUX')
@@ -256,7 +253,7 @@ if bufwinnr(1)
 endif
 
 " }}}
-" -> Folding {{{
+" Folding {{{
 " Space to toggle folds.
 nnoremap <silent> <leader><leader> za"{{{
 nnoremap <silent> z<leader> mzzMzvzz15<c-e>`z
@@ -274,7 +271,7 @@ nmap zj zjmzzMzvzz15<c-e>`z
 nmap zk zkmzzMzvzz15<c-e>`z
 
 " " }}}
-" -> Some vim tunings {{{
+" Some vim tunings {{{
 nnoremap Y y$
 nnoremap vv V
 
@@ -306,9 +303,10 @@ nnoremap H ^
 nnoremap L $
 " }}}
 " }}}
-" Filetypes --------------------------------------------------------------- {{{
-" -> Ansible/Yaml {{{
-" git submodule add https://github.com/pearofducks/ansible-vim pack/filetypes/opt/ansible
+
+" Filetypes {{{
+" Ansible/Yaml {{{
+" inst: https://github.com/pearofducks/ansible-vim filetypes/opt/ansible
 augroup ft_ansible
     au!
     au BufNewFile,BufRead */\(playbooks\|roles\|tasks\|handlers\|defaults\|vars\)/*.\(yaml\|yml\) set filetype=yaml.ansible
@@ -342,49 +340,68 @@ augroup ft_ansible
 
 augroup END
 " }}}
-" -> CSV {{{
-" git submodule add https://github.com/chrisbra/csv.vim pack/filetypes/opt/csv
+" CSV {{{
+" inst: https://github.com/chrisbra/csv.vim filetypes/opt/csv
 augroup ft_csv
     au!
     au BufNewFile,BufRead *.csv set filetype=csv
     au FileType csv call LoadCSVFT()
-    function! LoadCSVFT() " {{{
+    function! LoadCSVFT()
         packadd csv
-    endfunction " }}}
+    endfunction
 
 augroup END
 " }}}
-" -> Yaml {{{
+" Yaml {{{
 augroup ft_yaml
     au!
 
     au FileType yaml call LoadYamlFT()
-    function! LoadYamlFT() " {{{
+    function! LoadYamlFT()
+
+        packadd ale
         let b:ale_yaml_yamllint_executable = 'yamllint_custom'
         let b:ale_linters = ['yamllint']
-    endfunction " }}}
+
+    endfunction
 
 augroup END
 " }}}
-" -> Config {{{
+" Config {{{
 augroup ft_config
     au!
     au BufNewFile,BufRead *.conf,*.cfg,*.ini set filetype=config
     au FileType config setlocal commentstring=#\ %s
 augroup END
 " }}}
-" -> GitIgnore {{{
+" GitIgnore {{{
 augroup ft_git
     au!
     au BufNewFile,BufRead *.gitignore set filetype=gitignore
 augroup END
 " }}}
-" -> Go {{{
+" Go {{{
+" inst: https://github.com/fatih/vim-go filetypes/opt/vim-go
 augroup ft_go
     au!
 
     au FileType go call LoadGoFT()
     function! LoadGoFT()
+
+        packadd vim-go
+
+        let g:go_highlight_functions = 1
+        let g:go_highlight_methods = 1
+        let g:go_highlight_structs = 1
+        let g:go_highlight_interfaces = 1
+        let g:go_highlight_operators = 1
+        let g:go_highlight_build_constraints = 1
+        
+        " let g:go_auto_type_info = 1
+        let g:go_auto_sameids = 1
+        " let g:go_fmt_autosave = 0
+        " let g:go_fmt_command = "goimports"
+
         nmap <buffer> <silent> <leader>rr :silent GoRun<CR>
         nmap <buffer> <silent> <leader>rt :GoTest<CR>
         nmap <buffer> <silent> <leader>rb :GoBuild<CR>
@@ -407,27 +424,38 @@ augroup ft_go
 
 augroup END
 " }}}
-" -> JSON {{{
+" JSON {{{
 augroup ft_json
     au!
     au BufNewFile,BufRead *.json set filetype=javascript
 augroup END
 " }}}
-" -> Haskell {{{
+" Haskell {{{
 augroup ft_haskell
     au!
     au BufNewFile,BufRead *.hs,*.lhs set filetype=haskell
 augroup END
 " }}}
-" -> Logstash {{{
+" Logstash {{{
+" inst: https://github.com/robbles/logstash.vim filetypes/opt/logstash
 augroup ft_logstash
     au!
-    au FileType logstash setlocal foldmethod=marker|setlocal foldmarker={,}|setlocal wrap
+    au FileType logstash call LoadLogstashFT()
+    function! LoadLogstashFT()
+
+        packadd logstash
+
+        setlocal foldmethod=marker
+        setlocal foldmarker={,}
+        setlocal wrap
+
+    endfunction
+
 augroup END
 " }}}
-" -> Markdown {{{
-" git submodule add https://github.com/shime/vim-livedown pack/filetypes/opt/livedown
-" git submodule add https://github.com/gpanders/vim-medieval pack/filetypes/opt/medieval
+" Markdown {{{
+" inst: https://github.com/shime/vim-livedown filetypes/opt/livedown
+" inst: https://github.com/gpanders/vim-medieval filetypes/opt/medieval
 augroup ft_markdown
     au!
 
@@ -457,19 +485,45 @@ augroup ft_markdown
 
 augroup END
 " }}}
-" -> Morph {{{
+" Morph {{{
 augroup ft_morph
     au!
     au BufNewFile,BufRead *.b64,*.base64 set filetype=base64
     au BufNewFile,BufRead *.enc,*.gpg set filetype=encrypted
 augroup END
 " }}}
-" -> Python {{{
+" Python {{{
+" inst: https://github.com/jmcantrell/vim-virtualenv filetypes/opt/vim-virtualenv
+" inst: https://github.com/Vimjas/vim-python-pep8-indent filetypes/opt/pep8-ind
+" inst: https://github.com/davidhalter/jedi-vim filetypes/opt/jedi
 augroup ft_python
     au!
 
     au FileType python call LoadPythonFT()
     function! LoadPythonFT() " {{{
+
+        packadd jedi
+
+        let g:jedi#goto_command = ""
+        let g:jedi#goto_assignments_command = "gA"
+        let g:jedi#goto_definitions_command = "gd"
+        let g:jedi#documentation_command = "K"
+        let g:jedi#usages_command = "gr"
+        let g:jedi#completions_command = ""
+        let g:jedi#rename_command = "<leader>rR"
+        let g:jedi#completions_enabled = 0
+        let g:jedi#use_splits_not_buffers = "right"
+        let g:jedi#goto_stubs_command = ""
+
+        packadd vim-virtualenv
+        let g:virtualenv_directory = $PWD
+
+        packadd pep8-ind
+
+        setlocal foldmethod=indent
+        setlocal foldlevel=0
+        setlocal foldnestmax=2
+        setlocal commentstring=#\ %s
 
         nmap <buffer> <leader>rr :w\|call RunCmd("python " . bufname("%"))<CR>
         nmap <buffer> <leader>rt :w\|call RunCmd("python -m unittest " . bufname("%"))<CR>
@@ -480,11 +534,7 @@ augroup ft_python
         nmap <Plug>(python_breakpoint) oimport pudb; pudb.set_trace()<esc>
         nmap <silent> <buffer> <leader>rb <Plug>(python_breakpoint)
 
-
-        setlocal foldmethod=indent
-        setlocal foldlevel=0
-        setlocal foldnestmax=2
-        setlocal commentstring=#\ %s
+        packadd ale
 
         let b:ale_linters = ['flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle']
         let b:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8']}
@@ -502,11 +552,15 @@ augroup ft_python
         let b:ale_python_isort_executable = 'isort'
         let b:ale_python_pydocstyle_executable = 'pydocstyle'
         let b:ale_python_vulture_executable = 'vulture'
+
+        packadd textobj-python
+
     endfunction " }}}
 
 augroup END
 " }}}
-" -> Puppet {{{
+" Puppet {{{
+" inst: https://github.com/rodjek/vim-puppet filetypes/opt/puppet
 augroup ft_puppet
     au!
 
@@ -518,14 +572,18 @@ augroup ft_puppet
         nmap <buffer> <leader>rt :w\|call RunCmd("puppet parser validate")<CR>
         nmap <buffer> <leader>rL :!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>
 
+        packadd puppet
+
+        let g:puppet_align_hashes = 0
+
         " let b:ale_linters = ['puppet', 'puppetlint']
     endfunction
 
 augroup END
 " }}}
-" -> Rust {{{
-" git submodule add https://github.com/rust-lang/rust.vim pack/filetypes/opt/rust
-" git submodule add https://github.com/racer-rust/vim-racer pack/filetypes/opt/rust-racer
+" Rust {{{
+" inst: https://github.com/rust-lang/rust.vim filetypes/opt/rust
+" inst: https://github.com/racer-rust/vim-racer filetypes/opt/rust-racer
 augroup ft_rust
     au!
 
@@ -546,7 +604,7 @@ augroup ft_rust
 
 augroup END
 " }}}
-" -> Vim {{{
+" Vim {{{
 augroup ft_vim
     au!
 
@@ -555,43 +613,50 @@ augroup ft_vim
 
     au FileType vim call LoadVimFT()
     function! LoadVimFT() " {{{
+
         let g:lmap.r.S = 'Source-line'
         setlocal foldmethod=marker keywordprg=:help
         setlocal commentstring=\"\ %s
 
         inoremap <c-n> <c-x><c-n>
+
         let g:lmap.r.r = 'Source'
         nmap <buffer> <leader>rr :source %<CR>:echon "script reloaded!"<CR>
         vnoremap <buffer> <leader>rS y:@"<CR>
         nnoremap <buffer> <leader>rS ^vg_y:execute @@<cr>:echo 'Sourced line.'<cr>
+
     endfunction " }}}
 
 augroup END
 " }}}
-" -> ZSH {{{
+" ZSH {{{
 augroup ft_zsh
     au!
     au BufNewFile,BufRead *.zsh-theme set filetype=zsh
 augroup END
 " }}}
-" -> Shell {{{
+" Shell {{{
 augroup ft_sh
     au!
 
     au FileType sh call LoadShFT()
     function! LoadShFT() " {{{
+
         nmap <buffer> <leader>rr :w\|call RunCmd("bash " . bufname("%"))<CR>
+
+        packadd ale
         let b:ale_linters = ['shellcheck', 'language_server']
+
     endfunction " }}}
 
 augroup END
 " }}}
-" -> Vimwiki {{{
+" Vimwiki {{{
 augroup ft_vimwiki
     au!
 
     au FileType vimwiki call LoadVimWikiFT()
-    function! LoadVimWikiFT() " {{{
+    function! LoadVimWikiFT()
         setlocal foldlevel=2
 
         packadd ale
@@ -600,51 +665,80 @@ augroup ft_vimwiki
         packadd medieval
         let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
 
-    endfunction " }}}
+    endfunction 
 
 augroup END
 " }}}
-" -> Dockerfile {{{
+" Dockerfile {{{
 augroup ft_dockerfile
     au!
 
     au FileType dockerfile call LoadDockerfileFT()
-    function! LoadDockerfileFT() " {{{
+    function! LoadDockerfileFT()
+
+        packadd ale
         let b:ale_linters = ['hadolint']
-    endfunction " }}}
+
+    endfunction
 
 augroup END
 " }}}
-" -> Mail {{{
+" Mail {{{
 augroup ft_mail
     au!
     au FileType mail map <buffer> <leader>rr :%!pandoc -f markdown_mmd -t html<CR>
 augroup END
 " }}}
-" -> Helm {{{
+" Helm {{{
+" inst: https://github.com/towolf/vim-helm filetypes/opt/helm
 augroup ft_helm
     au!
     au BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl set ft=helm
+
+    au FileType helm call LoadHelmFT()
+    function! LoadHelmFT()
+
+        packadd helm
+
+    endfunction
+
 augroup END
 "  }}}
-" -> i3 {{{
+" i3 {{{
 augroup ft_i3
     au!
     au BufNewFile,BufRead .i3.config,i3.config,*.i3config,*.i3.config,*/.i3/config set filetype=i3config
 augroup END
 "  }}}
-" -> Log {{{
+" Log {{{
+" inst: https://github.com/mtdl9/vim-log-highlighting filetypes/opt/log
 augroup ft_log
     au!
     au BufNewFile,BufRead *.log set filetype=log
+
+    au FileType log call LoadLogFT()
+    function! LoadLogFT()
+
+        packadd log
+
+    endfunction
+
 augroup END
 "  }}}
-" -> Terraform {{{
+" Terraform {{{
+" inst: https://github.com/hashivim/vim-terraform filetypes/opt/terraform
 augroup ft_terraform
     au!
 
     au FileType terraform call LoadTerraformFT()
-    function! LoadTerraformFT() " {{{
+    function! LoadTerraformFT()
+
+        packadd terraform
+
+        let g:terraform_align=1
+        let g:terraform_fmt_on_save=1
+
+        packadd ale
 
         call ale#linter#Define('terraform', {
                     \   'name': 'terraform-lsp',
@@ -653,16 +747,19 @@ augroup ft_terraform
                     \   'command': '%e',
                     \   'project_root': getcwd(),
                     \})
-    endfunction " }}}
+
+    endfunction
 
 augroup END
 "  }}}
-" -> LUA {{{
+" LUA {{{
 augroup ft_lua
     au!
 
     au FileType lua call LoadLUAFT()
     function! LoadLUAFT() " {{{
+
+        packadd ale
 
         call ale#linter#Define('lua', {
                     \   'name': 'lua-language-server',
@@ -674,15 +771,38 @@ augroup ft_lua
     endfunction " }}}
 
 augroup END
-"  }}}
+" }}}
+" XML {{{
+" inst: https://github.com/sukima/xmledit filetypes/opt/xml
+augroup ft_xml
+    au!
+
+    au FileType xml call LoadXMLFT()
+    function! LoadXMLFT()
+
+        packadd xml
+
+    endfunction
+
+augroup END
+" }}}
 " }}}
 
-" Colorscheme ------------------------------------------------------------- {{{
-" git submodule add https://github.com/KeitaNakamura/neodark.vim pack/ui/opt/neodark
+" UI {{{
+" Colorscheme {{{
+" inst: https://github.com/KeitaNakamura/neodark.vim ui/opt/neodark
+
+packadd neodark
 
 let g:neodark#background = '#282c34'
 
 colorscheme neodark
+" }}}
+" Lightline {{{
+" inst: https://github.com/itchyny/lightline.vim ui/start/lightline
+if !has('gui_running')
+    set t_Co=256
+endif
 
 let g:lightline = {
             \ 'colorscheme': 'neodark',
@@ -698,169 +818,764 @@ let g:lightline = {
             \ }
 
 " }}}
-" Plugins ----------------------------------------------------------------- {{{
-" git submodule add https://github.com/w0rp/ale pack/code/ale
+" Fuzzy {{{
+" inst: https://github.com/junegunn/fzf ui/start/fzf
+" inst: https://github.com/junegunn/fzf.vim ui/start/fzf.vim
 
+tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 
-" Filetype plugins -------------------------------------------------------- {{{
-"""""" " -> Go {{{
-"""""" "  TODO: Still not working
-"""""" Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
-"""""" let g:go_highlight_functions = 1
-"""""" let g:go_highlight_methods = 1
-"""""" let g:go_highlight_structs = 1
-"""""" let g:go_highlight_interfaces = 1
-"""""" let g:go_highlight_operators = 1
-"""""" let g:go_highlight_build_constraints = 1
-"""""" 
-"""""" " let g:go_auto_type_info = 1
-"""""" let g:go_auto_sameids = 1
-"""""" " let g:go_fmt_autosave = 0
-"""""" " let g:go_fmt_command = "goimports"
-"""""" 
-"""""" " }}}
-"""""" " -> Logstash {{{
-"""""" Plug 'robbles/logstash.vim', { 'for': 'logstash' }
-"""""" " }}}
-"""""" " -> Puppet {{{
-"""""" Plug 'rodjek/vim-puppet', { 'for': 'puppet' }
-"""""" 
-"""""" " Prevent puppet plugin change alligment
-"""""" let g:puppet_align_hashes = 0
-"""""" " }}}
-"""""" " -> Python {{{
-"""""" Plug 'jmcantrell/vim-virtualenv', { 'for': 'python' }
-"""""" let g:virtualenv_directory = $PWD
-"""""" 
-"""""" Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
-"""""" 
-"""""" Plug 'deoplete-plugins/deoplete-jedi', { 'for': 'python' }
-"""""" 
-"""""" Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-"""""" let g:jedi#goto_command = ""
-"""""" let g:jedi#goto_assignments_command = "gA"
-"""""" let g:jedi#goto_definitions_command = "gd"
-"""""" let g:jedi#documentation_command = "K"
-"""""" let g:jedi#usages_command = "gr"
-"""""" let g:jedi#completions_command = ""
-"""""" let g:jedi#rename_command = "<leader>rR"
-"""""" let g:jedi#completions_enabled = 0
-"""""" let g:jedi#use_splits_not_buffers = "right"
-"""""" let g:jedi#goto_stubs_command = ""
-"""""" 
-"""""" let g:deoplete#sources#jedi#show_docstring = 1
-"""""" " }}}
-"""""" " -> Salt {{{
-"""""" Plug 'saltstack/salt-vim', { 'for': 'sls' }
-"""""" " }}}
-"""""" " -> SQL {{{
-"""""" " Plug 'martingms/vipsql', { 'for': 'sql' }
-"""""" " }}}
-"""""" " -> Terraform {{{
-"""""" Plug 'hashivim/vim-terraform'
-"""""" let g:terraform_align=1
-"""""" let g:terraform_fmt_on_save=1
-"""""" "  }}}
-"""""" " -> VIM {{{
-"""""" Plug 'Shougo/neco-vim', { 'for': 'vim' }
-"""""" " }}}
-"""""" " -> XML {{{
-"""""" Plug 'sukima/xmledit', { 'do': 'make', 'for': ['xml', 'html'] }
-"""""" " }}}
-"""""" " -> NodeJSX {{{
-"""""" Plug 'ternjs/tern_for_vim', { 'for': 'javascript.jsx' }
-"""""" Plug 'mxw/vim-jsx', { 'for': 'javascript.jsx' }
-"""""" Plug 'mattn/emmet-vim', { 'for': 'javascript.jsx' }
-"""""" " }}}
-"""""" " -> Helm {{{
-"""""" Plug 'towolf/vim-helm', { 'for': 'helm' }
-"""""" "  }}}
-"""""" " -> i3 {{{
-"""""" Plug 'mboughaba/i3config.vim', { 'for': 'i3config' }
-"""""" "  }}}
-"""""" " -> Log {{{
-"""""" Plug 'mtdl9/vim-log-highlighting', { 'for': 'log' }
-"""""" "  }}}
-"""""" " }}}
-"""""" " Info plugins ------------------------------------------------------------ {{{
-"""""" " -> Zeal {{{
-"""""" Plug 'KabbAmine/zeavim.vim', { 'on': ['<Plug>Zeavim', '<Plug>ZVVisSelection', '<Plug>ZVKeyDocset', '<Plug>ZVOperator'] }
-"""""" nmap gzz <Plug>Zeavim
-"""""" vmap gzz <Plug>ZVVisSelection
-"""""" 
-"""""" nmap gZ <Plug>ZVKeyDocset<CR>
-"""""" nmap gz <Plug>ZVOperator
-"""""" 
-"""""" let g:zv_file_types = {
-""""""             \   'help'                : 'vim',
-""""""             \   'yaml.ansible'        : 'ansible',
-""""""             \   'jinja2'              : 'jinja',
-""""""             \ }
-"""""" " }}}
-"""""" " }}}
-"""""" " Motion plugins ---------------------------------------------------------- {{{
-"""""" " -> Easymotion {{{
-"""""" if has('neovim')
-""""""     Plug 'easymotion/vim-easymotion'
-"""""" endif
-"""""" let g:EasyMotion_do_mapping = 0 " Disable default mappings
-"""""" 
-"""""" " Jump to anywhere you want with minimal keystrokes, with just one key binding.
-"""""" nmap ss <Plug>(easymotion-overwin-f)
-"""""" 
-"""""" " Turn on case insensitive feature
-"""""" let g:EasyMotion_smartcase = 1
-"""""" 
-"""""" map sl <Plug>(easymotion-lineforward)
-"""""" map sj <Plug>(easymotion-j)
-"""""" map sk <Plug>(easymotion-k)
-"""""" map sh <Plug>(easymotion-linebackward)
-"""""" " }}}
-"""""" " -> Text objects
-"""""" Plug 'kana/vim-textobj-user'
-"""""" 
-"""""" " Adds: f - function
-"""""" Plug 'bps/vim-textobj-python', { 'for': 'python' }
-"""""" 
-"""""" let g:textobj_python_no_default_key_mappings = 1
-"""""" xmap af <Plug>(textobj-python-function-a)
-"""""" omap af <Plug>(textobj-python-function-a)
-"""""" xmap if <Plug>(textobj-python-function-i)
-"""""" omap if <Plug>(textobj-python-function-i)
-"""""" 
-"""""" " Adds: i - indent, I - the same indent
-"""""" Plug 'kana/vim-textobj-indent'
-"""""" 
-"""""" " Adds: c - comment, C - whole comment
-"""""" Plug 'glts/vim-textobj-comment'
-"""""" 
-"""""" " }}}
-"""""" " Text plugins ------------------------------------------------------------ {{{
-"""""" " -> Drag blocks {{{
-"""""" Plug 'zirrostig/vim-schlepp', { 'on': ['<Plug>SchleppUp', '<Plug>SchleppRight', '<Plug>SchleppLeft', '<Plug>SchleppDown'] }
-"""""" 
-"""""" vmap <up>    <Plug>SchleppUp
-"""""" vmap <down>  <Plug>SchleppDown
-"""""" vmap <left>  <Plug>SchleppLeft
-"""""" vmap <right> <Plug>SchleppRight
-"""""" " }}}
-"""""" " -> Easyalign {{{
-"""""" Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(LiveEasyAlign)'] }
-"""""" 
-"""""" nmap ga <Plug>(LiveEasyAlign)
-"""""" xmap ga <Plug>(LiveEasyAlign)
-"""""" " }}}
-"""""" " -> Find and Replace {{{
-"""""" Plug 'brooth/far.vim', { 'on': 'Far' }
-"""""" 
-"""""" let g:far#source = 'agnvim'
-"""""" let g:far#file_mask_favorites = ['%', '.*', '\.py$', '\.go$']
-"""""" 
-"""""" let g:lmap.f.r = 'Replace'
-"""""" nnoremap <leader>fr :Far<space>
-"""""" vnoremap <leader>fr :Far<space>
-"""""" 
-"""""" " }}}
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..',
+            \ 'source': 'ag --hidden --ignore .git -U -p ~/.gitexcludes --nogroup --column --color "^(?=.)"'}, <bang>0)
+
+let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
+
+nnoremap <silent> <leader>pp :Files<CR>
+nnoremap <silent> <leader>pm :Marks<CR>
+nnoremap <silent> <leader>pb :Buffers<CR>
+nnoremap <silent> <leader>pf :Filetypes<CR>
+
+let g:lmap.g.f = { 'name': '+File' }
+let g:lmap.g.f.h = 'file-History'
+nmap <silent> <leader>gfh :BCommits<CR>
+
+let g:lmap.f.f = 'in-File'
+nmap <silent> <leader>ff :Ag<CR>
+
+function! s:build_quickfix_list(lines)
+    call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+    copen
+    cc
+endfunction
+
+let g:fzf_action = {
+            \ 'ctrl-q': function('s:build_quickfix_list'),
+            \ 'ctrl-t': 'tab split',
+            \ 'ctrl-x': 'split',
+            \ 'ctrl-v': 'vsplit' }
+
+let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
+" }}}
+" NERTree {{{
+" inst: https://github.com/preservim/nerdtree ui/start/nerdtree
+" inst: https://github.com/Xuyuanp/nerdtree-git-plugin ui/start/nerdtree-git
+
+nnoremap <leader>pn :NERDTreeToggle<Bar>wincmd p<CR>
+nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
+
+function! FindPathOrShowNERDTree()
+    let currentfile = expand('%')
+    if (currentfile == "") || !(currentfile !~? 'NERD')
+        NERDTreeToggle
+    else
+        NERDTreeFind
+    endif
+endfunction
+
+let g:lmap.f.p = 'Path'
+nmap <leader>fp <Plug>(find_Path)
+
+let NERDTreeShowBookmarks=0
+let NERDTreeChDirMode=2
+let NERDTreeMouseMode=2
+let g:nerdtree_tabs_focus_on_files=1
+let g:nerdtree_tabs_open_on_gui_startup=0
+
+" make nerdtree look nice
+let NERDTreeMinimalUI=1
+let NERDTreeDirArrows=1
+let g:NERDTreeWinSize=30
+let NERDTreeIgnore=['\.pyc$']
+
+" ReMaps
+let NERDTreeMapOpenVSplit='v'
+let NERDTreeMapOpenSplit='s'
+let NERDTreeMapJumpNextSibling=''
+let NERDTreeMapJumpPrevSibling=''
+
+" Close vim if the only NERDTree window left
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" }}}
+" Which-Key {{{
+" inst: https://github.com/liuchengxu/vim-which-key ui/opt/which-key
+packadd which-key
+
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
+" }}}
+" Indent-guides {{{
+" inst: https://github.com/nathanaelkane/vim-indent-guides ui/opt/indent-guides
+packadd indent-guides
+
+let g:indent_guides_auto_colors = 0
+hi IndentGuidesOdd  ctermbg=237
+hi IndentGuidesEven ctermbg=236
+
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_default_mapping = 0
+" }}}
+" Texting {{{
+" inst: https://github.com/junegunn/goyo.vim ui/opt/goyo
+" inst: https://github.com/junegunn/limelight.vim ui/opt/limelight
+
+" Spell Check
+let g:myLangList=["nospell","en_us", "ru_ru"]
+
+function! ToggleSpell()
+    if !exists( "b:myLang" )
+        if &spell
+            let b:myLang=index(g:myLangList, &spelllang)
+        else
+            let b:myLang=0
+        endif
+    endif
+    let b:myLang=b:myLang+1
+    if b:myLang>=len(g:myLangList) | let b:myLang=0 | endif
+    if b:myLang==0
+        setlocal nospell
+        " exe "GrammarousReset"
+    else
+        execute "setlocal spell spelllang=".get(g:myLangList, b:myLang)
+        " execute "GrammarousCheck"
+    endif
+    echo "spell checking language:" g:myLangList[b:myLang]
+endfunction
+
+nnoremap <silent> <F7> :call ToggleSpell()<CR>
+
+let g:lmap.t.s = 'Syntax'
+nnoremap <silent> <leader>ts :call ToggleSpell()<CR>
+imap <silent> <F7> <ESC>:call ToggleSpell()<CR>a
+
+" Focus on the process
+"
+function! s:goyo_enter()
+    silent !tmux set status off
+    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+    set noshowmode
+    set noshowcmd
+    set scrolloff=999
+    set wrap
+    Limelight
+    " ...
+endfunction
+
+function! s:goyo_leave()
+    silent !tmux set status on
+    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+    set showmode
+    set showcmd
+    set scrolloff=5
+    set nowrap
+    Limelight!
+    " ...
+endfunction
+
+au! User GoyoEnter nested call <SID>goyo_enter()
+au! User GoyoLeave nested call <SID>goyo_leave()
+
+function! StartGoyo()
+
+    if !exists("g:goyo_loaded")
+        packadd goyo
+        packadd limelight
+        let g:goyo_loaded = 1
+    endif
+
+    Goyo
+
+endfunction
+
+let g:lmap.t.t = 'Text-only(Goyo)'
+nnoremap <silent> <leader>tt :call StartGoyo()<CR>
+" }}}
+" Tmux {{{
+" inst: https://github.com/christoomey/vim-tmux-navigator ui/start/tmux-navigator
+" inst: https://github.com/benmills/vimux ui/opt/vimux
+if exists('$TMUX')
+    if has('neovim')
+        nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
+    endif
+
+    let g:tmux_navigator_save_on_switch = 2
+    let g:tmux_navigator_disable_when_zoomed = 1
+
+    packadd vimux
+
+    " Override RunCmd command
+    function! RunCmd(cmd)
+        mark z
+        exe VimuxRunCommand(a:cmd)
+        exe "normal! g`z"
+        delmark z
+    endfunction
+
+    function! CloseRunner()
+        if exists('g:VimuxRunnerIndex')
+            let choice = confirm("Close runner?", "\n&yes\n&no\nor &detach", 2)
+
+            if choice == 2
+                VimuxCloseRunner
+            elseif choice == 4
+                unlet g:VimuxRunnerIndex
+            endif
+        else
+            echo "Runner is not registered"
+        endif
+    endfunction
+
+    let g:lmap.r.q = 'Close Runner'
+    nmap <leader>rq :call CloseRunner()<CR>
+
+    let g:lmap.r.x = 'Interrupt'
+    nmap <leader>rx :VimuxInterruptRunner<CR>
+    let g:VimuxHeight = "20"
+    let g:VimuxUseNearest = 0
+endif
+" }}}
+" Autoread {{{
+" inst: https://github.com/djoshea/vim-autoread ui/start/autoread
+let autoreadargs={'autoread':1}
+" }}}
+" }}}
+
+" Code {{{
+" Ale {{{
+" inst: https://github.com/w0rp/ale code/opt/ale
+" }}}
+" Completor {{{
+" inst: https://github.com/maralla/completor.vim code/start/completor
+"noremap <silent> <leader>d :call completor#do('definition')<CR>
+"noremap <silent> <leader>c :call completor#do('doc')<CR>
+"noremap <silent> <leader>f :call completor#do('format')<CR>
+"noremap <silent> <leader>s :call completor#do('hover')<CR>
+" }}}
+" Text objects {{{
+" inst: https://github.com/kana/vim-textobj-user code/start/textobj
+
+" adds: f - function
+" inst: https://github.com/bps/vim-textobj-python code/opt/textobj-python
+
+let g:textobj_python_no_default_key_mappings = 1
+xmap af <Plug>(textobj-python-function-a)
+omap af <Plug>(textobj-python-function-a)
+xmap if <Plug>(textobj-python-function-i)
+omap if <Plug>(textobj-python-function-i)
+
+" Adds: i - indent, I - the same indent
+" inst: https://github.com/kana/vim-textobj-indent code/start/textobj-indent
+
+" Adds: c - comment, C - whole comment
+" inst: https://github.com/glts/vim-textobj-comment code/start/textobj-comment
+" }}}
+" Easyalign {{{
+" inst: https://github.com/junegunn/vim-easy-align code/start/easy-align
+nmap ga <Plug>(LiveEasyAlign)
+xmap ga <Plug>(LiveEasyAlign)
+" }}}
+" Find and Replace {{{
+" inst: https://github.com/brooth/far.vim code/start/far
+
+let g:far#source = 'agnvim'
+let g:far#file_mask_favorites = ['%', '.*', '\.py$', '\.go$']
+
+let g:lmap.f.r = 'Replace'
+nnoremap <leader>fr :Far<space>
+vnoremap <leader>fr :Far<space>
+
+" }}}
+" Surround {{{
+" inst: https://github.com/tpope/vim-surround code/start/surround
+let g:surround_113="#{\r}"       " v
+let g:surround_35="#{\r}"        " #
+let g:surround_45="{%- \r -%}"   " -
+let g:surround_61="{%= \r =%}"   " =
+
+" div
+let g:surround_{char2nr("d")} = "<div\1id: \r..*\r id=\"&\"\1>\r</div>"
+" xml
+let g:surround_{char2nr("x")} = "<\1id: \r..*\r&\1>\r</\1\1>"
+
+let g:surround_{char2nr("%")} = "{% \r %}"
+
+" }}}
+" }}}
+
+" Motion {{{
+" Easymotion {{{
+" inst: https://github.com/easymotion/vim-easymotion ui/start/easymotion
+"
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+nmap ss <Plug>(easymotion-overwin-f)
+
+" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
+
+map sl <Plug>(easymotion-lineforward)
+map sj <Plug>(easymotion-j)
+map sk <Plug>(easymotion-k)
+map sh <Plug>(easymotion-linebackward)
+" }}}
+" }}}
+
+" Additional {{{
+" VimWiki {{{
+" inst: https://github.com/vimwiki/vimwiki ui/opt/vimwiki
+function! LoadVimwiki()
+
+    packadd vimwiki
+
+    let g:lmap.w.w = 'Index'
+    nunmap <Leader>ww
+    noremap <Leader>ww :call VimwikiIndexCd()<CR>
+
+    nunmap <Leader>w<Space>i
+    nunmap <Leader>w<Space>t
+    nunmap <Leader>w<Space>w
+    nunmap <Leader>w<Space>y
+    nunmap <Leader>w<Space>m
+    nunmap <Leader>wt
+    " i - generate
+    " t tab make diary
+    " w make diary
+    " y yesterday
+    " m tommorow
+
+    map <leader>wt :call VimwikiMakeDiaryNoteNew()<CR>
+    let g:lmap.w.s = 'Select-wiki'
+    let g:lmap.w.t = 'Today'
+    let g:lmap.w.i = 'Diary'
+endfunction
+
+function! VimWikiHelpers()
+    let g:lmap.w.r = 'Rename-link'
+    let g:lmap.w.d = 'Delete-link'
+    let g:lmap.w.h = 'to-Html'
+    let g:lmap.w.hh = 'toHtml-browse'
+    let g:lmap.w.n = 'goto'
+endfunction
+
+function! VimwikiIndexCd()
+    VimwikiIndex
+    cd %:h
+    call VimWikiHelpers()
+endfunction
+
+function! VimwikiMakeDiaryNoteNew()
+    VimwikiMakeDiaryNote
+    cd %:h:h
+    call VimWikiHelpers()
+endfunction
+
+let g:vimwiki_list = [{'path': '~/Notes/',
+            \ 'syntax': 'markdown', 'ext': '.md',
+            \ 'auto_toc': 1,
+            \ 'auto_diary_index': 1,
+            \ 'list_margin': 0,
+            \ 'custom_wiki2html': 'vimwiki-godown',
+            \ 'auto_tags': 1}]
+
+let g:vimwiki_ext2syntax = {'.md': 'markdown',
+            \ '.mkd': 'markdown',
+            \ '.wiki': 'media'}
+
+let g:vimwiki_folding = 'expr'
+let g:vimwiki_hl_headers = 1
+let g:vimwiki_hl_cb_checked = 2
+"let g:vimwiki_markdown_link_ext = 1
+
+" }}}
+" Sessions {{{
+let g:sessiondir = $HOME . "/.vim/sessions"
+
+function! MakeSession(file)
+
+    if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+        exe ':tabdo NERDTreeClose'
+    endif
+
+    if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
+        exe ':tabdo TagbarClose'
+    endif
+
+    exe ':lclose|cclose'
+
+    let file = a:file
+
+    if (file == "")
+        if (exists('g:sessionfile'))
+            let b:sessiondir = g:sessiondir
+            let file = g:sessionfile
+        else
+            let b:sessiondir = g:sessiondir . getcwd()
+            let file = "session"
+        endif
+    else
+        let b:sessiondir = g:sessiondir
+        let g:sessionfile = file
+    endif
+
+    if (filewritable(b:sessiondir) != 2)
+        exe 'silent !mkdir -p ' b:sessiondir
+        redraw!
+    endif
+    let b:filename = b:sessiondir . '/' . file . '.vim'
+
+    exe "silent mksession! " . b:filename
+endfunction
+
+function! LoadSession(file)
+
+    let file = a:file
+
+    if (file == "")
+        if (exists('g:sessionfile'))
+            let b:sessiondir = g:sessiondir
+            let file = g:sessionfile
+        else
+            let b:sessiondir = g:sessiondir . getcwd()
+            let file = "session"
+        endif
+    else
+        let b:sessiondir = g:sessiondir
+        let g:sessionfile = file
+    endif
+
+    let b:sessionfile = b:sessiondir . '/' . file . '.vim'
+    if (filereadable(b:sessionfile))
+        exe 'silent source ' b:sessionfile
+    else
+        echo "No session loaded."
+    endif
+endfunction
+
+function! DeleteSession(file)
+
+    let file = a:file
+
+    if (file == "")
+        if (exists('g:sessionfile'))
+            let b:sessiondir = g:sessiondir
+            let file = g:sessionfile
+        else
+            let b:sessiondir = g:sessiondir . getcwd()
+            let file = "session"
+        endif
+    else
+        let b:sessiondir = g:sessiondir
+    endif
+
+    let b:sessionfile = b:sessiondir . '/' . file . '.vim'
+    if (filereadable(b:sessionfile))
+        exe 'silent !rm -f ' b:sessionfile
+    else
+        echo "No session loaded."
+    endif
+endfunction
+
+function! CloseSession()
+    if (exists('g:sessionfile'))
+        call MakeSession(g:sessionfile)
+        unlet g:sessionfile
+    else
+        call MakeSession("")
+    endif
+    exe 'silent wa | %bd!'
+endfunction
+
+function! CloseSessionAndExit()
+    call CloseSession()
+    exe 'silent qa'
+endfunction
+
+fun! ListSessions(A,L,P)
+    return system("ls " . g:sessiondir . ' | grep .vim | sed s/\.vim$//')
+endfun
+
+command! -nargs=1 -range -complete=custom,ListSessions MakeSession :call MakeSession("<args>")
+command! -nargs=1 -range -complete=custom,ListSessions LoadSession :call LoadSession("<args>")
+command! -nargs=1 -range -complete=custom,ListSessions DeleteSession :call DeleteSession("<args>")
+command! MakeSessionCurrent :call MakeSession("")
+command! LoadSessionCurrent :call LoadSession("")
+command! DeleteSessionCurrent :call DeleteSession("")
+command! CloseSession :call CloseSession()
+command! CloseSessionAndExitCurrent :call CloseSessionAndExit()
+
+nnoremap <Plug>(session_Load) :LoadSession<SPACE>
+nnoremap <Plug>(session_Load-Current) :LoadSessionCurrent<CR>
+nnoremap <Plug>(session_Make) :MakeSessionCurrent<CR>
+nnoremap <Plug>(session_Exit) :CloseSessionAndExit<CR>
+nnoremap <Plug>(session_Close) :CloseSession<CR>
+nnoremap <Plug>(session_Delete) :DeleteSessionCurrent<CR>
+
+let g:lmap.s.o = 'Open'
+nmap <leader>so <Plug>(session_Load)
+let g:lmap.s.u = 'open-cUrrent'
+nmap <leader>su <Plug>(session_Load-Current)
+let g:lmap.s.s = 'Save'
+nmap <leader>ss <Plug>(session_Make)
+let g:lmap.s.q = 'Quit'
+nmap <leader>sq <Plug>(session_Exit)
+let g:lmap.s.c = 'Close'
+nmap <leader>sc <Plug>(session_Close)
+let g:lmap.s.d = 'Delete'
+nmap <leader>sd <Plug>(session_Delete)
+" }}}
+" Folding {{{
+" Thx Steve Losh
+set foldlevelstart=0
+
+" "Focus" the current line.  Basically:
+"
+" 1. Close all folds.
+" 2. Open just the folds containing the current line.
+" 3. Move the line to a little bit (15 lines) above the center of the screen.
+"
+" This mapping wipes out the z mark, which I never use.
+"
+function! MyFoldText() " {{{
+    let line = getline(v:foldstart)
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+
+    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+endfunction " }}}
+set foldtext=MyFoldText()
+
+" }}}
+" AutoSave feature {{{
+
+" Trigger autoread when changing buffers or coming back to vim.
+" au FocusGained,BufEnter,WinEnter * :silent! !
+
+au! FileType vim,python,golang,go,yaml.ansible,puppet,json,sh,vimwiki,rust,yaml call DefaultOn()
+
+function! DefaultOn()
+    if !exists("b:auto_save")
+        let b:auto_save = 1
+    endif
+endfunction
+
+set updatetime=4000
+
+let s:save_cpo = &cpo
+set cpo&vim
+
+if !exists("g:auto_save_silent")
+    let g:auto_save_silent = 0
+endif
+
+if !exists("g:auto_save_events")
+    let g:auto_save_events = ["CursorHold","CursorHoldI","BufLeave","FocusLost","WinLeave"]
+endif
+
+" Check all used events exist
+for event in g:auto_save_events
+    if !exists("##" . event)
+        let eventIndex = index(g:auto_save_events, event)
+        if (eventIndex >= 0)
+            call remove(g:auto_save_events, eventIndex)
+            echo "(AutoSave) Save on " . event . " event is not supported for your Vim version!"
+            echo "(AutoSave) " . event . " was removed from g:auto_save_events variable."
+            echo "(AutoSave) Please, upgrade your Vim to a newer version or use other events in g:auto_save_events!"
+        endif
+    endif
+endfor
+
+augroup auto_save
+    au!
+    for event in g:auto_save_events
+        execute "au " . event . " * nested call AutoSave()"
+    endfor
+augroup END
+
+function! AutoSave()
+    if &modified > 0
+        if !exists("b:auto_save")
+            let b:auto_save = 0
+        endif
+
+        if b:auto_save == 0
+            return
+        end
+
+        let was_modified = &modified
+
+        " Preserve marks that are used to remember start and
+        " end position of the last changed or yanked text (`:h '[`).
+        let first_char_pos = getpos("'[")
+        let last_char_pos = getpos("']")
+
+        call DoSave()
+
+        call setpos("'[", first_char_pos)
+        call setpos("']", last_char_pos)
+
+        if was_modified && !&modified
+            if g:auto_save_silent == 0
+                echo "(AutoSave) saved at " . strftime("%H:%M:%S")
+            endif
+        endif
+    endif
+endfunction
+
+function! DoSave()
+    silent! w
+endfunction
+
+function! ToggleAutoSave()
+    if !exists("b:auto_save")
+        let b:auto_save = 0
+    endif
+
+    if b:auto_save == 0
+        let b:auto_save = 1
+    else
+        let b:auto_save = 0
+    end
+endfunction
+
+command! ToggleAutoSave :call ToggleAutoSave()
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+" }}}
+" Quickfix {{{
+function! GetBufferList()
+    redir =>buflist
+    silent! ls!
+    redir END
+    return buflist
+endfunction
+
+function! ToggleList(bufname, pfx)
+    let buflist = GetBufferList()
+    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+        if bufwinnr(bufnum) != -1
+            exec(a:pfx.'close')
+            return
+        endif
+    endfor
+    if a:pfx == 'l' && len(getloclist(0)) == 0
+        echohl ErrorMsg
+        echo "Location List is Empty."
+        return
+    endif
+    let winnr = winnr()
+    exec(a:pfx.'open')
+    if winnr() != winnr
+        wincmd p
+    endif
+endfunction
+
+function! QFixSwitch(direction)
+    exec('copen')
+    if a:direction == 'next'
+        try
+            cnext
+        catch E42
+        catch E553
+            echom "No more items"
+        endtry
+    elseif a:direction == 'prev'
+        try
+            cprevious
+        catch E42
+        catch E553
+            echom "No more items"
+        endtry
+    else
+        echom "Unknown direction"
+    endif
+endfunction
+
+nnoremap <Plug>(qfix_Toggle) :call ToggleList("Quickfix List", 'c')<CR>
+nnoremap <Plug>(qfix_Open) :copen<CR>
+nnoremap <Plug>(qfix_Close) :cclose<CR>
+nnoremap <Plug>(qfix_QNext) :call QFixSwitch('next')<CR>
+nnoremap <Plug>(qfix_QPrev) :call QFixSwitch('prev')<CR>
+let g:lmap.q.q = 'toggle'
+nmap <leader>qq  <Plug>(qfix_Toggle)
+let g:lmap.q.o = 'Open'
+nmap <leader>qo <Plug>(qfix_Open)
+let g:lmap.q.c = 'Close'
+nmap <leader>qc <Plug>(qfix_Close)
+let g:lmap.q.n = 'Next'
+nmap <leader>qn <Plug>(qfix_QNext)
+let g:lmap.q.p = 'Previous'
+nmap <leader>qp <Plug>(qfix_QPrev)
+
+nnoremap <Plug>(qfix_LToggle) :call ToggleList("Location List", 'l')<CR>
+nnoremap <Plug>(qfix_LOpen) :lopen<CR>
+nnoremap <Plug>(qfix_LClose) :lclose<CR>
+nnoremap <Plug>(qfix_LNext) :lnext<CR>
+nnoremap <Plug>(qfix_LPrev) :lprev<CR>
+let g:lmap.l.l = 'toggle'
+nmap <leader>ll  <Plug>(qfix_LToggle)
+let g:lmap.l.o = 'Open'
+nmap <leader>lo <Plug>(qfix_LOpen)
+let g:lmap.l.c = 'Close'
+nmap <leader>lc <Plug>(qfix_LClose)
+let g:lmap.l.n = 'Next'
+nmap <leader>ln <Plug>(qfix_LNext)
+let g:lmap.l.p = 'Previous'
+nmap <leader>lp <Plug>(qfix_LPrev)
+" }}}
+" TODOs {{{
+inoremap \td <C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
+inoremap \dts <C-R>=strftime("%Y-%m-%d %H:%M:%S") . " "<CR>
+inoremap \fl <C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR>
+inoremap \fp <C-R>=expand("%:h") . '/' . expand("%:t")<CR>
+
+let g:lmap.t.d = 'to-Do'
+nnoremap <leader>td O<C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
+
+let g:lmap.o.t = 'To-do'
+nnoremap <leader>ot :call OpenToDo()<CR>
+function! OpenToDo()
+    vsplit TODO.md
+    nnoremap <buffer> q :x<CR>
+    hi TODO guifg=Yellow ctermfg=Yellow term=Bold
+    hi FIXME guifg=Red ctermfg=Red term=Bold
+    hi P1 guifg=Red ctermfg=Red term=Bold
+    hi P2 guifg=LightRed ctermfg=LightRed term=Bold
+    hi P3 guifg=LightYellow ctermfg=LightYellow term=Bold
+    hi P4 guifg=LightGrey ctermfg=Grey term=Italic
+    hi DONE guifg=DarkGreen ctermfg=Grey term=Italic
+
+    call matchadd('TODO', 'TODO')
+    call matchadd('TODO', '@todo')
+    call matchadd('FIXME', 'FIXME')
+    call matchadd('FIXME', '@fixme')
+    syn match P1 ".*\[[^X]\]\s\+[pP]1.*$"
+    syn match P2 ".*\[[^X]\]\s\+[pP]2.*$"
+    syn match P3 ".*\[[^X]\]\s\+[pP]3.*$"
+    syn match P4 ".*\[[^X]\]\s\+[pP]4.*$"
+    syn match DONE ".*\[[X]\]\s.*$"
+endfunction
+
+let g:lmap.t.h = 'To-Html'
+nnoremap <leader>th :TOhtml<CR>
+vnoremap <leader>th :TOhtml<CR>
+" }}}
+" }}}
+
+"""""" " Motion plugins {{{
+"""""" " Text plugins {{{
 """""" " -> Morph {{{
 """""" Plug 'd0c-s4vage/vim-morph', { 'for': [ 'base64', 'encrypted']}
 """""" 
@@ -876,85 +1591,6 @@ let g:lightline = {
 """"""     set undodir=~/.config/nvim/local/backups
 """"""     set undofile
 """""" endif
-"""""" " }}}
-"""""" " -> Surround {{{
-"""""" Plug 'tpope/vim-surround'
-"""""" 
-"""""" let g:surround_113="#{\r}"       " v
-"""""" let g:surround_35="#{\r}"        " #
-"""""" let g:surround_45="{%- \r -%}"   " -
-"""""" let g:surround_61="{%= \r =%}"   " =
-"""""" 
-"""""" " div
-"""""" let g:surround_{char2nr("d")} = "<div\1id: \r..*\r id=\"&\"\1>\r</div>"
-"""""" " xml
-"""""" let g:surround_{char2nr("x")} = "<\1id: \r..*\r&\1>\r</\1\1>"
-"""""" 
-"""""" let g:surround_{char2nr("%")} = "{% \r %}"
-"""""" 
-"""""" " }}}
-"""""" " -> Texting {{{
-"""""" Plug 'https://github.com/junegunn/goyo.vim', { 'on': 'Goyo' }
-"""""" Plug 'https://github.com/junegunn/limelight.vim', { 'on': 'Limelight' }
-"""""" 
-"""""" " Spell Check
-"""""" let g:myLangList=["nospell","en_us", "ru_ru"]
-"""""" 
-"""""" function! ToggleSpell()
-""""""     if !exists( "b:myLang" )
-""""""         if &spell
-""""""             let b:myLang=index(g:myLangList, &spelllang)
-""""""         else
-""""""             let b:myLang=0
-""""""         endif
-""""""     endif
-""""""     let b:myLang=b:myLang+1
-""""""     if b:myLang>=len(g:myLangList) | let b:myLang=0 | endif
-""""""     if b:myLang==0
-""""""         setlocal nospell
-""""""         " exe "GrammarousReset"
-""""""     else
-""""""         execute "setlocal spell spelllang=".get(g:myLangList, b:myLang)
-""""""         " execute "GrammarousCheck"
-""""""     endif
-""""""     echo "spell checking language:" g:myLangList[b:myLang]
-"""""" endfunction
-"""""" 
-"""""" nnoremap <silent> <F7> :call ToggleSpell()<CR>
-"""""" 
-"""""" let g:lmap.t.s = 'Syntax'
-"""""" nnoremap <silent> <leader>ts :call ToggleSpell()<CR>
-"""""" imap <silent> <F7> <ESC>:call ToggleSpell()<CR>a
-"""""" 
-"""""" " Focus on the process
-"""""" "
-"""""" function! s:goyo_enter()
-""""""     silent !tmux set status off
-""""""     silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-""""""     set noshowmode
-""""""     set noshowcmd
-""""""     set scrolloff=999
-""""""     set wrap
-""""""     Limelight
-""""""     " ...
-"""""" endfunction
-"""""" 
-"""""" function! s:goyo_leave()
-""""""     silent !tmux set status on
-""""""     silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-""""""     set showmode
-""""""     set showcmd
-""""""     set scrolloff=5
-""""""     set nowrap
-""""""     Limelight!
-""""""     " ...
-"""""" endfunction
-"""""" 
-"""""" au! User GoyoEnter nested call <SID>goyo_enter()
-"""""" au! User GoyoLeave nested call <SID>goyo_leave()
-"""""" 
-"""""" let g:lmap.t.t = 'Text-only(Goyo)'
-"""""" nnoremap <silent> <leader>tt :Goyo<CR>
 """""" " }}}
 """""" " -> Xkb {{{
 """""" Plug 'lyokha/vim-xkbswitch'
@@ -979,158 +1615,12 @@ let g:lightline = {
 """""" " -> Yank {{{
 """""" Plug 'idanarye/vim-yankitute', { 'on': 'Yankitute' }
 """""" 
-"""""" nmap <expr>  MR  ':%s/\(' . @/ . '\)//g<LEFT><LEFT>'
+nmap <expr>  MR  ':%s/\(' . @/ . '\)//g<LEFT><LEFT>'
 """""" nmap <expr>  MY  ':%Yankitute/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
-"""""" vmap <expr>  MR  ':s/\(' . @/ . '\)//g<LEFT><LEFT>'
+vmap <expr>  MR  ':s/\(' . @/ . '\)//g<LEFT><LEFT>'
 """""" vmap <expr>  MY  ':Yankitute/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
 """""" " }}}
-"""""" " UI plugins -------------------------------------------------------------- {{{
-"""""" " -> Buffers {{{
-"""""" Plug 'jeetsukumaran/vim-buffergator', { 'on': 'BuffergatorToggle' }
-"""""" 
-"""""" let g:buffergator_suppress_keymaps=1
-"""""" let g:buffergator_viewport_split_policy="B"
-"""""" 
-"""""" nnoremap <silent> <leader>pB :BuffergatorToggle<cr>
-"""""" " }}}
-"""""" " -> Fuzzy {{{
-"""""" Plug 'junegunn/fzf'
-"""""" Plug 'junegunn/fzf.vim'
-"""""" 
-"""""" tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
-"""""" 
-"""""" command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..',
-""""""             \ 'source': 'ag --hidden --ignore .git -U -p ~/.gitexcludes --nogroup --column --color "^(?=.)"'}, <bang>0)
-"""""" 
-"""""" let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
-"""""" 
-"""""" nnoremap <silent> <leader>pp :Files<CR>
-"""""" nnoremap <silent> <leader>pm :Marks<CR>
-"""""" nnoremap <silent> <leader>pb :Buffers<CR>
-"""""" nnoremap <silent> <leader>pf :Filetypes<CR>
-"""""" 
-"""""" let g:lmap.g.f = { 'name': '+File' }
-"""""" let g:lmap.g.f.h = 'file-History'
-"""""" nmap <silent> <leader>gfh :BCommits<CR>
-"""""" 
-"""""" let g:lmap.f.f = 'in-File'
-"""""" nmap <silent> <leader>ff :Ag<CR>
-"""""" 
-"""""" function! s:build_quickfix_list(lines)
-""""""     call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-""""""     copen
-""""""     cc
-"""""" endfunction
-"""""" 
-"""""" let g:fzf_action = {
-""""""             \ 'ctrl-q': function('s:build_quickfix_list'),
-""""""             \ 'ctrl-t': 'tab split',
-""""""             \ 'ctrl-x': 'split',
-""""""             \ 'ctrl-v': 'vsplit' }
-"""""" 
-"""""" let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
-"""""" let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
-"""""" 
-"""""" " }}}
-"""""" " -> Indent-guides {{{
-"""""" Plug 'nathanaelkane/vim-indent-guides'
-"""""" 
-"""""" let g:indent_guides_auto_colors = 0
-"""""" hi IndentGuidesOdd  ctermbg=237
-"""""" hi IndentGuidesEven ctermbg=236
-"""""" 
-"""""" let g:indent_guides_start_level = 2
-"""""" let g:indent_guides_guide_size = 1
-"""""" let g:indent_guides_default_mapping = 0
-"""""" 
-"""""" " }}}
-"""""" " -> Lightline {{{
-"""""" Plug 'itchyny/lightline.vim'
-"""""" if !has('gui_running')
-""""""     set t_Co=256
-"""""" endif
-"""""" " }}}
-"""""" " -> NERTree {{{
-"""""" Plug 'preservim/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind', 'NERDTree'] }
-"""""" Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeFind', 'NERDTree'] }
-"""""" 
-"""""" nnoremap <leader>pn :NERDTreeToggle<Bar>wincmd p<CR>
-"""""" nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
-"""""" 
-"""""" function! FindPathOrShowNERDTree()
-""""""     let currentfile = expand('%')
-""""""     if (currentfile == "") || !(currentfile !~? 'NERD')
-""""""         NERDTreeToggle
-""""""     else
-""""""         NERDTreeFind
-""""""     endif
-"""""" endfunction
-"""""" 
-"""""" let g:lmap.f.p = 'Path'
-"""""" nmap <leader>fp <Plug>(find_Path)
-"""""" 
-"""""" let NERDTreeShowBookmarks=0
-"""""" let NERDTreeChDirMode=2
-"""""" let NERDTreeMouseMode=2
-"""""" let g:nerdtree_tabs_focus_on_files=1
-"""""" let g:nerdtree_tabs_open_on_gui_startup=0
-"""""" 
-"""""" " make nerdtree look nice
-"""""" let NERDTreeMinimalUI=1
-"""""" let NERDTreeDirArrows=1
-"""""" let g:NERDTreeWinSize=30
-"""""" let NERDTreeIgnore=['\.pyc$']
-"""""" 
-"""""" " ReMaps
-"""""" let NERDTreeMapOpenVSplit='v'
-"""""" let NERDTreeMapOpenSplit='s'
-"""""" let NERDTreeMapJumpNextSibling=''
-"""""" let NERDTreeMapJumpPrevSibling=''
-"""""" 
-"""""" " Close vim if the only NERDTree window left
-"""""" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-"""""" " }}}
-"""""" " -> Tmux {{{
-"""""" Plug 'christoomey/vim-tmux-navigator'
-"""""" if exists('$TMUX')
-""""""     nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
-"""""" 
-""""""     let g:tmux_navigator_save_on_switch = 2
-""""""     let g:tmux_navigator_disable_when_zoomed = 1
-"""""" 
-""""""     Plug 'benmills/vimux'
-"""""" 
-""""""     " Override RunCmd command
-""""""     function! RunCmd(cmd)
-""""""         mark z
-""""""         exe VimuxRunCommand(a:cmd)
-""""""         exe "normal! g`z"
-""""""         delmark z
-""""""     endfunction
-"""""" 
-""""""     function! CloseRunner()
-""""""         if exists('g:VimuxRunnerIndex')
-""""""             let choice = confirm("Close runner?", "\n&yes\n&no\nor &detach", 2)
-"""""" 
-""""""             if choice == 2
-""""""                 VimuxCloseRunner
-""""""             elseif choice == 4
-""""""                 unlet g:VimuxRunnerIndex
-""""""             endif
-""""""         else
-""""""             echo "Runner is not registered"
-""""""         endif
-""""""     endfunction
-"""""" 
-""""""     let g:lmap.r.q = 'Close Runner'
-""""""     nmap <leader>rq :call CloseRunner()<CR>
-"""""" 
-""""""     let g:lmap.r.x = 'Interrupt'
-""""""     nmap <leader>rx :VimuxInterruptRunner<CR>
-""""""     let g:VimuxHeight = "20"
-""""""     let g:VimuxUseNearest = 0
-"""""" endif
-"""""" " }}}
+"""""" " UI plugins {{{
 """""" " -> Zoom {{{
 """""" Plug 'dhruvasagar/vim-zoom'
 """""" 
@@ -1162,61 +1652,13 @@ let g:lightline = {
 """"""     endif
 """""" endfunction
 """""" " }}}
-"""""" " -> Which-Key {{{
-"""""" Plug 'liuchengxu/vim-which-key'
-"""""" nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-"""""" vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
-"""""" 
-"""""" nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-"""""" vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 """""" " }}}
-"""""" " -> Autoread {{{
-"""""" Plug 'djoshea/vim-autoread'
-"""""" let autoreadargs={'autoread':1}
-"""""" " }}}
-"""""" " }}}
-"""""" " Code plugins ------------------------------------------------------------ {{{
+"""""" " Code plugins {{{
 """""" " -> Commentary {{{
 """""" Plug 'tpope/vim-commentary'
 """""" 
 """""" set commentstring=#\ %s
 """""" " }}}
-"""""" " -> Autocompletion {{{
-"""""" git submodule add https://github.com/Shougo/deoplete.nvim pack/code/start/deoplete
-"""""" let g:deoplete#enable_at_startup = 1
-"""""" git submodule add https://github.com/deoplete-plugins/deoplete-tag pack/code/start/deoplete-tag
-"""""" 
-"""""" "use <tab> for completion
-"""""" function! TabWrap()
-""""""     if pumvisible()
-""""""         return "\<C-N>"
-""""""     elseif strpart( getline('.'), 0, col('.') - 1 ) =~ '^\s*$'
-""""""         return "\<tab>"
-""""""     elseif &omnifunc !~ ''
-""""""         return "\<C-X>\<C-O>"
-""""""     else
-""""""         return "\<C-N>"
-""""""     endif
-"""""" endfunction
-"""""" 
-"""""" " power tab
-"""""" imap <silent><expr><tab> TabWrap()
-"""""" 
-"""""" " Enter: complete&close popup if visible (so next Enter works); else: break undo
-"""""" inoremap <silent><expr> <Cr> pumvisible() ?
-""""""             \ deoplete#close_popup() : "<C-g>u<Cr>"
-"""""" inoremap <silent><expr> <C-M> pumvisible() ?
-""""""             \ deoplete#close_popup() : "<C-g>u<Cr>"
-"""""" 
-"""""" " Ctrl-Space: summon FULL (synced) autocompletion
-"""""" inoremap <silent><expr> <C-Space> deoplete#manual_complete()
-"""""" 
-"""""" " Escape: exit autocompletion, go to Normal mode
-" """"" " inoremap <silent><expr> <Esc> pumvisible() ? "<C-e><Esc>" : "<Esc>"
-noremap <silent> <leader>d :call completor#do('definition')<CR>
-noremap <silent> <leader>c :call completor#do('doc')<CR>
-noremap <silent> <leader>f :call completor#do('format')<CR>
-noremap <silent> <leader>s :call completor#do('hover')<CR>
 """""" " }}}
 """""" " -> Snippets {{{
 """""" Plug 'Shougo/neosnippet.vim'
@@ -1422,7 +1864,7 @@ noremap <silent> <leader>s :call completor#do('hover')<CR>
 """""" Plug 'pechorin/any-jump.vim'
 """""" let g:any_jump_search_prefered_engine = 'rg'
 """""" "  }}}
-"""""" " Small plugins ----------------------------------------------------------- {{{
+"""""" " Small plugins {{{
 """""" "
 """""" Plug 'bronson/vim-trailing-whitespace'
 """""" Plug 'jiangmiao/auto-pairs'
@@ -1443,473 +1885,19 @@ noremap <silent> <leader>s :call completor#do('hover')<CR>
 """""" 
 """""" " }}}
 """""" "
-" -> VimWiki {{{
-" git submodule add https://github.com/vimwiki/vimwiki pack/ui/opt/vimwiki
-function! LoadVimwiki()
-    packadd vimwiki
-
-    let g:lmap.w.w = 'Index'
-    nunmap <Leader>ww
-    noremap <Leader>ww :call VimwikiIndexCd()<CR>
-
-    nunmap <Leader>w<Space>i
-    nunmap <Leader>w<Space>t
-    nunmap <Leader>w<Space>w
-    nunmap <Leader>w<Space>y
-    nunmap <Leader>w<Space>m
-    nunmap <Leader>wt
-    " i - generate
-    " t tab make diary
-    " w make diary
-    " y yesterday
-    " m tommorow
-
-    map <leader>wt :call VimwikiMakeDiaryNoteNew()<CR>
-    let g:lmap.w.s = 'Select-wiki'
-    let g:lmap.w.t = 'Today'
-    let g:lmap.w.i = 'Diary'
-endfunction
-
-function! VimWikiHelpers()
-    let g:lmap.w.r = 'Rename-link'
-    let g:lmap.w.d = 'Delete-link'
-    let g:lmap.w.h = 'to-Html'
-    let g:lmap.w.hh = 'toHtml-browse'
-    let g:lmap.w.n = 'goto'
-endfunction
-
-function! VimwikiIndexCd()
-    VimwikiIndex
-    cd %:h
-    call VimWikiHelpers()
-endfunction
-
-function! VimwikiMakeDiaryNoteNew()
-    VimwikiMakeDiaryNote
-    cd %:h:h
-    call VimWikiHelpers()
-endfunction
-
-let g:vimwiki_list = [{'path': '~/Notes/',
-            \ 'syntax': 'markdown', 'ext': '.md',
-            \ 'auto_toc': 1,
-            \ 'auto_diary_index': 1,
-            \ 'list_margin': 0,
-            \ 'custom_wiki2html': 'vimwiki-godown',
-            \ 'auto_tags': 1}]
-
-let g:vimwiki_ext2syntax = {'.md': 'markdown',
-            \ '.mkd': 'markdown',
-            \ '.wiki': 'media'}
-
-let g:vimwiki_folding = 'expr'
-let g:vimwiki_hl_headers = 1
-let g:vimwiki_hl_cb_checked = 2
-"let g:vimwiki_markdown_link_ext = 1
-
 " }}}
-" }}}
-" Simple plugins ---------------------------------------------------------- {{{
-
-"""""" " -> Sessions {{{
-"""""" let g:sessiondir = $HOME . "/.config/nvim/local/sessions"
+"
 """""" 
-"""""" function! MakeSession(file)
-"""""" 
-""""""     if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
-""""""         exe ':tabdo NERDTreeClose'
-""""""     endif
-"""""" 
-""""""     if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
-""""""         exe ':tabdo TagbarClose'
-""""""     endif
-"""""" 
-""""""     exe ':lclose|cclose'
-"""""" 
-""""""     let file = a:file
-"""""" 
-""""""     if (file == "")
-""""""         if (exists('g:sessionfile'))
-""""""             let b:sessiondir = g:sessiondir
-""""""             let file = g:sessionfile
-""""""         else
-""""""             let b:sessiondir = g:sessiondir . getcwd()
-""""""             let file = "session"
-""""""         endif
-""""""     else
-""""""         let b:sessiondir = g:sessiondir
-""""""         let g:sessionfile = file
-""""""     endif
-"""""" 
-""""""     if (filewritable(b:sessiondir) != 2)
-""""""         exe 'silent !mkdir -p ' b:sessiondir
-""""""         redraw!
-""""""     endif
-""""""     let b:filename = b:sessiondir . '/' . file . '.vim'
-"""""" 
-""""""     exe "silent mksession! " . b:filename
-"""""" endfunction
-"""""" 
-"""""" function! LoadSession(file)
-"""""" 
-""""""     let file = a:file
-"""""" 
-""""""     if (file == "")
-""""""         if (exists('g:sessionfile'))
-""""""             let b:sessiondir = g:sessiondir
-""""""             let file = g:sessionfile
-""""""         else
-""""""             let b:sessiondir = g:sessiondir . getcwd()
-""""""             let file = "session"
-""""""         endif
-""""""     else
-""""""         let b:sessiondir = g:sessiondir
-""""""         let g:sessionfile = file
-""""""     endif
-"""""" 
-""""""     let b:sessionfile = b:sessiondir . '/' . file . '.vim'
-""""""     if (filereadable(b:sessionfile))
-""""""         exe 'silent source ' b:sessionfile
-""""""     else
-""""""         echo "No session loaded."
-""""""     endif
-"""""" endfunction
-"""""" 
-"""""" function! DeleteSession(file)
-"""""" 
-""""""     let file = a:file
-"""""" 
-""""""     if (file == "")
-""""""         if (exists('g:sessionfile'))
-""""""             let b:sessiondir = g:sessiondir
-""""""             let file = g:sessionfile
-""""""         else
-""""""             let b:sessiondir = g:sessiondir . getcwd()
-""""""             let file = "session"
-""""""         endif
-""""""     else
-""""""         let b:sessiondir = g:sessiondir
-""""""     endif
-"""""" 
-""""""     let b:sessionfile = b:sessiondir . '/' . file . '.vim'
-""""""     if (filereadable(b:sessionfile))
-""""""         exe 'silent !rm -f ' b:sessionfile
-""""""     else
-""""""         echo "No session loaded."
-""""""     endif
-"""""" endfunction
-"""""" 
-"""""" function! CloseSession()
-""""""     if (exists('g:sessionfile'))
-""""""         call MakeSession(g:sessionfile)
-""""""         unlet g:sessionfile
-""""""     else
-""""""         call MakeSession("")
-""""""     endif
-""""""     exe 'silent wa | %bd!'
-"""""" endfunction
-"""""" 
-"""""" function! CloseSessionAndExit()
-""""""     call CloseSession()
-""""""     exe 'silent qa'
-"""""" endfunction
-"""""" 
-"""""" fun! ListSessions(A,L,P)
-""""""     return system("ls " . g:sessiondir . ' | grep .vim | sed s/\.vim$//')
-"""""" endfun
-"""""" 
-"""""" command! -nargs=1 -range -complete=custom,ListSessions MakeSession :call MakeSession("<args>")
-"""""" command! -nargs=1 -range -complete=custom,ListSessions LoadSession :call LoadSession("<args>")
-"""""" command! -nargs=1 -range -complete=custom,ListSessions DeleteSession :call DeleteSession("<args>")
-"""""" command! MakeSessionCurrent :call MakeSession("")
-"""""" command! LoadSessionCurrent :call LoadSession("")
-"""""" command! DeleteSessionCurrent :call DeleteSession("")
-"""""" command! CloseSession :call CloseSession()
-"""""" command! CloseSessionAndExitCurrent :call CloseSessionAndExit()
-"""""" 
-"""""" nnoremap <Plug>(session_Load) :LoadSession<SPACE>
-"""""" nnoremap <Plug>(session_Load-Current) :LoadSessionCurrent<CR>
-"""""" nnoremap <Plug>(session_Make) :MakeSessionCurrent<CR>
-"""""" nnoremap <Plug>(session_Exit) :CloseSessionAndExit<CR>
-"""""" nnoremap <Plug>(session_Close) :CloseSession<CR>
-"""""" nnoremap <Plug>(session_Delete) :DeleteSessionCurrent<CR>
-"""""" 
-"""""" let g:lmap.s.o = 'Open'
-"""""" nmap <leader>so <Plug>(session_Load)
-"""""" let g:lmap.s.u = 'open-cUrrent'
-"""""" nmap <leader>su <Plug>(session_Load-Current)
-"""""" let g:lmap.s.s = 'Save'
-"""""" nmap <leader>ss <Plug>(session_Make)
-"""""" let g:lmap.s.q = 'Quit'
-"""""" nmap <leader>sq <Plug>(session_Exit)
-"""""" let g:lmap.s.c = 'Close'
-"""""" nmap <leader>sc <Plug>(session_Close)
-"""""" let g:lmap.s.d = 'Delete'
-"""""" nmap <leader>sd <Plug>(session_Delete)
-"""""" " }}}
-"""""" " -> Folding {{{
-"""""" " Thx Steve Losh
-"""""" set foldlevelstart=0
-"""""" 
-"""""" " "Focus" the current line.  Basically:
-"""""" "
-"""""" " 1. Close all folds.
-"""""" " 2. Open just the folds containing the current line.
-"""""" " 3. Move the line to a little bit (15 lines) above the center of the screen.
-"""""" "
-"""""" " This mapping wipes out the z mark, which I never use.
-"""""" "
-"""""" function! MyFoldText() " {{{
-""""""     let line = getline(v:foldstart)
-"""""" 
-""""""     let nucolwidth = &fdc + &number * &numberwidth
-""""""     let windowwidth = winwidth(0) - nucolwidth - 3
-""""""     let foldedlinecount = v:foldend - v:foldstart
-"""""" 
-""""""     " expand tabs into spaces
-""""""     let onetab = strpart('          ', 0, &tabstop)
-""""""     let line = substitute(line, '\t', onetab, 'g')
-"""""" 
-""""""     let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-""""""     let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-""""""     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-"""""" endfunction " }}}
-"""""" set foldtext=MyFoldText()
-"""""" 
-"""""" " }}}
-"""""" " -> AutoSave feature {{{
-"""""" "
-"""""" " Trigger autoread when changing buffers or coming back to vim.
-"""""" " au FocusGained,BufEnter,WinEnter * :silent! !
-"""""" 
-"""""" au! FileType vim,python,golang,go,yaml.ansible,puppet,json,sh,vimwiki,rust,yaml call DefaultOn()
-"""""" 
-"""""" function! DefaultOn()
-""""""     if !exists("b:auto_save")
-""""""         let b:auto_save = 1
-""""""     endif
-"""""" endfunction
-"""""" 
-"""""" set updatetime=4000
-"""""" 
-"""""" let s:save_cpo = &cpo
-"""""" set cpo&vim
-"""""" 
-"""""" if !exists("g:auto_save_silent")
-""""""     let g:auto_save_silent = 0
-"""""" endif
-"""""" 
-"""""" if !exists("g:auto_save_events")
-""""""     let g:auto_save_events = ["CursorHold","CursorHoldI","BufLeave","FocusLost","WinLeave"]
-"""""" endif
-"""""" 
-"""""" " Check all used events exist
-"""""" for event in g:auto_save_events
-""""""     if !exists("##" . event)
-""""""         let eventIndex = index(g:auto_save_events, event)
-""""""         if (eventIndex >= 0)
-""""""             call remove(g:auto_save_events, eventIndex)
-""""""             echo "(AutoSave) Save on " . event . " event is not supported for your Vim version!"
-""""""             echo "(AutoSave) " . event . " was removed from g:auto_save_events variable."
-""""""             echo "(AutoSave) Please, upgrade your Vim to a newer version or use other events in g:auto_save_events!"
-""""""         endif
-""""""     endif
-"""""" endfor
-"""""" 
-"""""" augroup auto_save
-""""""     au!
-""""""     for event in g:auto_save_events
-""""""         execute "au " . event . " * nested call AutoSave()"
-""""""     endfor
-"""""" augroup END
-"""""" 
-"""""" function! AutoSave()
-""""""     if &modified > 0
-""""""         if !exists("b:auto_save")
-""""""             let b:auto_save = 0
-""""""         endif
-"""""" 
-""""""         if b:auto_save == 0
-""""""             return
-""""""         end
-"""""" 
-""""""         let was_modified = &modified
-"""""" 
-""""""         " Preserve marks that are used to remember start and
-""""""         " end position of the last changed or yanked text (`:h '[`).
-""""""         let first_char_pos = getpos("'[")
-""""""         let last_char_pos = getpos("']")
-"""""" 
-""""""         call DoSave()
-"""""" 
-""""""         call setpos("'[", first_char_pos)
-""""""         call setpos("']", last_char_pos)
-"""""" 
-""""""         if was_modified && !&modified
-""""""             if g:auto_save_silent == 0
-""""""                 echo "(AutoSave) saved at " . strftime("%H:%M:%S")
-""""""             endif
-""""""         endif
-""""""     endif
-"""""" endfunction
-"""""" 
-"""""" function! DoSave()
-""""""     silent! w
-"""""" endfunction
-"""""" 
-"""""" function! ToggleAutoSave()
-""""""     if !exists("b:auto_save")
-""""""         let b:auto_save = 0
-""""""     endif
-"""""" 
-""""""     if b:auto_save == 0
-""""""         let b:auto_save = 1
-""""""     else
-""""""         let b:auto_save = 0
-""""""     end
-"""""" endfunction
-"""""" 
-"""""" command! ToggleAutoSave :call ToggleAutoSave()
-"""""" 
-"""""" let &cpo = s:save_cpo
-"""""" unlet s:save_cpo
-"""""" 
-"""""" " }}}
-"""""" " -> Quickfix {{{
-"""""" function! GetBufferList()
-""""""     redir =>buflist
-""""""     silent! ls!
-""""""     redir END
-""""""     return buflist
-"""""" endfunction
-"""""" 
-"""""" function! ToggleList(bufname, pfx)
-""""""     let buflist = GetBufferList()
-""""""     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-""""""         if bufwinnr(bufnum) != -1
-""""""             exec(a:pfx.'close')
-""""""             return
-""""""         endif
-""""""     endfor
-""""""     if a:pfx == 'l' && len(getloclist(0)) == 0
-""""""         echohl ErrorMsg
-""""""         echo "Location List is Empty."
-""""""         return
-""""""     endif
-""""""     let winnr = winnr()
-""""""     exec(a:pfx.'open')
-""""""     if winnr() != winnr
-""""""         wincmd p
-""""""     endif
-"""""" endfunction
-"""""" 
-"""""" function! QFixSwitch(direction)
-""""""     exec('copen')
-""""""     if a:direction == 'next'
-""""""         try
-""""""             cnext
-""""""         catch E42
-""""""         catch E553
-""""""             echom "No more items"
-""""""         endtry
-""""""     elseif a:direction == 'prev'
-""""""         try
-""""""             cprevious
-""""""         catch E42
-""""""         catch E553
-""""""             echom "No more items"
-""""""         endtry
-""""""     else
-""""""         echom "Unknown direction"
-""""""     endif
-"""""" endfunction
-"""""" 
-"""""" nnoremap <Plug>(qfix_Toggle) :call ToggleList("Quickfix List", 'c')<CR>
-"""""" nnoremap <Plug>(qfix_Open) :copen<CR>
-"""""" nnoremap <Plug>(qfix_Close) :cclose<CR>
-"""""" nnoremap <Plug>(qfix_QNext) :call QFixSwitch('next')<CR>
-"""""" nnoremap <Plug>(qfix_QPrev) :call QFixSwitch('prev')<CR>
-"""""" let g:lmap.q.q = 'toggle'
-"""""" nmap <leader>qq  <Plug>(qfix_Toggle)
-"""""" let g:lmap.q.o = 'Open'
-"""""" nmap <leader>qo <Plug>(qfix_Open)
-"""""" let g:lmap.q.c = 'Close'
-"""""" nmap <leader>qc <Plug>(qfix_Close)
-"""""" let g:lmap.q.n = 'Next'
-"""""" nmap <leader>qn <Plug>(qfix_QNext)
-"""""" let g:lmap.q.p = 'Previous'
-"""""" nmap <leader>qp <Plug>(qfix_QPrev)
-"""""" 
-"""""" nnoremap <Plug>(qfix_LToggle) :call ToggleList("Location List", 'l')<CR>
-"""""" nnoremap <Plug>(qfix_LOpen) :lopen<CR>
-"""""" nnoremap <Plug>(qfix_LClose) :lclose<CR>
-"""""" nnoremap <Plug>(qfix_LNext) :lnext<CR>
-"""""" nnoremap <Plug>(qfix_LPrev) :lprev<CR>
-"""""" let g:lmap.l.l = 'toggle'
-"""""" nmap <leader>ll  <Plug>(qfix_LToggle)
-"""""" let g:lmap.l.o = 'Open'
-"""""" nmap <leader>lo <Plug>(qfix_LOpen)
-"""""" let g:lmap.l.c = 'Close'
-"""""" nmap <leader>lc <Plug>(qfix_LClose)
-"""""" let g:lmap.l.n = 'Next'
-"""""" nmap <leader>ln <Plug>(qfix_LNext)
-"""""" let g:lmap.l.p = 'Previous'
-"""""" nmap <leader>lp <Plug>(qfix_LPrev)
-"""""" 
-"""""" " }}}
-"""""" " -> TODOs {{{
-"""""" inoremap \td <C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
-"""""" inoremap \dts <C-R>=strftime("%Y-%m-%d %H:%M:%S") . " "<CR>
-"""""" inoremap \fl <C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR>
-"""""" inoremap \fp <C-R>=expand("%:h") . '/' . expand("%:t")<CR>
-"""""" 
-"""""" let g:lmap.t.d = 'to-Do'
-"""""" nnoremap <leader>td O<C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
-"""""" 
-"""""" let g:lmap.o.t = 'To-do'
-"""""" nnoremap <leader>ot :call OpenToDo()<CR>
-"""""" function! OpenToDo()
-""""""     vsplit TODO.md
-""""""     nnoremap <buffer> q :x<CR>
-""""""     hi TODO guifg=Yellow ctermfg=Yellow term=Bold
-""""""     hi FIXME guifg=Red ctermfg=Red term=Bold
-""""""     hi P1 guifg=Red ctermfg=Red term=Bold
-""""""     hi P2 guifg=LightRed ctermfg=LightRed term=Bold
-""""""     hi P3 guifg=LightYellow ctermfg=LightYellow term=Bold
-""""""     hi P4 guifg=LightGrey ctermfg=Grey term=Italic
-""""""     hi DONE guifg=DarkGreen ctermfg=Grey term=Italic
-"""""" 
-""""""     call matchadd('TODO', 'TODO')
-""""""     call matchadd('TODO', '@todo')
-""""""     call matchadd('FIXME', 'FIXME')
-""""""     call matchadd('FIXME', '@fixme')
-""""""     syn match P1 ".*\[[^X]\]\s\+[pP]1.*$"
-""""""     syn match P2 ".*\[[^X]\]\s\+[pP]2.*$"
-""""""     syn match P3 ".*\[[^X]\]\s\+[pP]3.*$"
-""""""     syn match P4 ".*\[[^X]\]\s\+[pP]4.*$"
-""""""     syn match DONE ".*\[[X]\]\s.*$"
-"""""" endfunction
-"""""" 
-"""""" let g:lmap.t.h = 'To-Html'
-"""""" nnoremap <leader>th :TOhtml<CR>
-"""""" vnoremap <leader>th :TOhtml<CR>
-"""""" " }}}
-"""""" 
-"""""" " }}}
 """""" " Leader end
-"""""" "call which_key#register('<Space>', "g:lmap")
+call which_key#register('<Space>', "g:lmap")
 """""" 
 au! VimEnter * call AfterVimEnter()
 function! AfterVimEnter()
-"   if g:largefile != 1
-"       exe ":IndentGuidesEnable"
-"   endif
+    if g:largefile != 1
+        exe ":IndentGuidesEnable"
+    endif
 
     call LoadVimwiki()
-
-"  call deoplete#custom#source('_', 'sorters', ['sorter_rank'])
-"  call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy'])
-"  call deoplete#custom#source('ale', 'rank', 999)
 endfunction
 
 " Load local vars {{{
