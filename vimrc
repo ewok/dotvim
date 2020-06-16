@@ -306,7 +306,7 @@ nnoremap L $
 
 " Filetypes {{{
 " Ansible/Yaml {{{
-" inst: https://github.com/pearofducks/ansible-vim filetypes/opt/ansible
+" inst: https://github.com/pearofducks/ansible-vim filetypes opt ansible
 augroup ft_ansible
     au!
     au BufNewFile,BufRead */\(playbooks\|roles\|tasks\|handlers\|defaults\|vars\)/*.\(yaml\|yml\) set filetype=yaml.ansible
@@ -341,7 +341,7 @@ augroup ft_ansible
 augroup END
 " }}}
 " CSV {{{
-" inst: https://github.com/chrisbra/csv.vim filetypes/opt/csv
+" inst: https://github.com/chrisbra/csv.vim filetypes opt csv
 augroup ft_csv
     au!
     au BufNewFile,BufRead *.csv set filetype=csv
@@ -381,7 +381,7 @@ augroup ft_git
 augroup END
 " }}}
 " Go {{{
-" inst: https://github.com/fatih/vim-go filetypes/opt/vim-go
+" inst: https://github.com/fatih/vim-go filetypes opt vim-go
 augroup ft_go
     au!
 
@@ -437,7 +437,7 @@ augroup ft_haskell
 augroup END
 " }}}
 " Logstash {{{
-" inst: https://github.com/robbles/logstash.vim filetypes/opt/logstash
+" inst: https://github.com/robbles/logstash.vim filetypes opt logstash
 augroup ft_logstash
     au!
     au FileType logstash call LoadLogstashFT()
@@ -454,8 +454,8 @@ augroup ft_logstash
 augroup END
 " }}}
 " Markdown {{{
-" inst: https://github.com/shime/vim-livedown filetypes/opt/livedown
-" inst: https://github.com/gpanders/vim-medieval filetypes/opt/medieval
+" inst: https://github.com/shime/vim-livedown filetypes opt livedown
+" inst: https://github.com/gpanders/vim-medieval filetypes opt medieval
 augroup ft_markdown
     au!
 
@@ -493,9 +493,9 @@ augroup ft_morph
 augroup END
 " }}}
 " Python {{{
-" inst: https://github.com/jmcantrell/vim-virtualenv filetypes/opt/vim-virtualenv
-" inst: https://github.com/Vimjas/vim-python-pep8-indent filetypes/opt/pep8-ind
-" inst: https://github.com/davidhalter/jedi-vim filetypes/opt/jedi
+" inst: https://github.com/jmcantrell/vim-virtualenv filetypes opt vim-virtualenv
+" inst: https://github.com/Vimjas/vim-python-pep8-indent filetypes opt pep8-ind
+" inst: https://github.com/davidhalter/jedi-vim filetypes opt jedi
 augroup ft_python
     au!
 
@@ -560,7 +560,7 @@ augroup ft_python
 augroup END
 " }}}
 " Puppet {{{
-" inst: https://github.com/rodjek/vim-puppet filetypes/opt/puppet
+" inst: https://github.com/rodjek/vim-puppet filetypes opt puppet
 augroup ft_puppet
     au!
 
@@ -582,8 +582,8 @@ augroup ft_puppet
 augroup END
 " }}}
 " Rust {{{
-" inst: https://github.com/rust-lang/rust.vim filetypes/opt/rust
-" inst: https://github.com/racer-rust/vim-racer filetypes/opt/rust-racer
+" inst: https://github.com/rust-lang/rust.vim filetypes opt rust
+" inst: https://github.com/racer-rust/vim-racer filetypes opt rust-racer
 augroup ft_rust
     au!
 
@@ -690,7 +690,7 @@ augroup ft_mail
 augroup END
 " }}}
 " Helm {{{
-" inst: https://github.com/towolf/vim-helm filetypes/opt/helm
+" inst: https://github.com/towolf/vim-helm filetypes opt helm
 augroup ft_helm
     au!
     au BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl set ft=helm
@@ -711,7 +711,7 @@ augroup ft_i3
 augroup END
 "  }}}
 " Log {{{
-" inst: https://github.com/mtdl9/vim-log-highlighting filetypes/opt/log
+" inst: https://github.com/mtdl9/vim-log-highlighting filetypes opt log
 augroup ft_log
     au!
     au BufNewFile,BufRead *.log set filetype=log
@@ -726,7 +726,7 @@ augroup ft_log
 augroup END
 "  }}}
 " Terraform {{{
-" inst: https://github.com/hashivim/vim-terraform filetypes/opt/terraform
+" inst: https://github.com/hashivim/vim-terraform filetypes opt terraform
 augroup ft_terraform
     au!
 
@@ -773,7 +773,7 @@ augroup ft_lua
 augroup END
 " }}}
 " XML {{{
-" inst: https://github.com/sukima/xmledit filetypes/opt/xml
+" inst: https://github.com/sukima/xmledit filetypes opt xml
 augroup ft_xml
     au!
 
@@ -790,7 +790,7 @@ augroup END
 
 " UI {{{
 " Colorscheme {{{
-" inst: https://github.com/KeitaNakamura/neodark.vim ui/opt/neodark
+" inst: https://github.com/KeitaNakamura/neodark.vim ui opt neodark
 
 packadd neodark
 
@@ -799,7 +799,7 @@ let g:neodark#background = '#282c34'
 colorscheme neodark
 " }}}
 " Lightline {{{
-" inst: https://github.com/itchyny/lightline.vim ui/start/lightline
+" inst: https://github.com/itchyny/lightline.vim ui start lightline
 if !has('gui_running')
     set t_Co=256
 endif
@@ -819,8 +819,8 @@ let g:lightline = {
 
 " }}}
 " Fuzzy {{{
-" inst: https://github.com/junegunn/fzf ui/start/fzf
-" inst: https://github.com/junegunn/fzf.vim ui/start/fzf.vim
+" inst: https://github.com/junegunn/fzf ui start fzf
+" inst: https://github.com/junegunn/fzf.vim ui start fzf.vim
 
 tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 
@@ -857,8 +857,8 @@ let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-al
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
 " }}}
 " NERTree {{{
-" inst: https://github.com/preservim/nerdtree ui/start/nerdtree
-" inst: https://github.com/Xuyuanp/nerdtree-git-plugin ui/start/nerdtree-git
+" inst: https://github.com/preservim/nerdtree ui start nerdtree
+" inst: https://github.com/Xuyuanp/nerdtree-git-plugin ui start nerdtree-git
 
 nnoremap <leader>pn :NERDTreeToggle<Bar>wincmd p<CR>
 nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
@@ -897,7 +897,7 @@ let NERDTreeMapJumpPrevSibling=''
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " }}}
 " Which-Key {{{
-" inst: https://github.com/liuchengxu/vim-which-key ui/opt/which-key
+" inst: https://github.com/liuchengxu/vim-which-key ui opt which-key
 packadd which-key
 
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
@@ -907,7 +907,7 @@ nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 " }}}
 " Indent-guides {{{
-" inst: https://github.com/nathanaelkane/vim-indent-guides ui/opt/indent-guides
+" inst: https://github.com/nathanaelkane/vim-indent-guides ui opt indent-guides
 packadd indent-guides
 
 let g:indent_guides_auto_colors = 0
@@ -919,8 +919,8 @@ let g:indent_guides_guide_size = 1
 let g:indent_guides_default_mapping = 0
 " }}}
 " Texting {{{
-" inst: https://github.com/junegunn/goyo.vim ui/opt/goyo
-" inst: https://github.com/junegunn/limelight.vim ui/opt/limelight
+" inst: https://github.com/junegunn/goyo.vim ui opt goyo
+" inst: https://github.com/junegunn/limelight.vim ui opt limelight
 
 " Spell Check
 let g:myLangList=["nospell","en_us", "ru_ru"]
@@ -994,8 +994,8 @@ let g:lmap.t.t = 'Text-only(Goyo)'
 nnoremap <silent> <leader>tt :call StartGoyo()<CR>
 " }}}
 " Tmux {{{
-" inst: https://github.com/christoomey/vim-tmux-navigator ui/start/tmux-navigator
-" inst: https://github.com/benmills/vimux ui/opt/vimux
+" inst: https://github.com/christoomey/vim-tmux-navigator ui start tmux-navigator
+" inst: https://github.com/benmills/vimux ui opt vimux
 if exists('$TMUX')
     if has('neovim')
         nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
@@ -1038,27 +1038,28 @@ if exists('$TMUX')
 endif
 " }}}
 " Autoread {{{
-" inst: https://github.com/djoshea/vim-autoread ui/start/autoread
+" inst: https://github.com/djoshea/vim-autoread ui start autoread
 let autoreadargs={'autoread':1}
 " }}}
 " }}}
 
 " Code {{{
 " Ale {{{
-" inst: https://github.com/w0rp/ale code/opt/ale
+" inst: https://github.com/w0rp/ale code opt ale
 " }}}
 " Completor {{{
-" inst: https://github.com/maralla/completor.vim code/start/completor
+" inst: https://github.com/maralla/completor.vim code start completor
+
 "noremap <silent> <leader>d :call completor#do('definition')<CR>
 "noremap <silent> <leader>c :call completor#do('doc')<CR>
 "noremap <silent> <leader>f :call completor#do('format')<CR>
 "noremap <silent> <leader>s :call completor#do('hover')<CR>
 " }}}
 " Text objects {{{
-" inst: https://github.com/kana/vim-textobj-user code/start/textobj
+" inst: https://github.com/kana/vim-textobj-user code start textobj
 
 " adds: f - function
-" inst: https://github.com/bps/vim-textobj-python code/opt/textobj-python
+" inst: https://github.com/bps/vim-textobj-python code opt textobj-python
 
 let g:textobj_python_no_default_key_mappings = 1
 xmap af <Plug>(textobj-python-function-a)
@@ -1067,18 +1068,18 @@ xmap if <Plug>(textobj-python-function-i)
 omap if <Plug>(textobj-python-function-i)
 
 " Adds: i - indent, I - the same indent
-" inst: https://github.com/kana/vim-textobj-indent code/start/textobj-indent
+" inst: https://github.com/kana/vim-textobj-indent code start textobj-indent
 
 " Adds: c - comment, C - whole comment
-" inst: https://github.com/glts/vim-textobj-comment code/start/textobj-comment
+" inst: https://github.com/glts/vim-textobj-comment code start textobj-comment
 " }}}
 " Easyalign {{{
-" inst: https://github.com/junegunn/vim-easy-align code/start/easy-align
+" inst: https://github.com/junegunn/vim-easy-align code start easy-align
 nmap ga <Plug>(LiveEasyAlign)
 xmap ga <Plug>(LiveEasyAlign)
 " }}}
 " Find and Replace {{{
-" inst: https://github.com/brooth/far.vim code/start/far
+" inst: https://github.com/brooth/far.vim code start far
 
 let g:far#source = 'agnvim'
 let g:far#file_mask_favorites = ['%', '.*', '\.py$', '\.go$']
@@ -1089,7 +1090,7 @@ vnoremap <leader>fr :Far<space>
 
 " }}}
 " Surround {{{
-" inst: https://github.com/tpope/vim-surround code/start/surround
+" inst: https://github.com/tpope/vim-surround code start surround
 let g:surround_113="#{\r}"       " v
 let g:surround_35="#{\r}"        " #
 let g:surround_45="{%- \r -%}"   " -
@@ -1107,7 +1108,7 @@ let g:surround_{char2nr("%")} = "{% \r %}"
 
 " Motion {{{
 " Easymotion {{{
-" inst: https://github.com/easymotion/vim-easymotion ui/start/easymotion
+" inst: https://github.com/easymotion/vim-easymotion ui start easymotion
 "
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
@@ -1126,10 +1127,9 @@ map sh <Plug>(easymotion-linebackward)
 
 " Additional {{{
 " VimWiki {{{
-" inst: https://github.com/vimwiki/vimwiki ui/opt/vimwiki
+" inst: https://github.com/vimwiki/vimwiki ui opt vimwiki
+packadd vimwiki
 function! LoadVimwiki()
-
-    packadd vimwiki
 
     let g:lmap.w.w = 'Index'
     nunmap <Leader>ww
