@@ -819,42 +819,55 @@ let g:lightline = {
 
 " }}}
 " Fuzzy {{{
-" inst: https://github.com/junegunn/fzf ui start fzf
-" inst: https://github.com/junegunn/fzf.vim ui start fzf.vim
+" inst: https://github.com/junegunn/fzf ui opt fzf
+" inst: https://github.com/junegunn/fzf.vim ui opt fzf.vim
+" inst: https://github.com/ctrlpvim/ctrlp.vim.git ui opt ctrlp.vim
 
-tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
+if has('ivim')
+    let g:ctrlp_map = '<leader>p1'
+    let g:ctrlp_cmd = 'CtrlP'
 
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..',
-            \ 'source': 'ag --hidden --ignore .git -U -p ~/.gitexcludes --nogroup --column --color "^(?=.)"'}, <bang>0)
+    packadd ctrlp.vim
 
-let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
+    nnoremap <silent> <leader>pp :CtrlP<CR>
+    nnoremap <silent> <leader>pb :CtrlPBuffer<CR>
+    nnoremap <silent> <leader>ff :CtrlPLine<CR>
 
-nnoremap <silent> <leader>pp :Files<CR>
-nnoremap <silent> <leader>pm :Marks<CR>
-nnoremap <silent> <leader>pb :Buffers<CR>
-nnoremap <silent> <leader>pf :Filetypes<CR>
+else
+    tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 
-let g:lmap.g.f = { 'name': '+File' }
-let g:lmap.g.f.h = 'file-History'
-nmap <silent> <leader>gfh :BCommits<CR>
+    command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..',
+                \ 'source': 'ag --hidden --ignore .git -U -p ~/.gitexcludes --nogroup --column --color "^(?=.)"'}, <bang>0)
 
-let g:lmap.f.f = 'in-File'
-nmap <silent> <leader>ff :Ag<CR>
+    let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
 
-function! s:build_quickfix_list(lines)
-    call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-    copen
-    cc
-endfunction
+    nnoremap <silent> <leader>pp :Files<CR>
+    nnoremap <silent> <leader>pm :Marks<CR>
+    nnoremap <silent> <leader>pb :Buffers<CR>
+    nnoremap <silent> <leader>pf :Filetypes<CR>
 
-let g:fzf_action = {
-            \ 'ctrl-q': function('s:build_quickfix_list'),
-            \ 'ctrl-t': 'tab split',
-            \ 'ctrl-x': 'split',
-            \ 'ctrl-v': 'vsplit' }
+    let g:lmap.g.f = { 'name': '+File' }
+    let g:lmap.g.f.h = 'file-History'
+    nmap <silent> <leader>gfh :BCommits<CR>
 
-let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
+    let g:lmap.f.f = 'in-File'
+    nmap <silent> <leader>ff :Ag<CR>
+
+    function! s:build_quickfix_list(lines)
+        call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+        copen
+        cc
+    endfunction
+
+    let g:fzf_action = {
+                \ 'ctrl-q': function('s:build_quickfix_list'),
+                \ 'ctrl-t': 'tab split',
+                \ 'ctrl-x': 'split',
+                \ 'ctrl-v': 'vsplit' }
+
+    let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
+    let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
+endif
 " }}}
 " NERTree {{{
 " inst: https://github.com/preservim/nerdtree ui start nerdtree
@@ -1049,6 +1062,11 @@ let autoreadargs={'autoread':1}
 " }}}
 " Completor {{{
 " inst: https://github.com/maralla/completor.vim code start completor
+set completeopt+=menuone
+set completeopt+=noinsert
+
+function test()
+endfunction
 
 "noremap <silent> <leader>d :call completor#do('definition')<CR>
 "noremap <silent> <leader>c :call completor#do('doc')<CR>
@@ -1128,7 +1146,6 @@ map sh <Plug>(easymotion-linebackward)
 " Additional {{{
 " VimWiki {{{
 " inst: https://github.com/vimwiki/vimwiki ui opt vimwiki
-packadd vimwiki
 function! LoadVimwiki()
 
     let g:lmap.w.w = 'Index'
@@ -1190,6 +1207,7 @@ let g:vimwiki_hl_headers = 1
 let g:vimwiki_hl_cb_checked = 2
 "let g:vimwiki_markdown_link_ext = 1
 
+packadd vimwiki
 " }}}
 " Sessions {{{
 let g:sessiondir = $HOME . "/.vim/sessions"
