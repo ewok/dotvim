@@ -213,8 +213,7 @@ let g:lmap.r = { 'name': '+Run' }
 let g:lmap.s = { 'name': '+Session-Sort' }
 let g:lmap.t = { 'name': '+Tags-To-Text' }
 let g:lmap.w = { 'name': '+Wiki' }
-let g:lmap.y = { 'name': '+Yank' }
-let g:lmap.z = { 'name': '+Zeal' }
+let g:lmap.z = { 'name': '+Zoom' }
 " }}}
 
 " Keymaps {{{
@@ -271,6 +270,10 @@ nmap zj zjmzzMzvzz15<c-e>`z
 nmap zk zkmzzMzvzz15<c-e>`z
 
 " " }}}
+" Yank {{{
+nmap <expr>  MR  ':%s/\(' . @/ . '\)//g<LEFT><LEFT>'
+vmap <expr>  MR  ':s/\(' . @/ . '\)//g<LEFT><LEFT>'
+" }}}
 " Some vim tunings {{{
 nnoremap Y y$
 nnoremap vv V
@@ -312,7 +315,7 @@ augroup ft_ansible
     au BufNewFile,BufRead */\(playbooks\|roles\|tasks\|handlers\|defaults\|vars\)/*.\(yaml\|yml\) set filetype=yaml.ansible
 
     au FileType yaml.ansible call LoadAnsibleFT()
-    function! LoadAnsibleFT() " {{{
+    function! LoadAnsibleFT()
         setlocal commentstring=#\ %s
 
         packadd ale
@@ -328,6 +331,7 @@ augroup ft_ansible
                     \   'command': '%e %s',
                     \   'callback': 'ale_linters#ansible#ansible_lint#Handle',
                     \})
+
         packadd ansible
 
         let g:ansible_template_syntaxes = { '*.rb.j2': 'ruby', '*.py.j2': 'python' }
@@ -336,7 +340,8 @@ augroup ft_ansible
         let g:ansible_extra_keywords_highlight = 1
         let g:ansible_normal_keywords_highlight = 'Constant'
         let g:ansible_with_keywords_highlight = 'Constant'
-    endfunction " }}}
+
+    endfunction
 
 augroup END
 " }}}
@@ -345,6 +350,7 @@ augroup END
 augroup ft_csv
     au!
     au BufNewFile,BufRead *.csv set filetype=csv
+
     au FileType csv call LoadCSVFT()
     function! LoadCSVFT()
         packadd csv
@@ -396,7 +402,7 @@ augroup ft_go
         let g:go_highlight_interfaces = 1
         let g:go_highlight_operators = 1
         let g:go_highlight_build_constraints = 1
-        
+
         " let g:go_auto_type_info = 1
         let g:go_auto_sameids = 1
         " let g:go_fmt_autosave = 0
@@ -420,6 +426,7 @@ augroup ft_go
 
         let g:lmap.r.d.i = 'Info'
         nmap <buffer> <Leader>rdi <Plug>(go-info)
+
     endfunction
 
 augroup END
@@ -440,6 +447,7 @@ augroup END
 " inst: https://github.com/robbles/logstash.vim filetypes opt logstash
 augroup ft_logstash
     au!
+
     au FileType logstash call LoadLogstashFT()
     function! LoadLogstashFT()
 
@@ -460,36 +468,32 @@ augroup ft_markdown
     au!
 
     au FileType markdown call LoadMarkdownFT()
-    function! LoadMarkdownFT() " {{{
+    function! LoadMarkdownFT()
         setlocal foldlevel=2
         setlocal conceallevel=2
 
-        packadd livedown
-        let g:livedown_browser = 'firefox'
-        let g:livedown_port = 14545
+        if !has('ivim')
+          packadd livedown
+          let g:livedown_browser = 'firefox'
+          let g:livedown_port = 14545
+
+          nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>
+          nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
+          nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
+
+          packadd medieval
+          let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
+
+          command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>)
+          nmap <buffer> <leader>rb "":EvalBlock<CR>
+
+        endif
 
         packadd ale
         let b:ale_linters = ['vale', 'markdownlint']
 
-        packadd medieval
-        let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
+    endfunction
 
-        nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>
-        nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
-        nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
-
-        command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>)
-        nmap <buffer> <leader>rb "":EvalBlock<CR>
-
-    endfunction " }}}
-
-augroup END
-" }}}
-" Morph {{{
-augroup ft_morph
-    au!
-    au BufNewFile,BufRead *.b64,*.base64 set filetype=base64
-    au BufNewFile,BufRead *.enc,*.gpg set filetype=encrypted
 augroup END
 " }}}
 " Python {{{
@@ -500,10 +504,9 @@ augroup ft_python
     au!
 
     au FileType python call LoadPythonFT()
-    function! LoadPythonFT() " {{{
+    function! LoadPythonFT()
 
         packadd jedi
-
         let g:jedi#goto_command = ""
         let g:jedi#goto_assignments_command = "gA"
         let g:jedi#goto_definitions_command = "gd"
@@ -535,10 +538,8 @@ augroup ft_python
         nmap <silent> <buffer> <leader>rb <Plug>(python_breakpoint)
 
         packadd ale
-
         let b:ale_linters = ['flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle']
         let b:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8']}
-
         let b:ale_python_flake8_executable = 'flake8'
         let b:ale_python_flake8_options = '--ignore E501'
         let b:ale_python_flake8_use_global = 0
@@ -555,7 +556,7 @@ augroup ft_python
 
         packadd textobj-python
 
-    endfunction " }}}
+    endfunction
 
 augroup END
 " }}}
@@ -566,6 +567,7 @@ augroup ft_puppet
 
     au FileType puppet call LoadPuppetFT()
     function! LoadPuppetFT()
+
         setlocal commentstring=#\ %s
 
         nmap <buffer> <leader>rr :w\|call RunCmd("puppet " . bufname("%"))<CR>
@@ -573,7 +575,6 @@ augroup ft_puppet
         nmap <buffer> <leader>rL :!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>
 
         packadd puppet
-
         let g:puppet_align_hashes = 0
 
         " let b:ale_linters = ['puppet', 'puppetlint']
@@ -589,6 +590,7 @@ augroup ft_rust
 
     au FileType rust call LoadRustFT()
     function! LoadRustFT()
+
         packadd rust
         packadd rust-racer
         let g:racer_experimental_completer = 1
@@ -600,6 +602,7 @@ augroup ft_rust
         nmap <buffer> <silent> <leader>rr :RustRun<CR>
         nmap <buffer> <silent> <leader>rt :RustTest<CR>
         nmap <buffer> <silent> <leader>rf :RustFmt<CR>
+
     endfunction
 
 augroup END
@@ -612,7 +615,7 @@ augroup ft_vim
     au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 
     au FileType vim call LoadVimFT()
-    function! LoadVimFT() " {{{
+    function! LoadVimFT()
 
         let g:lmap.r.S = 'Source-line'
         setlocal foldmethod=marker keywordprg=:help
@@ -625,7 +628,7 @@ augroup ft_vim
         vnoremap <buffer> <leader>rS y:@"<CR>
         nnoremap <buffer> <leader>rS ^vg_y:execute @@<cr>:echo 'Sourced line.'<cr>
 
-    endfunction " }}}
+    endfunction
 
 augroup END
 " }}}
@@ -640,14 +643,14 @@ augroup ft_sh
     au!
 
     au FileType sh call LoadShFT()
-    function! LoadShFT() " {{{
+    function! LoadShFT()
 
         nmap <buffer> <leader>rr :w\|call RunCmd("bash " . bufname("%"))<CR>
 
         packadd ale
         let b:ale_linters = ['shellcheck', 'language_server']
 
-    endfunction " }}}
+    endfunction
 
 augroup END
 " }}}
@@ -657,15 +660,18 @@ augroup ft_vimwiki
 
     au FileType vimwiki call LoadVimWikiFT()
     function! LoadVimWikiFT()
+
         setlocal foldlevel=2
 
         packadd ale
         let b:ale_linters = ['vale', 'markdownlint']
 
-        packadd medieval
-        let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
+        if !has('ivim')
+          packadd medieval
+          let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
+        endif
 
-    endfunction 
+    endfunction
 
 augroup END
 " }}}
@@ -697,17 +703,9 @@ augroup ft_helm
 
     au FileType helm call LoadHelmFT()
     function! LoadHelmFT()
-
         packadd helm
-
     endfunction
 
-augroup END
-"  }}}
-" i3 {{{
-augroup ft_i3
-    au!
-    au BufNewFile,BufRead .i3.config,i3.config,*.i3config,*.i3.config,*/.i3/config set filetype=i3config
 augroup END
 "  }}}
 " Log {{{
@@ -718,9 +716,7 @@ augroup ft_log
 
     au FileType log call LoadLogFT()
     function! LoadLogFT()
-
         packadd log
-
     endfunction
 
 augroup END
@@ -734,12 +730,10 @@ augroup ft_terraform
     function! LoadTerraformFT()
 
         packadd terraform
-
         let g:terraform_align=1
         let g:terraform_fmt_on_save=1
 
         packadd ale
-
         call ale#linter#Define('terraform', {
                     \   'name': 'terraform-lsp',
                     \   'lsp': 'stdio',
@@ -757,10 +751,9 @@ augroup ft_lua
     au!
 
     au FileType lua call LoadLUAFT()
-    function! LoadLUAFT() " {{{
+    function! LoadLUAFT()
 
         packadd ale
-
         call ale#linter#Define('lua', {
                     \   'name': 'lua-language-server',
                     \   'lsp': 'stdio',
@@ -768,7 +761,7 @@ augroup ft_lua
                     \   'command': '%e',
                     \   'project_root': getcwd(),
                     \})
-    endfunction " }}}
+    endfunction
 
 augroup END
 " }}}
@@ -779,9 +772,7 @@ augroup ft_xml
 
     au FileType xml call LoadXMLFT()
     function! LoadXMLFT()
-
         packadd xml
-
     endfunction
 
 augroup END
@@ -791,11 +782,8 @@ augroup END
 " UI {{{
 " Colorscheme {{{
 " inst: https://github.com/KeitaNakamura/neodark.vim ui opt neodark
-
 packadd neodark
-
 let g:neodark#background = '#282c34'
-
 colorscheme neodark
 " }}}
 " Lightline {{{
@@ -824,49 +812,54 @@ let g:lightline = {
 " inst: https://github.com/ctrlpvim/ctrlp.vim.git ui opt ctrlp.vim
 
 if has('ivim')
-    let g:ctrlp_map = '<leader>p1'
-    let g:ctrlp_cmd = 'CtrlP'
 
-    packadd ctrlp.vim
+  let g:ctrlp_map = '<leader>p1'
+  let g:ctrlp_cmd = 'CtrlP'
 
-    nnoremap <silent> <leader>pp :CtrlP<CR>
-    nnoremap <silent> <leader>pb :CtrlPBuffer<CR>
-    nnoremap <silent> <leader>ff :CtrlPLine<CR>
+  packadd ctrlp.vim
+
+  nnoremap <silent> <leader>pp :CtrlP<CR>
+  nnoremap <silent> <leader>pb :CtrlPBuffer<CR>
+  nnoremap <silent> <leader>ff :CtrlPLine<CR>
 
 else
-    tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 
-    command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..',
-                \ 'source': 'ag --hidden --ignore .git -U -p ~/.gitexcludes --nogroup --column --color "^(?=.)"'}, <bang>0)
+  packadd fzf
+  packadd fzf.vim
 
-    let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
+  tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
+  command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..',
+        \ 'source': 'ag --hidden --ignore .git -U -p ~/.gitexcludes --nogroup --column --color "^(?=.)"'}, <bang>0)
 
-    nnoremap <silent> <leader>pp :Files<CR>
-    nnoremap <silent> <leader>pm :Marks<CR>
-    nnoremap <silent> <leader>pb :Buffers<CR>
-    nnoremap <silent> <leader>pf :Filetypes<CR>
+  let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
 
-    let g:lmap.g.f = { 'name': '+File' }
-    let g:lmap.g.f.h = 'file-History'
-    nmap <silent> <leader>gfh :BCommits<CR>
+  nnoremap <silent> <leader>pp :Files<CR>
+  nnoremap <silent> <leader>pm :Marks<CR>
+  nnoremap <silent> <leader>pb :Buffers<CR>
+  nnoremap <silent> <leader>pf :Filetypes<CR>
 
-    let g:lmap.f.f = 'in-File'
-    nmap <silent> <leader>ff :Ag<CR>
+  let g:lmap.g.f = { 'name': '+File' }
+  let g:lmap.g.f.h = 'file-History'
+  nmap <silent> <leader>gfh :BCommits<CR>
 
-    function! s:build_quickfix_list(lines)
-        call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-        copen
-        cc
-    endfunction
+  let g:lmap.f.f = 'in-File'
+  nmap <silent> <leader>ff :Ag<CR>
 
-    let g:fzf_action = {
-                \ 'ctrl-q': function('s:build_quickfix_list'),
-                \ 'ctrl-t': 'tab split',
-                \ 'ctrl-x': 'split',
-                \ 'ctrl-v': 'vsplit' }
+  function! s:build_quickfix_list(lines)
+    call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+    copen
+    cc
+  endfunction
 
-    let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
-    let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
+  let g:fzf_action = {
+        \ 'ctrl-q': function('s:build_quickfix_list'),
+        \ 'ctrl-t': 'tab split',
+        \ 'ctrl-x': 'split',
+        \ 'ctrl-v': 'vsplit' }
+
+  let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
+  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
+
 endif
 " }}}
 " NERTree {{{
@@ -1054,24 +1047,55 @@ endif
 " inst: https://github.com/djoshea/vim-autoread ui start autoread
 let autoreadargs={'autoread':1}
 " }}}
+" Zoom {{{
+" inst: https://github.com/dhruvasagar/vim-zoom ui start vim-zoom
+
+let g:lmap.z = 'Zoom'
+nmap <leader>z :call ZoomToggle()<CR>
+
+function! ZoomToggle()
+    if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+        exe ':NERDTreeClose'
+        let zoom_nerd = 1
+    endif
+
+    if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
+        exe ':TagbarClose'
+        let zoom_tag = 1
+    endif
+
+    call zoom#toggle()
+
+    if (exists("zoom_nerd") && (zoom_nerd == 1))
+        exe ':NERDTreeCWD'
+        exe ':wincmd p'
+        unlet zoom_nerd
+    endif
+
+    if (exists("zoom_tag") && (zoom_tag == 1))
+        exe ':TagbarOpen'
+        unlet zoom_tag
+    endif
+endfunction
+" }}}
 " }}}
 
 " Code {{{
 " Ale {{{
 " inst: https://github.com/w0rp/ale code opt ale
+" let g:ale_sign_column_always = 1
+let g:ale_sign_error = '!!'
+let g:ale_sign_warning = '..'
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_insert_leave = 0
+let g:ale_completion_enabled = 0
 " }}}
 " Completor {{{
 " inst: https://github.com/maralla/completor.vim code start completor
-set completeopt+=menuone
-set completeopt+=noinsert
-
-function test()
-endfunction
-
-"noremap <silent> <leader>d :call completor#do('definition')<CR>
-"noremap <silent> <leader>c :call completor#do('doc')<CR>
-"noremap <silent> <leader>f :call completor#do('format')<CR>
-"noremap <silent> <leader>s :call completor#do('hover')<CR>
+noremap <silent> <leader>rd :call completor#do('definition')<CR>
+" noremap <silent> K :call completor#do('doc')<CR>
+" noremap <silent> <leader>f :call completor#do('format')<CR>
+" noremap <silent> <leader>s :call completor#do('hover')<CR>
 " }}}
 " Text objects {{{
 " inst: https://github.com/kana/vim-textobj-user code start textobj
@@ -1121,6 +1145,32 @@ let g:surround_{char2nr("x")} = "<\1id: \r..*\r&\1>\r</\1\1>"
 
 let g:surround_{char2nr("%")} = "{% \r %}"
 
+" }}}
+" AnyJump {{{
+if has('ivim')
+    " inst: https://github.com/dkprice/vim-easygrep.git code opt easygrep
+    packadd easygrep
+    let g:EasyGrepOptionPrefix=''
+    map <silent> <Leader>j <plug>EgMapGrepCurrentWord_v
+else
+    " inst: https://github.com/pechorin/any-jump.vim code opt anyjump
+    packadd anyjump
+    let g:any_jump_search_prefered_engine = 'rg'
+endif
+" }}}
+" Commentary {{{
+" inst: https://github.com/tpope/vim-commentary code start commentary
+set commentstring=#\ %s
+" }}}
+" Snippets {{{
+" inst: https://github.com/Shougo/neosnippet.vim code start neosnippet
+" inst: https://github.com/Shougo/neosnippet-snippets code start neosnippet-snippets
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+" }}}
+" AutoIndent {{{
+" inst: https://github.com/tpope/vim-sleuth code start auto-indent
 " }}}
 " }}}
 
@@ -1590,26 +1640,21 @@ let g:lmap.t.h = 'To-Html'
 nnoremap <leader>th :TOhtml<CR>
 vnoremap <leader>th :TOhtml<CR>
 " }}}
+" Small plugins {{{
+" inst: https://github.com/bronson/vim-trailing-whitespace other start whitespace
+" inst: https://github.com/jiangmiao/auto-pairs other start auto-pairs
+" inst: https://github.com/junegunn/vim-peekaboo other start peekaboo
+let g:peekaboo_delay = 1000
+" inst: https://github.com/chaoren/vim-wordmotion other start wordmotion
+" inst: https://github.com/tpope/vim-repeat other start repeat
+
+" if !has('ivim')
+" inst: https://github.com/powerline/fonts other opt fonts
+" endif
+" }}}
 " }}}
 
-"""""" " Motion plugins {{{
-"""""" " Text plugins {{{
-"""""" " -> Morph {{{
-"""""" Plug 'd0c-s4vage/vim-morph', { 'for': [ 'base64', 'encrypted']}
-"""""" 
-"""""" " }}}
-"""""" " -> Mundo {{{
-"""""" Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
-"""""" 
-"""""" let g:lmap.u = 'Undo'
-"""""" nmap <silent> <leader>u :MundoToggle<CR><CR>
-"""""" "
-"""""" if has('persistent_undo')
-""""""     silent !mkdir ~/.config/nvim/local/backups > /dev/null 2>&1
-""""""     set undodir=~/.config/nvim/local/backups
-""""""     set undofile
-"""""" endif
-"""""" " }}}
+" ToFix {{{
 """""" " -> Xkb {{{
 """""" Plug 'lyokha/vim-xkbswitch'
 """""" 
@@ -1628,162 +1673,6 @@ vnoremap <leader>th :TOhtml<CR>
 """""" 
 """""" let g:XkbSwitchEnabled = 1
 """""" let g:XkbSwitchSkipFt = [ 'nerdtree' ]
-"""""" 
-"""""" " }}}
-"""""" " -> Yank {{{
-"""""" Plug 'idanarye/vim-yankitute', { 'on': 'Yankitute' }
-"""""" 
-nmap <expr>  MR  ':%s/\(' . @/ . '\)//g<LEFT><LEFT>'
-"""""" nmap <expr>  MY  ':%Yankitute/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
-vmap <expr>  MR  ':s/\(' . @/ . '\)//g<LEFT><LEFT>'
-"""""" vmap <expr>  MY  ':Yankitute/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
-"""""" " }}}
-"""""" " UI plugins {{{
-"""""" " -> Zoom {{{
-"""""" Plug 'dhruvasagar/vim-zoom'
-"""""" 
-"""""" let g:lmap.z = 'Zoom'
-"""""" nmap <leader>z :call ZoomToggle()<CR>
-"""""" 
-"""""" function! ZoomToggle()
-""""""     if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
-""""""         exe ':NERDTreeClose'
-""""""         let zoom_nerd = 1
-""""""     endif
-"""""" 
-""""""     if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
-""""""         exe ':TagbarClose'
-""""""         let zoom_tag = 1
-""""""     endif
-"""""" 
-""""""     call zoom#toggle()
-"""""" 
-""""""     if (exists("zoom_nerd") && (zoom_nerd == 1))
-""""""         exe ':NERDTreeCWD'
-""""""         exe ':wincmd p'
-""""""         unlet zoom_nerd
-""""""     endif
-"""""" 
-""""""     if (exists("zoom_tag") && (zoom_tag == 1))
-""""""         exe ':TagbarOpen'
-""""""         unlet zoom_tag
-""""""     endif
-"""""" endfunction
-"""""" " }}}
-"""""" " }}}
-"""""" " Code plugins {{{
-"""""" " -> Commentary {{{
-"""""" Plug 'tpope/vim-commentary'
-"""""" 
-"""""" set commentstring=#\ %s
-"""""" " }}}
-"""""" " }}}
-"""""" " -> Snippets {{{
-"""""" Plug 'Shougo/neosnippet.vim'
-"""""" Plug 'Shougo/neosnippet-snippets'
-"""""" 
-"""""" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-"""""" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-"""""" xmap <C-k>     <Plug>(neosnippet_expand_target)
-"""""" 
-"""""" " }}}
-"""""" " -> Ctags {{{
-"""""" Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-"""""" Plug 'jsfaint/gen_tags.vim'
-"""""" 
-"""""" nnoremap <silent> <leader>pt :TagbarToggle<CR>
-"""""" 
-"""""" let g:lmap.t.u = 'tag-Update'
-"""""" nmap <leader>tu :!ctags -R --exclude=.git --exclude=.idea --exclude=log<CR><CR>
-"""""" 
-"""""" set tags=tags;/,codex.tags;/
-"""""" 
-"""""" let g:tagbar_type_puppet = {
-""""""             \ 'ctagstype': 'puppet',
-""""""             \ 'kinds': [
-""""""             \'c:class',
-""""""             \'s:site',
-""""""             \'n:node',
-""""""             \'d:definition',
-""""""             \'r:resource',
-""""""             \'f:default'
-""""""             \]
-""""""             \}
-"""""" 
-"""""" let g:tagbar_type_haskell = {
-""""""             \ 'ctagsbin'  : 'hasktags',
-""""""             \ 'ctagsargs' : '-x -c -o-',
-""""""             \ 'kinds'     : [
-""""""             \  'm:modules:0:1',
-""""""             \  'd:data: 0:1',
-""""""             \  'd_gadt: data gadt:0:1',
-""""""             \  't:type names:0:1',
-""""""             \  'nt:new types:0:1',
-""""""             \  'c:classes:0:1',
-""""""             \  'cons:constructors:1:1',
-""""""             \  'c_gadt:constructor gadt:1:1',
-""""""             \  'c_a:constructor accessors:1:1',
-""""""             \  'ft:function types:1:1',
-""""""             \  'fi:function implementations:0:1',
-""""""             \  'o:others:0:1'
-""""""             \ ],
-""""""             \ 'sro'        : '.',
-""""""             \ 'kind2scope' : {
-""""""             \ 'm' : 'module',
-""""""             \ 'c' : 'class',
-""""""             \ 'd' : 'data',
-""""""             \ 't' : 'type'
-""""""             \ },
-""""""             \ 'scope2kind' : {
-""""""             \ 'module' : 'm',
-""""""             \ 'class'  : 'c',
-""""""             \ 'data'   : 'd',
-""""""             \ 'type'   : 't'
-""""""             \ }
-""""""             \ }
-"""""" 
-"""""" let g:tagbar_type_go = {
-""""""             \ 'ctagstype' : 'go',
-""""""             \ 'kinds'     : [
-""""""             \ 'p:package',
-""""""             \ 'i:imports:1',
-""""""             \ 'c:constants',
-""""""             \ 'v:variables',
-""""""             \ 't:types',
-""""""             \ 'n:interfaces',
-""""""             \ 'w:fields',
-""""""             \ 'e:embedded',
-""""""             \ 'm:methods',
-""""""             \ 'r:constructor',
-""""""             \ 'f:functions'
-""""""             \ ],
-""""""             \ 'sro' : '.',
-""""""             \ 'kind2scope' : {
-""""""             \ 't' : 'ctype',
-""""""             \ 'n' : 'ntype'
-""""""             \ },
-""""""             \ 'scope2kind' : {
-""""""             \ 'ctype' : 't',
-""""""             \ 'ntype' : 'n'
-""""""             \ },
-""""""             \ 'ctagsbin'  : 'gotags',
-""""""             \ 'ctagsargs' : '-sort -silent'
-""""""             \ }
-"""""" 
-"""""" let g:tagbar_type_ansible = {
-""""""             \ 'ctagstype' : 'ansible',
-""""""             \ 'kinds' : [
-""""""             \ 't:tasks'
-""""""             \ ],
-""""""             \ 'sort' : 0
-""""""             \ }
-"""""" " }}}
-"""""" " -> @todo: Check actuality Folding  {{{
-"""""" Plug 'pseewald/vim-anyfold'
-"""""" 
-"""""" if g:largefile != 1
-""""""     au Filetype python,yaml.ansible,puppet,go,xml,json,sh,zsh :AnyFoldActivate
-"""""" endif
 """""" 
 """""" " }}}
 """""" " -> Git {{{
@@ -1860,55 +1749,12 @@ vmap <expr>  MR  ':s/\(' . @/ . '\)//g<LEFT><LEFT>'
 """""" let g:git_messenger_always_into_popup = v:true
 """""" nmap <Leader>gbb <Plug>(git-messenger)
 """""" " }}}
-"""""" " -> Linter {{{
-"""""" Plug 'w0rp/ale'
-"""""" 
-"""""" " let g:ale_sign_column_always = 1
-"""""" let g:ale_sign_error = '!!'
-"""""" let g:ale_sign_warning = '..'
-"""""" " let g:ale_lint_on_text_changed = 'never'
-"""""" " let g:ale_lint_on_insert_leave = 0
-"""""" let g:ale_completion_enabled = 0
-"""""" " }}}
-"""""" " -> AutoIndent {{{
-"""""" Plug 'tpope/vim-sleuth'
-"""""" " }}}
-"""""" " -> SortFolds {{{
-"""""" Plug 'obreitwi/vim-sort-folds', { 'on': '<Plug>SortFolds' }
-"""""" let g:lmap.s.f = { 'name': 'Fold' }
-"""""" vmap <silent> <leader>sf <Plug>SortFolds
-"""""" " }}}
-"""""" " -> AnyJump {{{
-"""""" Plug 'pechorin/any-jump.vim'
-"""""" let g:any_jump_search_prefered_engine = 'rg'
-"""""" "  }}}
-"""""" " Small plugins {{{
-"""""" "
-"""""" Plug 'bronson/vim-trailing-whitespace'
-"""""" Plug 'jiangmiao/auto-pairs'
-"""""" Plug 'junegunn/vim-emoji'
-"""""" Plug 'junegunn/vim-peekaboo'
-"""""" let g:peekaboo_delay = 1000
-"""""" 
-"""""" Plug 'tpope/vim-repeat'
-"""""" Plug 'tomtom/tlib_vim'
-"""""" Plug 'chaoren/vim-wordmotion'
-"""""" 
-"""""" " Fonts
-"""""" Plug 'powerline/fonts'
-"""""" 
-"""""" 
-"""""" call plug#end()
-"""""" endif
-"""""" 
-"""""" " }}}
-"""""" "
 " }}}
-"
-"""""" 
-"""""" " Leader end
+
+" Leader end
 call which_key#register('<Space>', "g:lmap")
-"""""" 
+
+" Start {{{
 au! VimEnter * call AfterVimEnter()
 function! AfterVimEnter()
     if g:largefile != 1
@@ -1917,6 +1763,7 @@ function! AfterVimEnter()
 
     call LoadVimwiki()
 endfunction
+" }}}
 
 " Load local vars {{{
 "

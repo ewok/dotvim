@@ -1,40 +1,40 @@
-iplug add https://github.com/pearofducks/ansible-vim
-iplug add https://github.com/chrisbra/csv.vim
-iplug add https://github.com/fatih/vim-go
-iplug add https://github.com/robbles/logstash.vim
-iplug add https://github.com/shime/vim-livedown
-iplug add https://github.com/gpanders/vim-medieval
-iplug add https://github.com/jmcantrell/vim-virtualenv
-iplug add https://github.com/Vimjas/vim-python-pep8-indent
-iplug add https://github.com/davidhalter/jedi-vim
-iplug add https://github.com/rodjek/vim-puppet
-iplug add https://github.com/rust-lang/rust.vim
-iplug add https://github.com/racer-rust/vim-racer
-iplug add https://github.com/towolf/vim-helm
-iplug add https://github.com/mtdl9/vim-log-highlighting
-iplug add https://github.com/hashivim/vim-terraform
-iplug add https://github.com/sukima/xmledit
-iplug add https://github.com/KeitaNakamura/neodark.vim
-iplug add https://github.com/itchyny/lightline.vim
-iplug add https://github.com/junegunn/fzf
-iplug add https://github.com/junegunn/fzf.vim
-iplug add https://github.com/preservim/nerdtree
-iplug add https://github.com/Xuyuanp/nerdtree-git-plugin
-iplug add https://github.com/liuchengxu/vim-which-key
-iplug add https://github.com/nathanaelkane/vim-indent-guides
-iplug add https://github.com/junegunn/goyo.vim
-iplug add https://github.com/junegunn/limelight.vim
-iplug add https://github.com/christoomey/vim-tmux-navigator
-iplug add https://github.com/benmills/vimux
-iplug add https://github.com/djoshea/vim-autoread
-iplug add https://github.com/w0rp/ale
-iplug add https://github.com/maralla/completor.vim
-iplug add https://github.com/kana/vim-textobj-user
-iplug add https://github.com/bps/vim-textobj-python
-iplug add https://github.com/kana/vim-textobj-indent
-iplug add https://github.com/glts/vim-textobj-comment
-iplug add https://github.com/junegunn/vim-easy-align
-iplug add https://github.com/brooth/far.vim
-iplug add https://github.com/tpope/vim-surround
-iplug add https://github.com/easymotion/vim-easymotion
-iplug add https://github.com/vimwiki/vimwiki
+iplug add -t opt -n ansible https://github.com/pearofducks/ansible-vim
+iplug add -t opt -n csv https://github.com/chrisbra/csv.vim
+iplug add -t opt -n vim-go https://github.com/fatih/vim-go
+iplug add -t opt -n logstash https://github.com/robbles/logstash.vim
+iplug add -t opt -n livedown https://github.com/shime/vim-livedown
+iplug add -t opt -n medieval https://github.com/gpanders/vim-medieval
+iplug add -t opt -n vim-virtualenv https://github.com/jmcantrell/vim-virtualenv
+iplug add -t opt -n pep8-ind https://github.com/Vimjas/vim-python-pep8-indent
+iplug add -t opt -n jedi https://github.com/davidhalter/jedi-vim
+iplug add -t opt -n puppet https://github.com/rodjek/vim-puppet
+iplug add -t opt -n rust https://github.com/rust-lang/rust.vim
+iplug add -t opt -n rust-racer https://github.com/racer-rust/vim-racer
+iplug add -t opt -n helm https://github.com/towolf/vim-helm
+iplug add -t opt -n log https://github.com/mtdl9/vim-log-highlighting
+iplug add -t opt -n terraform https://github.com/hashivim/vim-terraform
+iplug add -t opt -n xml https://github.com/sukima/xmledit
+iplug add -t opt -n neodark https://github.com/KeitaNakamura/neodark.vim
+iplug add -t start -n lightline https://github.com/itchyny/lightline.vim
+iplug add -t start -n fzf https://github.com/junegunn/fzf
+iplug add -t start -n fzf.vim https://github.com/junegunn/fzf.vim
+iplug add -t start -n nerdtree https://github.com/preservim/nerdtree
+iplug add -t start -n nerdtree-git https://github.com/Xuyuanp/nerdtree-git-plugin
+iplug add -t opt -n which-key https://github.com/liuchengxu/vim-which-key
+iplug add -t opt -n indent-guides https://github.com/nathanaelkane/vim-indent-guides
+iplug add -t opt -n goyo https://github.com/junegunn/goyo.vim
+iplug add -t opt -n limelight https://github.com/junegunn/limelight.vim
+iplug add -t start -n tmux-navigator https://github.com/christoomey/vim-tmux-navigator
+iplug add -t opt -n vimux https://github.com/benmills/vimux
+iplug add -t start -n autoread https://github.com/djoshea/vim-autoread
+iplug add -t opt -n ale https://github.com/w0rp/ale
+iplug add -t start -n completor https://github.com/maralla/completor.vim
+iplug add -t start -n textobj https://github.com/kana/vim-textobj-user
+iplug add -t opt -n textobj-python https://github.com/bps/vim-textobj-python
+iplug add -t start -n textobj-indent https://github.com/kana/vim-textobj-indent
+iplug add -t start -n textobj-comment https://github.com/glts/vim-textobj-comment
+iplug add -t start -n easy-align https://github.com/junegunn/vim-easy-align
+iplug add -t start -n far https://github.com/brooth/far.vim
+iplug add -t start -n surround https://github.com/tpope/vim-surround
+iplug add -t start -n easymotion https://github.com/easymotion/vim-easymotion
+iplug add -t opt -n vimwiki https://github.com/vimwiki/vimwiki
