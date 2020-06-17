@@ -38,7 +38,11 @@ set secure
 set shiftwidth=4
 set shortmess=aOtT
 set showmode
-set showtabline=1
+if has('ivim')
+  set showtabline=2
+else
+  set showtabline=1
+endif
 set smartcase
 set smarttab
 set softtabstop=4
@@ -1091,7 +1095,10 @@ let g:ale_sign_warning = '..'
 let g:ale_completion_enabled = 0
 " }}}
 " Completor {{{
-" inst: https://github.com/maralla/completor.vim code start completor
+" inst: https://github.com/maralla/completor.vim code opt  completor
+" TODO: turn off
+packadd completor
+
 noremap <silent> <leader>rd :call completor#do('definition')<CR>
 " noremap <silent> K :call completor#do('doc')<CR>
 " noremap <silent> <leader>f :call completor#do('format')<CR>
@@ -1515,7 +1522,7 @@ set foldtext=MyFoldText()
 " Trigger autoread when changing buffers or coming back to vim.
 " au FocusGained,BufEnter,WinEnter * :silent! !
 
-au! FileType vim,python,golang,go,yaml.ansible,puppet,json,sh,vimwiki,rust,yaml call DefaultOn()
+" au! FileType vim,python,golang,go,yaml.ansible,puppet,json,sh,vimwiki,rust,yaml call DefaultOn()
 
 function! DefaultOn()
     if !exists("b:auto_save")
