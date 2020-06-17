@@ -32,7 +32,7 @@ iplug add
    \,start
    \,start
    \,opt
-   \,start
+   \,opt
    \,start
    \,opt
    \,start
@@ -153,7 +153,7 @@ iplug add
    \ https://github.com/djoshea/vim-autoread
    \ https://github.com/dhruvasagar/vim-zoom
    \ https://github.com/w0rp/ale
-   \ https://github.com/maralla/completor.vim
+   \ https://github.com/prabirshrestha/asyncomplete.vim
    \ https://github.com/kana/vim-textobj-user
    \ https://github.com/bps/vim-textobj-python
    \ https://github.com/kana/vim-textobj-indent

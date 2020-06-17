@@ -4,7 +4,7 @@ let g:maplocalleader = ","
 
 " -> A big mess, should be reviewed {{{
 set backspace=2
-set clipboard+=unnamedplus
+set clipboard=unnamedplus
 set cmdheight=1
 set confirm
 set copyindent
@@ -1095,14 +1095,14 @@ let g:ale_sign_warning = '..'
 let g:ale_completion_enabled = 0
 " }}}
 " Completor {{{
-" inst: https://github.com/maralla/completor.vim code opt  completor
-" TODO: turn off
-packadd completor
+" inst: https://github.com/prabirshrestha/asyncomplete.vim code opt completor
 
-noremap <silent> <leader>rd :call completor#do('definition')<CR>
-" noremap <silent> K :call completor#do('doc')<CR>
-" noremap <silent> <leader>f :call completor#do('format')<CR>
-" noremap <silent> <leader>s :call completor#do('hover')<CR>
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+
+" let g:asyncomplete_auto_completeopt = 0
+" set completeopt=menuone,noinsert,noselect,preview
 " }}}
 " Text objects {{{
 " inst: https://github.com/kana/vim-textobj-user code start textobj
