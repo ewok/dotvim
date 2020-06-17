@@ -1172,6 +1172,91 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 " AutoIndent {{{
 " inst: https://github.com/tpope/vim-sleuth code start auto-indent
 " }}}
+" -> Git {{{
+" inst: https://github.com/tpope/vim-fugitive code opt fugitive
+" inst: https://github.com/tpope/vim-rhubarb code opt rhubarb
+" inst: https://github.com/shumphrey/fugitive-gitlab.vim code opt gitlab
+
+if !has('ivim')
+
+  packadd fugitive
+  packadd rhubarb
+  packadd gitlab
+
+  " Helper
+  function! GitShowBlockHistory()
+    exe ":G log -L " . string(getpos("'<'")[1]) . "," . string(getpos("'>'")[1]) . ":%"
+  endfunction
+
+  " Fugitive options
+  au BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>
+  au BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>
+  au BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>
+  "
+  " shortcuts mapping
+  let g:lmap.g.s = 'Status'
+  nmap <silent> <leader>gs :Gstatus<CR>
+  let g:lmap.g.d = 'Diff'
+  nmap <silent> <leader>gd :Gdiff<CR>
+  let g:lmap.g.C = 'Commit'
+  nmap <silent> <leader>gC :Gcommit<CR>
+  let g:lmap.g.W = 'Write'
+  nmap <silent> <leader>gW :Gwrite<CR>
+  let g:lmap.g.R = 'Read'
+  nmap <silent> <leader>gR :Gread<CR>
+
+  let g:lmap.g.b = { 'name': '+Blame' }
+  let g:lmap.g.b.l = 'bLame'
+  nmap <silent> <leader>gbl :Gblame<CR>
+
+  let g:lmap.g.p = { 'name': '+Push-pull' }
+  let g:lmap.g.p.s = 'Push'
+  nmap <silent> <leader>gps :G push<CR>
+  let g:lmap.g.p.l = { 'name': '+Pull' }
+  let g:lmap.g.p.l.r = 'Rebase'
+  nmap <silent> <leader>gplr :G pull --rebase<CR>
+  let g:lmap.g.p.l.m = 'Merge'
+  nmap <silent> <leader>gplm :G pull<CR>
+  let g:lmap.g.g = 'Browse'
+  nmap <silent> <leader>gg :.Gbrowse %<CR>
+  vmap <silent> <leader>gg :'<,'>Gbrowse %<CR>
+  let g:lmap.g.v = { 'name': '+Visual' }
+  vmap <silent> <leader>gvh :<C-U>call GitShowBlockHistory()<CR>
+
+  " Gitgutter options
+  " inst: https://github.com/airblade/vim-gitgutter code opt gitgutter
+  packadd gitgutter
+  let g:gitgutter_map_keys = 0
+
+  nmap [g <Plug>(GitGutterPrevHunk)
+  nmap ]g <Plug>(GitGutterNextHunk)
+
+  let g:gitgutter_override_sign_column_highlight = 0
+
+  let g:lmap.g.hs = 'Hunk-Stage'
+  nmap <leader>ghs :GitGutterStageHunk<CR>
+  let g:lmap.g.hr = 'Hunk-Revert'
+  nmap <leader>ghr :GitGutterUndoHunk<CR>
+  let g:lmap.g.hp = 'Hunk-Preview'
+  nmap <leader>ghp :GitGutterPreviewHunk<CR>
+
+  " Gitv options
+  " inst: https://github.com/junegunn/gv.vim code opt gv
+  packadd gv
+
+  let g:lmap.g.h = 'History'
+  let g:Gitv_DoNotMapCtrlKey = 1
+  nmap <silent> <leader>gh :GV<CR>
+
+  " Git messages in popup
+  " inst: https://github.com/rhysd/git-messenger.vim code opt git-messenger
+  packadd git-messenger
+
+  let g:git_messenger_no_default_mappings = v:true
+  let g:git_messenger_always_into_popup = v:true
+  nmap <Leader>gbb <Plug>(git-messenger)
+endif
+" }}}
 " }}}
 
 " Motion {{{
@@ -1674,80 +1759,6 @@ let g:peekaboo_delay = 1000
 """""" let g:XkbSwitchEnabled = 1
 """""" let g:XkbSwitchSkipFt = [ 'nerdtree' ]
 """""" 
-"""""" " }}}
-"""""" " -> Git {{{
-"""""" Plug 'tpope/vim-fugitive'
-"""""" Plug 'tpope/vim-rhubarb'
-"""""" Plug 'shumphrey/fugitive-gitlab.vim'
-"""""" 
-"""""" " Helper
-"""""" function! GitShowBlockHistory()
-""""""     exe ":G log -L " . string(getpos("'<'")[1]) . "," . string(getpos("'>'")[1]) . ":%"
-"""""" endfunction
-"""""" 
-"""""" " Fugitive options
-"""""" au BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>
-"""""" au BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>
-"""""" au BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>
-"""""" "
-"""""" " shortcuts mapping
-"""""" let g:lmap.g.s = 'Status'
-"""""" nmap <silent> <leader>gs :Gstatus<CR>
-"""""" let g:lmap.g.d = 'Diff'
-"""""" nmap <silent> <leader>gd :Gdiff<CR>
-"""""" let g:lmap.g.C = 'Commit'
-"""""" nmap <silent> <leader>gC :Gcommit<CR>
-"""""" let g:lmap.g.W = 'Write'
-"""""" nmap <silent> <leader>gW :Gwrite<CR>
-"""""" let g:lmap.g.R = 'Read'
-"""""" nmap <silent> <leader>gR :Gread<CR>
-"""""" 
-"""""" let g:lmap.g.b = { 'name': '+Blame' }
-"""""" let g:lmap.g.b.l = 'bLame'
-"""""" nmap <silent> <leader>gbl :Gblame<CR>
-"""""" 
-"""""" let g:lmap.g.p = { 'name': '+Push-pull' }
-"""""" let g:lmap.g.p.s = 'Push'
-"""""" nmap <silent> <leader>gps :G push<CR>
-"""""" let g:lmap.g.p.l = { 'name': '+Pull' }
-"""""" let g:lmap.g.p.l.r = 'Rebase'
-"""""" nmap <silent> <leader>gplr :G pull --rebase<CR>
-"""""" let g:lmap.g.p.l.m = 'Merge'
-"""""" nmap <silent> <leader>gplm :G pull<CR>
-"""""" let g:lmap.g.g = 'Browse'
-"""""" nmap <silent> <leader>gg :.Gbrowse %<CR>
-"""""" vmap <silent> <leader>gg :'<,'>Gbrowse %<CR>
-"""""" let g:lmap.g.v = { 'name': '+Visual' }
-"""""" vmap <silent> <leader>gvh :<C-U>call GitShowBlockHistory()<CR>
-"""""" 
-"""""" " Gitgutter options
-"""""" Plug 'airblade/vim-gitgutter'
-"""""" let g:gitgutter_map_keys = 0
-"""""" 
-"""""" nmap [g <Plug>(GitGutterPrevHunk)
-"""""" nmap ]g <Plug>(GitGutterNextHunk)
-"""""" 
-"""""" let g:gitgutter_override_sign_column_highlight = 0
-"""""" 
-"""""" let g:lmap.g.hs = 'Hunk-Stage'
-"""""" nmap <leader>ghs :GitGutterStageHunk<CR>
-"""""" let g:lmap.g.hr = 'Hunk-Revert'
-"""""" nmap <leader>ghr :GitGutterUndoHunk<CR>
-"""""" let g:lmap.g.hp = 'Hunk-Preview'
-"""""" nmap <leader>ghp :GitGutterPreviewHunk<CR>
-"""""" 
-"""""" " Gitv options
-"""""" Plug 'junegunn/gv.vim'
-"""""" 
-"""""" let g:lmap.g.h = 'History'
-"""""" let g:Gitv_DoNotMapCtrlKey = 1
-"""""" nmap <silent> <leader>gh :GV<CR>
-"""""" 
-"""""" " Git messages in popup
-"""""" Plug 'rhysd/git-messenger.vim'
-"""""" let g:git_messenger_no_default_mappings = v:true
-"""""" let g:git_messenger_always_into_popup = v:true
-"""""" nmap <Leader>gbb <Plug>(git-messenger)
 """""" " }}}
 " }}}
 
