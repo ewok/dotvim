@@ -8,13 +8,13 @@ opts=$(cat vimrc| grep '" inst:' | awk '{print $5}')
 echo "  \ -t" >> install.vim
 for i in $opts
 do
-    echo "   \ ,$i" >> install.vim
+    echo "   \,$i" >> install.vim
 done
 
 echo "  \ -n" >> install.vim
 for i in $names
 do
-    echo "   \ ,$i" >> install.vim
+    echo "   \,$i" >> install.vim
 done
 
 for i in $urls

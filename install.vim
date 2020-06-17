@@ -1,126 +1,126 @@
 iplug add
   \ -t
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,start
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,start
-   \ ,start
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,start
-   \ ,opt
-   \ ,start
-   \ ,start
-   \ ,opt
-   \ ,start
-   \ ,start
-   \ ,opt
-   \ ,start
-   \ ,start
-   \ ,start
-   \ ,start
-   \ ,start
-   \ ,opt
-   \ ,opt
-   \ ,start
-   \ ,start
-   \ ,start
-   \ ,start
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,opt
-   \ ,start
-   \ ,opt
-   \ ,start
-   \ ,start
-   \ ,start
-   \ ,start
-   \ ,start
-   \ ,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,start
+   \,opt
+   \,opt
+   \,opt
+   \,start
+   \,start
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,start
+   \,opt
+   \,start
+   \,start
+   \,opt
+   \,start
+   \,start
+   \,opt
+   \,start
+   \,start
+   \,start
+   \,start
+   \,start
+   \,opt
+   \,opt
+   \,start
+   \,start
+   \,start
+   \,start
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,opt
+   \,start
+   \,opt
+   \,start
+   \,start
+   \,start
+   \,start
+   \,start
+   \,opt
   \ -n
-   \ ,ansible
-   \ ,csv
-   \ ,vim-go
-   \ ,logstash
-   \ ,livedown
-   \ ,medieval
-   \ ,vim-virtualenv
-   \ ,pep8-ind
-   \ ,jedi
-   \ ,puppet
-   \ ,rust
-   \ ,rust-racer
-   \ ,helm
-   \ ,log
-   \ ,terraform
-   \ ,xml
-   \ ,neodark
-   \ ,lightline
-   \ ,fzf
-   \ ,fzf.vim
-   \ ,ctrlp.vim
-   \ ,nerdtree
-   \ ,nerdtree-git
-   \ ,which-key
-   \ ,indent-guides
-   \ ,goyo
-   \ ,limelight
-   \ ,tmux-navigator
-   \ ,vimux
-   \ ,autoread
-   \ ,vim-zoom
-   \ ,ale
-   \ ,completor
-   \ ,textobj
-   \ ,textobj-python
-   \ ,textobj-indent
-   \ ,textobj-comment
-   \ ,easy-align
-   \ ,far
-   \ ,surround
-   \ ,easygrep
-   \ ,anyjump
-   \ ,commentary
-   \ ,neosnippet
-   \ ,neosnippet-snippets
-   \ ,auto-indent
-   \ ,fugitive
-   \ ,rhubarb
-   \ ,gitlab
-   \ ,gitgutter
-   \ ,gv
-   \ ,git-messenger
-   \ ,easymotion
-   \ ,vimwiki
-   \ ,whitespace
-   \ ,auto-pairs
-   \ ,peekaboo
-   \ ,wordmotion
-   \ ,repeat
-   \ ,fonts
+   \,ansible
+   \,csv
+   \,vim-go
+   \,logstash
+   \,livedown
+   \,medieval
+   \,vim-virtualenv
+   \,pep8-ind
+   \,jedi
+   \,puppet
+   \,rust
+   \,rust-racer
+   \,helm
+   \,log
+   \,terraform
+   \,xml
+   \,neodark
+   \,lightline
+   \,fzf
+   \,fzf.vim
+   \,ctrlp.vim
+   \,nerdtree
+   \,nerdtree-git
+   \,which-key
+   \,indent-guides
+   \,goyo
+   \,limelight
+   \,tmux-navigator
+   \,vimux
+   \,autoread
+   \,vim-zoom
+   \,ale
+   \,completor
+   \,textobj
+   \,textobj-python
+   \,textobj-indent
+   \,textobj-comment
+   \,easy-align
+   \,far
+   \,surround
+   \,easygrep
+   \,anyjump
+   \,commentary
+   \,neosnippet
+   \,neosnippet-snippets
+   \,auto-indent
+   \,fugitive
+   \,rhubarb
+   \,gitlab
+   \,gitgutter
+   \,gv
+   \,git-messenger
+   \,easymotion
+   \,vimwiki
+   \,whitespace
+   \,auto-pairs
+   \,peekaboo
+   \,wordmotion
+   \,repeat
+   \,fonts
    \ https://github.com/pearofducks/ansible-vim
    \ https://github.com/chrisbra/csv.vim
    \ https://github.com/fatih/vim-go
