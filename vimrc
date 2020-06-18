@@ -55,7 +55,14 @@ set title
 set titlestring=%F
 set ttimeoutlen=-1
 set ttyfast
+
+if !isdirectory($HOME . "/.vim/undo")
+  call mkdir($HOME . "/.vim/undo", "p", 0700)
+endif
 set undolevels=100
+set undodir=~/.vim/undo
+set undofile
+
 set visualbell
 scriptencoding utf-8
 
