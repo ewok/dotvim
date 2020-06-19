@@ -284,6 +284,27 @@ nmap zk zkmzzMzvzz15<c-e>`z
 " Yank {{{
 nmap <expr>  MR  ':%s/\(' . @/ . '\)//g<LEFT><LEFT>'
 vmap <expr>  MR  ':s/\(' . @/ . '\)//g<LEFT><LEFT>'
+
+if has('unix') && executable('win32yank.exe')
+
+  set clipboard=unnamed
+
+  autocmd TextYankPost * call system('win32yank.exe -i --crlf', @")
+
+  function! Paste(mode)
+    let @" = system('win32yank.exe -o --lf')
+    return a:mode
+  endfunction
+
+  map <expr> p Paste('p')
+  map <expr> P Paste('P')
+
+  vmap <expr> p Paste('p').'gv"'.v:register.'y`>'
+  vmap <expr> P Paste('P').'gv"'.v:register.'y`>'
+
+  let g:win32yank = 1
+
+endif
 " }}}
 " Some vim tunings {{{
 nnoremap Y y$
@@ -298,7 +319,9 @@ xnoremap <  <gv
 xnoremap >  >gv
 
 " Replace without yanking
-vnoremap p :<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>
+if !exists('g:win32yank')
+  vnoremap p :<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>
+endif
 
 " Keep the cursor in place while joining lines
 nnoremap J mzJ`z
