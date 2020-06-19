@@ -576,6 +576,7 @@ augroup END
 augroup ft_puppet
     au!
 
+    au BufNewFile,BufRead *.pp set filetype=puppet
     au FileType puppet call LoadPuppetFT()
     function! LoadPuppetFT()
 
@@ -1529,7 +1530,7 @@ set foldtext=MyFoldText()
 " Trigger autoread when changing buffers or coming back to vim.
 " au FocusGained,BufEnter,WinEnter * :silent! !
 
-" au! FileType vim,python,golang,go,yaml.ansible,puppet,json,sh,vimwiki,rust,yaml call DefaultOn()
+au! FileType vim,python,golang,go,yaml.ansible,puppet,json,sh,vimwiki,rust,yaml call DefaultOn()
 
 function! DefaultOn()
     if !exists("b:auto_save")
