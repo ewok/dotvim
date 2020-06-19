@@ -57,11 +57,11 @@ set titlestring=%F
 set ttimeoutlen=-1
 set ttyfast
 
-if !isdirectory($HOME . "/.vim/undo")
-  call mkdir($HOME . "/.vim/undo", "p", 0700)
+if !isdirectory($HOME . "/.vim_undo")
+  call mkdir($HOME . "/.vim_undo", "p", 0700)
 endif
 set undolevels=100
-set undodir=~/.vim/undo
+set undodir=~/.vim_undo
 set undofile
 
 set visualbell
@@ -353,7 +353,7 @@ augroup ft_ansible
   function! LoadAnsibleFT()
     setlocal commentstring=#\ %s
 
-    packadd ale
+    packadd! ale
 
     let b:ale_ansible_ansible_lint_executable = 'ansible_custom'
     let b:ale_ansible_ansible_lint_command = '%e %t'
@@ -367,7 +367,7 @@ augroup ft_ansible
           \   'callback': 'ale_linters#ansible#ansible_lint#Handle',
           \})
 
-    packadd ansible
+    packadd! ansible
 
     let g:ansible_template_syntaxes = { '*.rb.j2': 'ruby', '*.py.j2': 'python' }
     let g:ansible_unindent_after_newline = 1
@@ -388,7 +388,7 @@ augroup ft_csv
 
   au FileType csv call LoadCSVFT()
   function! LoadCSVFT()
-    packadd csv
+    packadd! csv
   endfunction
 
 augroup END
@@ -400,7 +400,7 @@ augroup ft_yaml
   au FileType yaml call LoadYamlFT()
   function! LoadYamlFT()
 
-    packadd ale
+    packadd! ale
     let b:ale_yaml_yamllint_executable = 'yamllint_custom'
     let b:ale_linters = ['yamllint']
 
@@ -429,7 +429,7 @@ augroup ft_go
   au FileType go call LoadGoFT()
   function! LoadGoFT()
 
-    packadd vim-go
+    packadd! vim-go
 
     let g:go_highlight_functions = 1
     let g:go_highlight_methods = 1
@@ -486,7 +486,7 @@ augroup ft_logstash
   au FileType logstash call LoadLogstashFT()
   function! LoadLogstashFT()
 
-    packadd logstash
+    packadd! logstash
 
     setlocal foldmethod=marker
     setlocal foldmarker={,}
@@ -508,7 +508,7 @@ augroup ft_markdown
     setlocal conceallevel=2
 
     if !has('ivim')
-      packadd livedown
+      packadd! livedown
       let g:livedown_browser = 'firefox'
       let g:livedown_port = 14545
 
@@ -516,7 +516,7 @@ augroup ft_markdown
       nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
       nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
 
-      packadd medieval
+      packadd! medieval
       let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
 
       command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>)
@@ -524,7 +524,7 @@ augroup ft_markdown
 
     endif
 
-    packadd ale
+    packadd! ale
     let b:ale_linters = ['vale', 'markdownlint']
 
   endfunction
@@ -542,7 +542,7 @@ augroup ft_python
   function! LoadPythonFT()
 
     if !has('ivim')
-      packadd jedi
+      packadd! jedi
       let g:jedi#goto_command = ""
       let g:jedi#goto_assignments_command = "gA"
       let g:jedi#goto_definitions_command = "gd"
@@ -554,11 +554,11 @@ augroup ft_python
       let g:jedi#use_splits_not_buffers = "right"
       let g:jedi#goto_stubs_command = ""
 
-      packadd vim-virtualenv
+      packadd! vim-virtualenv
       let g:virtualenv_directory = $PWD
 
     endif
-    packadd pep8-ind
+    packadd! pep8-ind
 
     setlocal foldmethod=indent
     setlocal foldlevel=0
@@ -574,7 +574,7 @@ augroup ft_python
     nmap <Plug>(python_breakpoint) oimport pudb; pudb.set_trace()<esc>
     nmap <silent> <buffer> <leader>rb <Plug>(python_breakpoint)
 
-    packadd ale
+    packadd! ale
     let b:ale_linters = ['flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle']
     let b:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8']}
     let b:ale_python_flake8_executable = 'flake8'
@@ -591,7 +591,7 @@ augroup ft_python
     let b:ale_python_pydocstyle_executable = 'pydocstyle'
     let b:ale_python_vulture_executable = 'vulture'
 
-    packadd textobj-python
+    packadd! textobj-python
 
   endfunction
 
@@ -612,7 +612,7 @@ augroup ft_puppet
     nmap <buffer> <leader>rt :w\|call RunCmd("puppet parser validate")<CR>
     nmap <buffer> <leader>rL :!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>
 
-    packadd puppet
+    packadd! puppet
     let g:puppet_align_hashes = 0
 
     " let b:ale_linters = ['puppet', 'puppetlint']
@@ -629,8 +629,8 @@ augroup ft_rust
   au FileType rust call LoadRustFT()
   function! LoadRustFT()
 
-    packadd rust
-    packadd rust-racer
+    packadd! rust
+    packadd! rust-racer
     let g:racer_experimental_completer = 1
 
     nmap <buffer> gd <Plug>(rust-def)
@@ -685,7 +685,7 @@ augroup ft_sh
 
     nmap <buffer> <leader>rr :w\|call RunCmd("bash " . bufname("%"))<CR>
 
-    packadd ale
+    packadd! ale
     let b:ale_linters = ['shellcheck', 'language_server']
 
   endfunction
@@ -701,11 +701,11 @@ augroup ft_vimwiki
 
     setlocal foldlevel=2
 
-    packadd ale
+    packadd! ale
     let b:ale_linters = ['vale', 'markdownlint']
 
     if !has('ivim')
-      packadd medieval
+      packadd! medieval
       let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
     endif
 
@@ -720,7 +720,7 @@ augroup ft_dockerfile
   au FileType dockerfile call LoadDockerfileFT()
   function! LoadDockerfileFT()
 
-    packadd ale
+    packadd! ale
     let b:ale_linters = ['hadolint']
 
   endfunction
@@ -741,7 +741,7 @@ augroup ft_helm
 
   au FileType helm call LoadHelmFT()
   function! LoadHelmFT()
-    packadd helm
+    packadd! helm
   endfunction
 
 augroup END
@@ -754,7 +754,7 @@ augroup ft_log
 
   au FileType log call LoadLogFT()
   function! LoadLogFT()
-    packadd log
+    packadd! log
   endfunction
 
 augroup END
@@ -767,11 +767,11 @@ augroup ft_terraform
   au FileType terraform call LoadTerraformFT()
   function! LoadTerraformFT()
 
-    packadd terraform
+    packadd! terraform
     let g:terraform_align=1
     let g:terraform_fmt_on_save=1
 
-    packadd ale
+    packadd! ale
     call ale#linter#Define('terraform', {
           \   'name': 'terraform-lsp',
           \   'lsp': 'stdio',
@@ -791,7 +791,7 @@ augroup ft_lua
   au FileType lua call LoadLUAFT()
   function! LoadLUAFT()
 
-    packadd ale
+    packadd! ale
     call ale#linter#Define('lua', {
           \   'name': 'lua-language-server',
           \   'lsp': 'stdio',
@@ -804,13 +804,13 @@ augroup ft_lua
 augroup END
 " }}}
 " XML {{{
-" inst: https://github.com/sukima/xmledit filetypes opt xml
+" inst: https://github.com/sukima/xmledit filetypes opt xml "make"
 augroup ft_xml
   au!
 
   au FileType xml call LoadXMLFT()
   function! LoadXMLFT()
-    packadd xml
+    packadd! xml
   endfunction
 
 augroup END
@@ -820,7 +820,7 @@ augroup END
 " UI {{{
 " Colorscheme {{{
 " inst: https://github.com/KeitaNakamura/neodark.vim ui opt neodark
-packadd neodark
+packadd! neodark
 let g:neodark#background = '#282c34'
 colorscheme neodark
 " }}}
@@ -854,7 +854,7 @@ if has('ivim')
   let g:ctrlp_map = '<leader>p1'
   let g:ctrlp_cmd = 'CtrlP'
 
-  packadd ctrlp.vim
+  packadd! ctrlp.vim
 
   nnoremap <silent> <leader>pp :CtrlP<CR>
   nnoremap <silent> <leader>pb :CtrlPBuffer<CR>
@@ -862,8 +862,8 @@ if has('ivim')
 
 else
 
-  packadd fzf
-  packadd fzf.vim
+  packadd! fzf
+  packadd! fzf.vim
 
   tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
   command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..',
@@ -942,7 +942,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " }}}
 " Which-Key {{{
 " inst: https://github.com/liuchengxu/vim-which-key ui opt which-key
-packadd which-key
+packadd! which-key
 
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
@@ -952,7 +952,7 @@ vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 " }}}
 " Indent-guides {{{
 " inst: https://github.com/nathanaelkane/vim-indent-guides ui opt indent-guides
-packadd indent-guides
+packadd! indent-guides
 
 let g:indent_guides_auto_colors = 0
 hi IndentGuidesOdd  ctermbg=237
@@ -1025,8 +1025,8 @@ au! User GoyoLeave nested call <SID>goyo_leave()
 function! StartGoyo()
 
   if !exists("g:goyo_loaded")
-    packadd goyo
-    packadd limelight
+    packadd! goyo
+    packadd! limelight
     let g:goyo_loaded = 1
   endif
 
@@ -1048,7 +1048,7 @@ if exists('$TMUX')
   let g:tmux_navigator_save_on_switch = 2
   let g:tmux_navigator_disable_when_zoomed = 1
 
-  packadd vimux
+  packadd! vimux
 
   " Override RunCmd command
   function! RunCmd(cmd)
@@ -1129,7 +1129,8 @@ let g:ale_sign_warning = '..'
 let g:ale_completion_enabled = 0
 " }}}
 " Completor {{{
-" inst: https://github.com/prabirshrestha/asyncomplete.vim code opt completor
+" inst: https://github.com/maralla/completor.vim  code opt completor
+packadd! completor
 
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -1190,12 +1191,12 @@ let g:surround_{char2nr("%")} = "{% \r %}"
 " AnyJump {{{
 if has('ivim')
   " inst: https://github.com/dkprice/vim-easygrep.git code opt easygrep
-  packadd easygrep
+  packadd! easygrep
   let g:EasyGrepOptionPrefix=''
   map <silent> <Leader>j <plug>EgMapGrepCurrentWord_v
 else
   " inst: https://github.com/pechorin/any-jump.vim code opt anyjump
-  packadd anyjump
+  packadd! anyjump
   let g:any_jump_search_prefered_engine = 'rg'
 endif
 " }}}
@@ -1220,9 +1221,9 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 if !has('ivim')
 
-  packadd fugitive
-  packadd rhubarb
-  packadd gitlab
+  packadd! fugitive
+  packadd! rhubarb
+  packadd! gitlab
 
   " Helper
   function! GitShowBlockHistory()
@@ -1266,7 +1267,7 @@ if !has('ivim')
 
   " Gitgutter options
   " inst: https://github.com/airblade/vim-gitgutter code opt gitgutter
-  packadd gitgutter
+  packadd! gitgutter
   let g:gitgutter_map_keys = 0
 
   nmap [g <Plug>(GitGutterPrevHunk)
@@ -1283,7 +1284,7 @@ if !has('ivim')
 
   " Gitv options
   " inst: https://github.com/junegunn/gv.vim code opt gv
-  packadd gv
+  packadd! gv
 
   let g:lmap.g.h = 'History'
   let g:Gitv_DoNotMapCtrlKey = 1
@@ -1291,7 +1292,7 @@ if !has('ivim')
 
   " Git messages in popup
   " inst: https://github.com/rhysd/git-messenger.vim code opt git-messenger
-  packadd git-messenger
+  packadd! git-messenger
 
   let g:git_messenger_no_default_mappings = v:true
   let g:git_messenger_always_into_popup = v:true
@@ -1321,7 +1322,7 @@ map sh <Plug>(easymotion-linebackward)
 
 " Additional {{{
 " VimWiki {{{
-" inst: https://github.com/vimwiki/vimwiki ui opt vimwiki
+" inst: https://github.com/vimwiki/vimwiki ui opt vimwiki "branch dev"
 function! LoadVimwiki()
 
   let g:lmap.w.w = 'Index'
@@ -1383,10 +1384,10 @@ let g:vimwiki_hl_headers = 1
 let g:vimwiki_hl_cb_checked = 2
 "let g:vimwiki_markdown_link_ext = 1
 
-packadd vimwiki
+packadd! vimwiki
 " }}}
 " Sessions {{{
-let g:sessiondir = $HOME . "/.vim/sessions"
+let g:sessiondir = $HOME . "/.vim_sessions"
 
 function! MakeSession(file)
 
