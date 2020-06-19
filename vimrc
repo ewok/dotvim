@@ -79,7 +79,7 @@ set incsearch
 syntax enable
 
 if (has("termguicolors"))
-    set termguicolors
+  set termguicolors
 endif
 
 if exists('+termguicolors')
@@ -90,8 +90,8 @@ if exists('+termguicolors')
 endif
 
 set guicursor=n-v-c:block,i-ci-ve:block,r-cr:hor20,o:hor50
-            \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-            \,sm:block-blinkwait175-blinkoff150-blinkon175
+      \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+      \,sm:block-blinkwait175-blinkoff150-blinkon175
 
 " Dynamic timeoutlen
 au InsertEnter * set timeoutlen=1000
@@ -117,34 +117,34 @@ set wildignore+=tmp/**
 "
 " cursorline switched while focus is switched to another split window
 augroup cline
-    au!
-    au WinLeave,InsertEnter * set nocursorline
-    au WinEnter,InsertLeave * set cursorline
+  au!
+  au WinLeave,InsertEnter * set nocursorline
+  au WinEnter,InsertLeave * set cursorline
 augroup END
 " }}}
 " -> Restore cursor {{{
 augroup line_return
-    au!
-    au BufReadPost *
-                \ if line("'\"") > 0 && line("'\"") <= line("$") |
-                \     execute 'normal! g`"zvzz' |
-                \ endif
+  au!
+  au BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \     execute 'normal! g`"zvzz' |
+        \ endif
 augroup END
 " }}}
 " -> NeoVim settings  {{{
 "
 if has('neovim')
-    set shada='50,<1000,s100,"10,:10,n~/.viminfo
-    set inccommand=nosplit
+  set shada='50,<1000,s100,"10,:10,n~/.viminfo
+  set inccommand=nosplit
 
-    let g:python_host_prog = $HOME . "/share/venv/neovim2/bin/python2"
-    let g:python3_host_prog = $HOME . "/share/venv/neovim3/bin/python3"
+  let g:python_host_prog = $HOME . "/share/venv/neovim2/bin/python2"
+  let g:python3_host_prog = $HOME . "/share/venv/neovim3/bin/python3"
 
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
-    nmap <BS> <C-h>
-    tnoremap <Esc> <C-\><C-n>
+  nmap <BS> <C-h>
+  tnoremap <Esc> <C-\><C-n>
 endif
 
 " }}}
@@ -156,57 +156,57 @@ endif
 let g:largefile=0
 
 if !exists("my_auto_commands_loaded")
-    let my_auto_commands_loaded = 1
-    " Large files are > 10M
-    " Set options:
-    " eventignore+=FileType (no syntax highlighting etc
-    " assumes FileType always on)
-    " noswapfile (save copy of file)
-    " bufhidden=unload (save memory when other file is viewed)
-    " buftype=nowrite (file is read-only)
-    " undolevels=-1 (no undo possible)
-    "
-    let g:LargeFile = 1024 * 1024 * 3
-    augroup LargeFile
-        au BufReadPre *
-                    \ let f=expand("<afile>")
-                    \ | if getfsize(f) > g:LargeFile
-                        \ | if input("Large file detected, turn off features? (y/n) ", "y") == "y"
-                            \ | setlocal inccommand=
-                            \ | setlocal eventignore+=FileType
-                            \ | setlocal noswapfile bufhidden=unload undolevels=-1
-                            \ | let b:syntastic_mode="passive"
-                            \ | let b:ycm_auto_trigger=0
-                            \ | let g:largefile=1
-                            \ | endif
-                        \ | else
-                            \ | setlocal eventignore-=FileType
-                            \ | let g:largefile=0
-                            \ | endif
-    augroup END
+  let my_auto_commands_loaded = 1
+  " Large files are > 10M
+  " Set options:
+  " eventignore+=FileType (no syntax highlighting etc
+  " assumes FileType always on)
+  " noswapfile (save copy of file)
+  " bufhidden=unload (save memory when other file is viewed)
+  " buftype=nowrite (file is read-only)
+  " undolevels=-1 (no undo possible)
+  "
+  let g:LargeFile = 1024 * 1024 * 3
+  augroup LargeFile
+    au BufReadPre *
+          \ let f=expand("<afile>")
+          \ | if getfsize(f) > g:LargeFile
+            \ | if input("Large file detected, turn off features? (y/n) ", "y") == "y"
+              \ | setlocal inccommand=
+              \ | setlocal eventignore+=FileType
+              \ | setlocal noswapfile bufhidden=unload undolevels=-1
+              \ | let b:syntastic_mode="passive"
+              \ | let b:ycm_auto_trigger=0
+              \ | let g:largefile=1
+              \ | endif
+            \ | else
+              \ | setlocal eventignore-=FileType
+              \ | let g:largefile=0
+              \ | endif
+  augroup END
 endif
 " }}}
 " -> Number Toggle  {{{
 function! NumberToggle()
-    if(&relativenumber == 1)
-        set nornu
-    else
-        set rnu
-    endif
+  if(&relativenumber == 1)
+    set nornu
+  else
+    set rnu
+  endif
 endfunction
 
 set rnu
 
 augroup rnu
-    au!
-    au InsertEnter * :set nornu
-    au InsertLeave * :set rnu
+  au!
+  au InsertEnter * :set nornu
+  au InsertLeave * :set rnu
 augroup END
 " }}}
 " -> RunCmd {{{
 "
 function! RunCmd(cmd)
-    exe "!" . a:cmd
+  exe "!" . a:cmd
 endfunction
 " }}}
 " }}}
@@ -238,29 +238,29 @@ nnoremap <C-W>t :tabnew<CR>
 
 " Tmux?
 if exists('$TMUX')
-    nnoremap <Plug>(window_split-tmux) :!tmux split-window -v -p 20<CR><CR>
-    nmap <silent><C-W>S <Plug>(window_split-tmux)
+  nnoremap <Plug>(window_split-tmux) :!tmux split-window -v -p 20<CR><CR>
+  nmap <silent><C-W>S <Plug>(window_split-tmux)
 
-    nnoremap <Plug>(window_vsplit-tmux) :!tmux split-window -h -p 20<CR><CR>
-    nmap <silent><C-W>V <Plug>(window_vsplit-tmux)
+  nnoremap <Plug>(window_vsplit-tmux) :!tmux split-window -h -p 20<CR><CR>
+  nmap <silent><C-W>V <Plug>(window_vsplit-tmux)
 
 else
-    if has('neovim')
-        nmap <silent><C-W>S :split +terminal<CR>i
-        nmap <silent><C-W>V :vsplit +terminal<CR>i
-    else
-        nmap <silent><C-W>S :terminal<CR>i
-        nmap <silent><C-W>V :terminal<CR>i
-    endif
+  if has('neovim')
+    nmap <silent><C-W>S :split +terminal<CR>i
+    nmap <silent><C-W>V :vsplit +terminal<CR>i
+  else
+    nmap <silent><C-W>S :terminal<CR>i
+    nmap <silent><C-W>V :terminal<CR>i
+  endif
 endif
 
 " split window resize
 if bufwinnr(1)
-    map <C-W><C-J> :resize +5<CR>
-    map <C-W><C-K> :resize -5<CR>
-    map <C-W><C-L> :vertical resize +6<CR>
-    map <C-W><C-H> :vertical resize -6<CR>
-    map <C-W><BS> :vertical resize -6<CR>
+  map <C-W><C-J> :resize +5<CR>
+  map <C-W><C-K> :resize -5<CR>
+  map <C-W><C-L> :vertical resize +6<CR>
+  map <C-W><C-H> :vertical resize -6<CR>
+  map <C-W><BS> :vertical resize -6<CR>
 endif
 
 " }}}
@@ -346,153 +346,153 @@ nnoremap L $
 " Ansible/Yaml {{{
 " inst: https://github.com/pearofducks/ansible-vim filetypes opt ansible
 augroup ft_ansible
-    au!
-    au BufNewFile,BufRead */\(playbooks\|roles\|tasks\|handlers\|defaults\|vars\)/*.\(yaml\|yml\) set filetype=yaml.ansible
+  au!
+  au BufNewFile,BufRead */\(playbooks\|roles\|tasks\|handlers\|defaults\|vars\)/*.\(yaml\|yml\) set filetype=yaml.ansible
 
-    au FileType yaml.ansible call LoadAnsibleFT()
-    function! LoadAnsibleFT()
-        setlocal commentstring=#\ %s
+  au FileType yaml.ansible call LoadAnsibleFT()
+  function! LoadAnsibleFT()
+    setlocal commentstring=#\ %s
 
-        packadd ale
+    packadd ale
 
-        let b:ale_ansible_ansible_lint_executable = 'ansible_custom'
-        let b:ale_ansible_ansible_lint_command = '%e %t'
-        let b:ale_ansible_yamllint_executable = 'yamllint_custom'
-        let b:ale_linters = ['yamllint', 'ansible_custom']
+    let b:ale_ansible_ansible_lint_executable = 'ansible_custom'
+    let b:ale_ansible_ansible_lint_command = '%e %t'
+    let b:ale_ansible_yamllint_executable = 'yamllint_custom'
+    let b:ale_linters = ['yamllint', 'ansible_custom']
 
-        call ale#linter#Define('ansible', {
-                    \   'name': 'ansible_custom',
-                    \   'executable': function('ale_linters#ansible#ansible_lint#GetExecutable'),
-                    \   'command': '%e %s',
-                    \   'callback': 'ale_linters#ansible#ansible_lint#Handle',
-                    \})
+    call ale#linter#Define('ansible', {
+          \   'name': 'ansible_custom',
+          \   'executable': function('ale_linters#ansible#ansible_lint#GetExecutable'),
+          \   'command': '%e %s',
+          \   'callback': 'ale_linters#ansible#ansible_lint#Handle',
+          \})
 
-        packadd ansible
+    packadd ansible
 
-        let g:ansible_template_syntaxes = { '*.rb.j2': 'ruby', '*.py.j2': 'python' }
-        let g:ansible_unindent_after_newline = 1
-        let g:ansible_attribute_highlight = "ob"
-        let g:ansible_extra_keywords_highlight = 1
-        let g:ansible_normal_keywords_highlight = 'Constant'
-        let g:ansible_with_keywords_highlight = 'Constant'
+    let g:ansible_template_syntaxes = { '*.rb.j2': 'ruby', '*.py.j2': 'python' }
+    let g:ansible_unindent_after_newline = 1
+    let g:ansible_attribute_highlight = "ob"
+    let g:ansible_extra_keywords_highlight = 1
+    let g:ansible_normal_keywords_highlight = 'Constant'
+    let g:ansible_with_keywords_highlight = 'Constant'
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
 " CSV {{{
 " inst: https://github.com/chrisbra/csv.vim filetypes opt csv
 augroup ft_csv
-    au!
-    au BufNewFile,BufRead *.csv set filetype=csv
+  au!
+  au BufNewFile,BufRead *.csv set filetype=csv
 
-    au FileType csv call LoadCSVFT()
-    function! LoadCSVFT()
-        packadd csv
-    endfunction
+  au FileType csv call LoadCSVFT()
+  function! LoadCSVFT()
+    packadd csv
+  endfunction
 
 augroup END
 " }}}
 " Yaml {{{
 augroup ft_yaml
-    au!
+  au!
 
-    au FileType yaml call LoadYamlFT()
-    function! LoadYamlFT()
+  au FileType yaml call LoadYamlFT()
+  function! LoadYamlFT()
 
-        packadd ale
-        let b:ale_yaml_yamllint_executable = 'yamllint_custom'
-        let b:ale_linters = ['yamllint']
+    packadd ale
+    let b:ale_yaml_yamllint_executable = 'yamllint_custom'
+    let b:ale_linters = ['yamllint']
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
 " Config {{{
 augroup ft_config
-    au!
-    au BufNewFile,BufRead *.conf,*.cfg,*.ini set filetype=config
-    au FileType config setlocal commentstring=#\ %s
+  au!
+  au BufNewFile,BufRead *.conf,*.cfg,*.ini set filetype=config
+  au FileType config setlocal commentstring=#\ %s
 augroup END
 " }}}
 " GitIgnore {{{
 augroup ft_git
-    au!
-    au BufNewFile,BufRead *.gitignore set filetype=gitignore
+  au!
+  au BufNewFile,BufRead *.gitignore set filetype=gitignore
 augroup END
 " }}}
 " Go {{{
 " inst: https://github.com/fatih/vim-go filetypes opt vim-go
 augroup ft_go
-    au!
+  au!
 
-    au FileType go call LoadGoFT()
-    function! LoadGoFT()
+  au FileType go call LoadGoFT()
+  function! LoadGoFT()
 
-        packadd vim-go
+    packadd vim-go
 
-        let g:go_highlight_functions = 1
-        let g:go_highlight_methods = 1
-        let g:go_highlight_structs = 1
-        let g:go_highlight_interfaces = 1
-        let g:go_highlight_operators = 1
-        let g:go_highlight_build_constraints = 1
+    let g:go_highlight_functions = 1
+    let g:go_highlight_methods = 1
+    let g:go_highlight_structs = 1
+    let g:go_highlight_interfaces = 1
+    let g:go_highlight_operators = 1
+    let g:go_highlight_build_constraints = 1
 
-        " let g:go_auto_type_info = 1
-        let g:go_auto_sameids = 1
-        " let g:go_fmt_autosave = 0
-        " let g:go_fmt_command = "goimports"
+    " let g:go_auto_type_info = 1
+    let g:go_auto_sameids = 1
+    " let g:go_fmt_autosave = 0
+    " let g:go_fmt_command = "goimports"
 
-        nmap <buffer> <silent> <leader>rr :silent GoRun<CR>
-        nmap <buffer> <silent> <leader>rt :GoTest<CR>
-        nmap <buffer> <silent> <leader>rb :GoBuild<CR>
-        nmap <buffer> <silent> <leader>rc :GoCoverageToggle<CR>
+    nmap <buffer> <silent> <leader>rr :silent GoRun<CR>
+    nmap <buffer> <silent> <leader>rt :GoTest<CR>
+    nmap <buffer> <silent> <leader>rb :GoBuild<CR>
+    nmap <buffer> <silent> <leader>rc :GoCoverageToggle<CR>
 
-        let g:lmap.r.d = { 'name': '+Definition' }
-        let g:lmap.r.d.s = 'Split'
-        nmap <buffer> <Leader>rds <Plug>(go-def-split)
+    let g:lmap.r.d = { 'name': '+Definition' }
+    let g:lmap.r.d.s = 'Split'
+    nmap <buffer> <Leader>rds <Plug>(go-def-split)
 
-        let g:lmap.r.d.v = 'Vertical'
-        nmap <buffer> <Leader>rdv <Plug>(go-def-vertical)
+    let g:lmap.r.d.v = 'Vertical'
+    nmap <buffer> <Leader>rdv <Plug>(go-def-vertical)
 
-        let g:lmap.r.d.t = 'Tab'
-        nmap <buffer> <Leader>rdt <Plug>(go-def-tab)
-        " au FileType go nmap <buffer> K <Plug>(go-doc)
+    let g:lmap.r.d.t = 'Tab'
+    nmap <buffer> <Leader>rdt <Plug>(go-def-tab)
+    " au FileType go nmap <buffer> K <Plug>(go-doc)
 
-        let g:lmap.r.d.i = 'Info'
-        nmap <buffer> <Leader>rdi <Plug>(go-info)
+    let g:lmap.r.d.i = 'Info'
+    nmap <buffer> <Leader>rdi <Plug>(go-info)
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
 " JSON {{{
 augroup ft_json
-    au!
-    au BufNewFile,BufRead *.json set filetype=javascript
+  au!
+  au BufNewFile,BufRead *.json set filetype=javascript
 augroup END
 " }}}
 " Haskell {{{
 augroup ft_haskell
-    au!
-    au BufNewFile,BufRead *.hs,*.lhs set filetype=haskell
+  au!
+  au BufNewFile,BufRead *.hs,*.lhs set filetype=haskell
 augroup END
 " }}}
 " Logstash {{{
 " inst: https://github.com/robbles/logstash.vim filetypes opt logstash
 augroup ft_logstash
-    au!
+  au!
 
-    au FileType logstash call LoadLogstashFT()
-    function! LoadLogstashFT()
+  au FileType logstash call LoadLogstashFT()
+  function! LoadLogstashFT()
 
-        packadd logstash
+    packadd logstash
 
-        setlocal foldmethod=marker
-        setlocal foldmarker={,}
-        setlocal wrap
+    setlocal foldmethod=marker
+    setlocal foldmarker={,}
+    setlocal wrap
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
@@ -500,34 +500,34 @@ augroup END
 " inst: https://github.com/shime/vim-livedown filetypes opt livedown
 " inst: https://github.com/gpanders/vim-medieval filetypes opt medieval
 augroup ft_markdown
-    au!
+  au!
 
-    au FileType markdown call LoadMarkdownFT()
-    function! LoadMarkdownFT()
-        setlocal foldlevel=2
-        setlocal conceallevel=2
+  au FileType markdown call LoadMarkdownFT()
+  function! LoadMarkdownFT()
+    setlocal foldlevel=2
+    setlocal conceallevel=2
 
-        if !has('ivim')
-          packadd livedown
-          let g:livedown_browser = 'firefox'
-          let g:livedown_port = 14545
+    if !has('ivim')
+      packadd livedown
+      let g:livedown_browser = 'firefox'
+      let g:livedown_port = 14545
 
-          nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>
-          nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
-          nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
+      nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>
+      nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
+      nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
 
-          packadd medieval
-          let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
+      packadd medieval
+      let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
 
-          command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>)
-          nmap <buffer> <leader>rb "":EvalBlock<CR>
+      command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>)
+      nmap <buffer> <leader>rb "":EvalBlock<CR>
 
-        endif
+    endif
 
-        packadd ale
-        let b:ale_linters = ['vale', 'markdownlint']
+    packadd ale
+    let b:ale_linters = ['vale', 'markdownlint']
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
@@ -536,87 +536,87 @@ augroup END
 " inst: https://github.com/Vimjas/vim-python-pep8-indent filetypes opt pep8-ind
 " inst: https://github.com/davidhalter/jedi-vim filetypes opt jedi
 augroup ft_python
-    au!
+  au!
 
-    au FileType python call LoadPythonFT()
-    function! LoadPythonFT()
+  au FileType python call LoadPythonFT()
+  function! LoadPythonFT()
 
-      if !has('ivim')
-        packadd jedi
-        let g:jedi#goto_command = ""
-        let g:jedi#goto_assignments_command = "gA"
-        let g:jedi#goto_definitions_command = "gd"
-        let g:jedi#documentation_command = "K"
-        let g:jedi#usages_command = "gr"
-        let g:jedi#completions_command = ""
-        let g:jedi#rename_command = "<leader>rR"
-        let g:jedi#completions_enabled = 0
-        let g:jedi#use_splits_not_buffers = "right"
-        let g:jedi#goto_stubs_command = ""
+    if !has('ivim')
+      packadd jedi
+      let g:jedi#goto_command = ""
+      let g:jedi#goto_assignments_command = "gA"
+      let g:jedi#goto_definitions_command = "gd"
+      let g:jedi#documentation_command = "K"
+      let g:jedi#usages_command = "gr"
+      let g:jedi#completions_command = ""
+      let g:jedi#rename_command = "<leader>rR"
+      let g:jedi#completions_enabled = 0
+      let g:jedi#use_splits_not_buffers = "right"
+      let g:jedi#goto_stubs_command = ""
 
-        packadd vim-virtualenv
-        let g:virtualenv_directory = $PWD
+      packadd vim-virtualenv
+      let g:virtualenv_directory = $PWD
 
-      endif
-        packadd pep8-ind
+    endif
+    packadd pep8-ind
 
-        setlocal foldmethod=indent
-        setlocal foldlevel=0
-        setlocal foldnestmax=2
-        setlocal commentstring=#\ %s
+    setlocal foldmethod=indent
+    setlocal foldlevel=0
+    setlocal foldnestmax=2
+    setlocal commentstring=#\ %s
 
-        nmap <buffer> <leader>rr :w\|call RunCmd("python " . bufname("%"))<CR>
-        nmap <buffer> <leader>rt :w\|call RunCmd("python -m unittest " . bufname("%"))<CR>
-        nmap <buffer> <leader>rT :w\|call RunCmd("python -m unittest")<CR>
-        nmap <buffer> <leader>rL :!pip install flake8 mypy pylint bandit pydocstyle pudb jedi<CR>:ALEInfo<CR>
+    nmap <buffer> <leader>rr :w\|call RunCmd("python " . bufname("%"))<CR>
+    nmap <buffer> <leader>rt :w\|call RunCmd("python -m unittest " . bufname("%"))<CR>
+    nmap <buffer> <leader>rT :w\|call RunCmd("python -m unittest")<CR>
+    nmap <buffer> <leader>rL :!pip install flake8 mypy pylint bandit pydocstyle pudb jedi<CR>:ALEInfo<CR>
 
-        let g:lmap.r.b = 'Breakpoint'
-        nmap <Plug>(python_breakpoint) oimport pudb; pudb.set_trace()<esc>
-        nmap <silent> <buffer> <leader>rb <Plug>(python_breakpoint)
+    let g:lmap.r.b = 'Breakpoint'
+    nmap <Plug>(python_breakpoint) oimport pudb; pudb.set_trace()<esc>
+    nmap <silent> <buffer> <leader>rb <Plug>(python_breakpoint)
 
-        packadd ale
-        let b:ale_linters = ['flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle']
-        let b:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8']}
-        let b:ale_python_flake8_executable = 'flake8'
-        let b:ale_python_flake8_options = '--ignore E501'
-        let b:ale_python_flake8_use_global = 0
-        let b:ale_python_mypy_executable = 'mypy'
-        let b:ale_python_mypy_options = ''
-        let b:ale_python_mypy_use_global = 0
-        let b:ale_python_pylint_executable = 'pylint'
-        let b:ale_python_pylint_options = '--disable C0301,C0111,C0103'
-        let b:ale_python_pylint_use_global = 0
-        let b:ale_python_bandit_executable = 'bandit'
-        let b:ale_python_isort_executable = 'isort'
-        let b:ale_python_pydocstyle_executable = 'pydocstyle'
-        let b:ale_python_vulture_executable = 'vulture'
+    packadd ale
+    let b:ale_linters = ['flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle']
+    let b:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8']}
+    let b:ale_python_flake8_executable = 'flake8'
+    let b:ale_python_flake8_options = '--ignore E501'
+    let b:ale_python_flake8_use_global = 0
+    let b:ale_python_mypy_executable = 'mypy'
+    let b:ale_python_mypy_options = ''
+    let b:ale_python_mypy_use_global = 0
+    let b:ale_python_pylint_executable = 'pylint'
+    let b:ale_python_pylint_options = '--disable C0301,C0111,C0103'
+    let b:ale_python_pylint_use_global = 0
+    let b:ale_python_bandit_executable = 'bandit'
+    let b:ale_python_isort_executable = 'isort'
+    let b:ale_python_pydocstyle_executable = 'pydocstyle'
+    let b:ale_python_vulture_executable = 'vulture'
 
-        packadd textobj-python
+    packadd textobj-python
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
 " Puppet {{{
 " inst: https://github.com/rodjek/vim-puppet filetypes opt puppet
 augroup ft_puppet
-    au!
+  au!
 
-    au BufNewFile,BufRead *.pp set filetype=puppet
-    au FileType puppet call LoadPuppetFT()
-    function! LoadPuppetFT()
+  au BufNewFile,BufRead *.pp set filetype=puppet
+  au FileType puppet call LoadPuppetFT()
+  function! LoadPuppetFT()
 
-        setlocal commentstring=#\ %s
+    setlocal commentstring=#\ %s
 
-        nmap <buffer> <leader>rr :w\|call RunCmd("puppet " . bufname("%"))<CR>
-        nmap <buffer> <leader>rt :w\|call RunCmd("puppet parser validate")<CR>
-        nmap <buffer> <leader>rL :!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>
+    nmap <buffer> <leader>rr :w\|call RunCmd("puppet " . bufname("%"))<CR>
+    nmap <buffer> <leader>rt :w\|call RunCmd("puppet parser validate")<CR>
+    nmap <buffer> <leader>rL :!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>
 
-        packadd puppet
-        let g:puppet_align_hashes = 0
+    packadd puppet
+    let g:puppet_align_hashes = 0
 
-        " let b:ale_linters = ['puppet', 'puppetlint']
-    endfunction
+    " let b:ale_linters = ['puppet', 'puppetlint']
+  endfunction
 
 augroup END
 " }}}
@@ -624,194 +624,194 @@ augroup END
 " inst: https://github.com/rust-lang/rust.vim filetypes opt rust
 " inst: https://github.com/racer-rust/vim-racer filetypes opt rust-racer
 augroup ft_rust
-    au!
+  au!
 
-    au FileType rust call LoadRustFT()
-    function! LoadRustFT()
+  au FileType rust call LoadRustFT()
+  function! LoadRustFT()
 
-        packadd rust
-        packadd rust-racer
-        let g:racer_experimental_completer = 1
+    packadd rust
+    packadd rust-racer
+    let g:racer_experimental_completer = 1
 
-        nmap <buffer> gd <Plug>(rust-def)
-        nmap <buffer> gs <Plug>(rust-def-split)
-        nmap <buffer> gx <Plug>(rust-def-vertical)
-        nmap <buffer> K <Plug>(rust-doc)
-        nmap <buffer> <silent> <leader>rr :RustRun<CR>
-        nmap <buffer> <silent> <leader>rt :RustTest<CR>
-        nmap <buffer> <silent> <leader>rf :RustFmt<CR>
+    nmap <buffer> gd <Plug>(rust-def)
+    nmap <buffer> gs <Plug>(rust-def-split)
+    nmap <buffer> gx <Plug>(rust-def-vertical)
+    nmap <buffer> K <Plug>(rust-doc)
+    nmap <buffer> <silent> <leader>rr :RustRun<CR>
+    nmap <buffer> <silent> <leader>rt :RustTest<CR>
+    nmap <buffer> <silent> <leader>rf :RustFmt<CR>
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
 " Vim {{{
 augroup ft_vim
-    au!
+  au!
 
-    au FileType help setlocal textwidth=78
-    au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+  au FileType help setlocal textwidth=78
+  au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 
-    au FileType vim call LoadVimFT()
-    function! LoadVimFT()
+  au FileType vim call LoadVimFT()
+  function! LoadVimFT()
 
-        let g:lmap.r.S = 'Source-line'
-        setlocal foldmethod=marker keywordprg=:help
-        setlocal commentstring=\"\ %s
+    let g:lmap.r.S = 'Source-line'
+    setlocal foldmethod=marker keywordprg=:help
+    setlocal commentstring=\"\ %s
 
-        inoremap <c-n> <c-x><c-n>
+    inoremap <c-n> <c-x><c-n>
 
-        let g:lmap.r.r = 'Source'
-        nmap <buffer> <leader>rr :source %<CR>:echon "script reloaded!"<CR>
-        vnoremap <buffer> <leader>rS y:@"<CR>
-        nnoremap <buffer> <leader>rS ^vg_y:execute @@<cr>:echo 'Sourced line.'<cr>
+    let g:lmap.r.r = 'Source'
+    nmap <buffer> <leader>rr :source %<CR>:echon "script reloaded!"<CR>
+    vnoremap <buffer> <leader>rS y:@"<CR>
+    nnoremap <buffer> <leader>rS ^vg_y:execute @@<cr>:echo 'Sourced line.'<cr>
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
 " ZSH {{{
 augroup ft_zsh
-    au!
-    au BufNewFile,BufRead *.zsh-theme set filetype=zsh
+  au!
+  au BufNewFile,BufRead *.zsh-theme set filetype=zsh
 augroup END
 " }}}
 " Shell {{{
 augroup ft_sh
-    au!
+  au!
 
-    au FileType sh call LoadShFT()
-    function! LoadShFT()
+  au FileType sh call LoadShFT()
+  function! LoadShFT()
 
-        nmap <buffer> <leader>rr :w\|call RunCmd("bash " . bufname("%"))<CR>
+    nmap <buffer> <leader>rr :w\|call RunCmd("bash " . bufname("%"))<CR>
 
-        packadd ale
-        let b:ale_linters = ['shellcheck', 'language_server']
+    packadd ale
+    let b:ale_linters = ['shellcheck', 'language_server']
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
 " Vimwiki {{{
 augroup ft_vimwiki
-    au!
+  au!
 
-    au FileType vimwiki call LoadVimWikiFT()
-    function! LoadVimWikiFT()
+  au FileType vimwiki call LoadVimWikiFT()
+  function! LoadVimWikiFT()
 
-        setlocal foldlevel=2
+    setlocal foldlevel=2
 
-        packadd ale
-        let b:ale_linters = ['vale', 'markdownlint']
+    packadd ale
+    let b:ale_linters = ['vale', 'markdownlint']
 
-        if !has('ivim')
-          packadd medieval
-          let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
-        endif
+    if !has('ivim')
+      packadd medieval
+      let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
+    endif
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
 " Dockerfile {{{
 augroup ft_dockerfile
-    au!
+  au!
 
-    au FileType dockerfile call LoadDockerfileFT()
-    function! LoadDockerfileFT()
+  au FileType dockerfile call LoadDockerfileFT()
+  function! LoadDockerfileFT()
 
-        packadd ale
-        let b:ale_linters = ['hadolint']
+    packadd ale
+    let b:ale_linters = ['hadolint']
 
-    endfunction
+  endfunction
 
 augroup END
 " }}}
 " Mail {{{
 augroup ft_mail
-    au!
-    au FileType mail map <buffer> <leader>rr :%!pandoc -f markdown_mmd -t html<CR>
+  au!
+  au FileType mail map <buffer> <leader>rr :%!pandoc -f markdown_mmd -t html<CR>
 augroup END
 " }}}
 " Helm {{{
 " inst: https://github.com/towolf/vim-helm filetypes opt helm
 augroup ft_helm
-    au!
-    au BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl set ft=helm
+  au!
+  au BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl set ft=helm
 
-    au FileType helm call LoadHelmFT()
-    function! LoadHelmFT()
-        packadd helm
-    endfunction
+  au FileType helm call LoadHelmFT()
+  function! LoadHelmFT()
+    packadd helm
+  endfunction
 
 augroup END
 "  }}}
 " Log {{{
 " inst: https://github.com/mtdl9/vim-log-highlighting filetypes opt log
 augroup ft_log
-    au!
-    au BufNewFile,BufRead *.log set filetype=log
+  au!
+  au BufNewFile,BufRead *.log set filetype=log
 
-    au FileType log call LoadLogFT()
-    function! LoadLogFT()
-        packadd log
-    endfunction
+  au FileType log call LoadLogFT()
+  function! LoadLogFT()
+    packadd log
+  endfunction
 
 augroup END
 "  }}}
 " Terraform {{{
 " inst: https://github.com/hashivim/vim-terraform filetypes opt terraform
 augroup ft_terraform
-    au!
+  au!
 
-    au FileType terraform call LoadTerraformFT()
-    function! LoadTerraformFT()
+  au FileType terraform call LoadTerraformFT()
+  function! LoadTerraformFT()
 
-        packadd terraform
-        let g:terraform_align=1
-        let g:terraform_fmt_on_save=1
+    packadd terraform
+    let g:terraform_align=1
+    let g:terraform_fmt_on_save=1
 
-        packadd ale
-        call ale#linter#Define('terraform', {
-                    \   'name': 'terraform-lsp',
-                    \   'lsp': 'stdio',
-                    \   'executable': 'terraform-lsp',
-                    \   'command': '%e',
-                    \   'project_root': getcwd(),
-                    \})
+    packadd ale
+    call ale#linter#Define('terraform', {
+          \   'name': 'terraform-lsp',
+          \   'lsp': 'stdio',
+          \   'executable': 'terraform-lsp',
+          \   'command': '%e',
+          \   'project_root': getcwd(),
+          \})
 
-    endfunction
+  endfunction
 
 augroup END
 "  }}}
 " LUA {{{
 augroup ft_lua
-    au!
+  au!
 
-    au FileType lua call LoadLUAFT()
-    function! LoadLUAFT()
+  au FileType lua call LoadLUAFT()
+  function! LoadLUAFT()
 
-        packadd ale
-        call ale#linter#Define('lua', {
-                    \   'name': 'lua-language-server',
-                    \   'lsp': 'stdio',
-                    \   'executable': 'lua-language-server',
-                    \   'command': '%e',
-                    \   'project_root': getcwd(),
-                    \})
-    endfunction
+    packadd ale
+    call ale#linter#Define('lua', {
+          \   'name': 'lua-language-server',
+          \   'lsp': 'stdio',
+          \   'executable': 'lua-language-server',
+          \   'command': '%e',
+          \   'project_root': getcwd(),
+          \})
+  endfunction
 
 augroup END
 " }}}
 " XML {{{
 " inst: https://github.com/sukima/xmledit filetypes opt xml
 augroup ft_xml
-    au!
+  au!
 
-    au FileType xml call LoadXMLFT()
-    function! LoadXMLFT()
-        packadd xml
-    endfunction
+  au FileType xml call LoadXMLFT()
+  function! LoadXMLFT()
+    packadd xml
+  endfunction
 
 augroup END
 " }}}
@@ -827,21 +827,21 @@ colorscheme neodark
 " Lightline {{{
 " inst: https://github.com/itchyny/lightline.vim ui start lightline
 if !has('gui_running')
-    set t_Co=256
+  set t_Co=256
 endif
 
 let g:lightline = {
-            \ 'colorscheme': 'neodark',
-            \ 'active': {
-            \   'left': [ [ 'mode', 'paste' ],
-            \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ,
-            \             [ 'venv', 'readonly'] ]
-            \ },
-            \ 'component_function': {
-            \   'gitbranch': 'fugitive#head',
-            \   'venv': 'virtualenv#statusline'
-            \ },
-            \ }
+      \ 'colorscheme': 'neodark',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ,
+      \             [ 'venv', 'readonly'] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \   'venv': 'virtualenv#statusline'
+      \ },
+      \ }
 
 " }}}
 " Fuzzy {{{
@@ -908,12 +908,12 @@ nnoremap <leader>pn :NERDTreeToggle<Bar>wincmd p<CR>
 nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
 
 function! FindPathOrShowNERDTree()
-    let currentfile = expand('%')
-    if (currentfile == "") || !(currentfile !~? 'NERD')
-        NERDTreeToggle
-    else
-        NERDTreeFind
-    endif
+  let currentfile = expand('%')
+  if (currentfile == "") || !(currentfile !~? 'NERD')
+    NERDTreeToggle
+  else
+    NERDTreeFind
+  endif
 endfunction
 
 let g:lmap.f.p = 'Path'
@@ -970,23 +970,23 @@ let g:indent_guides_default_mapping = 0
 let g:myLangList=["nospell","en_us", "ru_ru"]
 
 function! ToggleSpell()
-    if !exists( "b:myLang" )
-        if &spell
-            let b:myLang=index(g:myLangList, &spelllang)
-        else
-            let b:myLang=0
-        endif
-    endif
-    let b:myLang=b:myLang+1
-    if b:myLang>=len(g:myLangList) | let b:myLang=0 | endif
-    if b:myLang==0
-        setlocal nospell
-        " exe "GrammarousReset"
+  if !exists( "b:myLang" )
+    if &spell
+      let b:myLang=index(g:myLangList, &spelllang)
     else
-        execute "setlocal spell spelllang=".get(g:myLangList, b:myLang)
-        " execute "GrammarousCheck"
+      let b:myLang=0
     endif
-    echo "spell checking language:" g:myLangList[b:myLang]
+  endif
+  let b:myLang=b:myLang+1
+  if b:myLang>=len(g:myLangList) | let b:myLang=0 | endif
+  if b:myLang==0
+    setlocal nospell
+    " exe "GrammarousReset"
+  else
+    execute "setlocal spell spelllang=".get(g:myLangList, b:myLang)
+    " execute "GrammarousCheck"
+  endif
+  echo "spell checking language:" g:myLangList[b:myLang]
 endfunction
 
 nnoremap <silent> <F7> :call ToggleSpell()<CR>
@@ -998,25 +998,25 @@ imap <silent> <F7> <ESC>:call ToggleSpell()<CR>a
 " Focus on the process
 "
 function! s:goyo_enter()
-    silent !tmux set status off
-    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-    set noshowmode
-    set noshowcmd
-    set scrolloff=999
-    set wrap
-    Limelight
-    " ...
+  silent !tmux set status off
+  silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  set noshowmode
+  set noshowcmd
+  set scrolloff=999
+  set wrap
+  Limelight
+  " ...
 endfunction
 
 function! s:goyo_leave()
-    silent !tmux set status on
-    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-    set showmode
-    set showcmd
-    set scrolloff=5
-    set nowrap
-    Limelight!
-    " ...
+  silent !tmux set status on
+  silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  set showmode
+  set showcmd
+  set scrolloff=5
+  set nowrap
+  Limelight!
+  " ...
 endfunction
 
 au! User GoyoEnter nested call <SID>goyo_enter()
@@ -1024,13 +1024,13 @@ au! User GoyoLeave nested call <SID>goyo_leave()
 
 function! StartGoyo()
 
-    if !exists("g:goyo_loaded")
-        packadd goyo
-        packadd limelight
-        let g:goyo_loaded = 1
-    endif
+  if !exists("g:goyo_loaded")
+    packadd goyo
+    packadd limelight
+    let g:goyo_loaded = 1
+  endif
 
-    Goyo
+  Goyo
 
 endfunction
 
@@ -1041,44 +1041,44 @@ nnoremap <silent> <leader>tt :call StartGoyo()<CR>
 " inst: https://github.com/christoomey/vim-tmux-navigator ui start tmux-navigator
 " inst: https://github.com/benmills/vimux ui opt vimux
 if exists('$TMUX')
-    if has('neovim')
-        nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
+  if has('neovim')
+    nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
+  endif
+
+  let g:tmux_navigator_save_on_switch = 2
+  let g:tmux_navigator_disable_when_zoomed = 1
+
+  packadd vimux
+
+  " Override RunCmd command
+  function! RunCmd(cmd)
+    mark z
+    exe VimuxRunCommand(a:cmd)
+    exe "normal! g`z"
+    delmark z
+  endfunction
+
+  function! CloseRunner()
+    if exists('g:VimuxRunnerIndex')
+      let choice = confirm("Close runner?", "\n&yes\n&no\nor &detach", 2)
+
+      if choice == 2
+        VimuxCloseRunner
+      elseif choice == 4
+        unlet g:VimuxRunnerIndex
+      endif
+    else
+      echo "Runner is not registered"
     endif
+  endfunction
 
-    let g:tmux_navigator_save_on_switch = 2
-    let g:tmux_navigator_disable_when_zoomed = 1
+  let g:lmap.r.q = 'Close Runner'
+  nmap <leader>rq :call CloseRunner()<CR>
 
-    packadd vimux
-
-    " Override RunCmd command
-    function! RunCmd(cmd)
-        mark z
-        exe VimuxRunCommand(a:cmd)
-        exe "normal! g`z"
-        delmark z
-    endfunction
-
-    function! CloseRunner()
-        if exists('g:VimuxRunnerIndex')
-            let choice = confirm("Close runner?", "\n&yes\n&no\nor &detach", 2)
-
-            if choice == 2
-                VimuxCloseRunner
-            elseif choice == 4
-                unlet g:VimuxRunnerIndex
-            endif
-        else
-            echo "Runner is not registered"
-        endif
-    endfunction
-
-    let g:lmap.r.q = 'Close Runner'
-    nmap <leader>rq :call CloseRunner()<CR>
-
-    let g:lmap.r.x = 'Interrupt'
-    nmap <leader>rx :VimuxInterruptRunner<CR>
-    let g:VimuxHeight = "20"
-    let g:VimuxUseNearest = 0
+  let g:lmap.r.x = 'Interrupt'
+  nmap <leader>rx :VimuxInterruptRunner<CR>
+  let g:VimuxHeight = "20"
+  let g:VimuxUseNearest = 0
 endif
 " }}}
 " Autoread {{{
@@ -1092,28 +1092,28 @@ let g:lmap.z = 'Zoom'
 nmap <leader>z :call ZoomToggle()<CR>
 
 function! ZoomToggle()
-    if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
-        exe ':NERDTreeClose'
-        let zoom_nerd = 1
-    endif
+  if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+    exe ':NERDTreeClose'
+    let zoom_nerd = 1
+  endif
 
-    if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
-        exe ':TagbarClose'
-        let zoom_tag = 1
-    endif
+  if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
+    exe ':TagbarClose'
+    let zoom_tag = 1
+  endif
 
-    call zoom#toggle()
+  call zoom#toggle()
 
-    if (exists("zoom_nerd") && (zoom_nerd == 1))
-        exe ':NERDTreeCWD'
-        exe ':wincmd p'
-        unlet zoom_nerd
-    endif
+  if (exists("zoom_nerd") && (zoom_nerd == 1))
+    exe ':NERDTreeCWD'
+    exe ':wincmd p'
+    unlet zoom_nerd
+  endif
 
-    if (exists("zoom_tag") && (zoom_tag == 1))
-        exe ':TagbarOpen'
-        unlet zoom_tag
-    endif
+  if (exists("zoom_tag") && (zoom_tag == 1))
+    exe ':TagbarOpen'
+    unlet zoom_tag
+  endif
 endfunction
 " }}}
 " }}}
@@ -1189,14 +1189,14 @@ let g:surround_{char2nr("%")} = "{% \r %}"
 " }}}
 " AnyJump {{{
 if has('ivim')
-    " inst: https://github.com/dkprice/vim-easygrep.git code opt easygrep
-    packadd easygrep
-    let g:EasyGrepOptionPrefix=''
-    map <silent> <Leader>j <plug>EgMapGrepCurrentWord_v
+  " inst: https://github.com/dkprice/vim-easygrep.git code opt easygrep
+  packadd easygrep
+  let g:EasyGrepOptionPrefix=''
+  map <silent> <Leader>j <plug>EgMapGrepCurrentWord_v
 else
-    " inst: https://github.com/pechorin/any-jump.vim code opt anyjump
-    packadd anyjump
-    let g:any_jump_search_prefered_engine = 'rg'
+  " inst: https://github.com/pechorin/any-jump.vim code opt anyjump
+  packadd anyjump
+  let g:any_jump_search_prefered_engine = 'rg'
 endif
 " }}}
 " Commentary {{{
@@ -1324,59 +1324,59 @@ map sh <Plug>(easymotion-linebackward)
 " inst: https://github.com/vimwiki/vimwiki ui opt vimwiki
 function! LoadVimwiki()
 
-    let g:lmap.w.w = 'Index'
-    nunmap <Leader>ww
-    noremap <Leader>ww :call VimwikiIndexCd()<CR>
+  let g:lmap.w.w = 'Index'
+  nunmap <Leader>ww
+  noremap <Leader>ww :call VimwikiIndexCd()<CR>
 
-    nunmap <Leader>w<Space>i
-    nunmap <Leader>w<Space>t
-    nunmap <Leader>w<Space>w
-    nunmap <Leader>w<Space>y
-    nunmap <Leader>w<Space>m
-    nunmap <Leader>wt
-    " i - generate
-    " t tab make diary
-    " w make diary
-    " y yesterday
-    " m tommorow
+  nunmap <Leader>w<Space>i
+  nunmap <Leader>w<Space>t
+  nunmap <Leader>w<Space>w
+  nunmap <Leader>w<Space>y
+  nunmap <Leader>w<Space>m
+  nunmap <Leader>wt
+  " i - generate
+  " t tab make diary
+  " w make diary
+  " y yesterday
+  " m tommorow
 
-    map <leader>wt :call VimwikiMakeDiaryNoteNew()<CR>
-    let g:lmap.w.s = 'Select-wiki'
-    let g:lmap.w.t = 'Today'
-    let g:lmap.w.i = 'Diary'
+  map <leader>wt :call VimwikiMakeDiaryNoteNew()<CR>
+  let g:lmap.w.s = 'Select-wiki'
+  let g:lmap.w.t = 'Today'
+  let g:lmap.w.i = 'Diary'
 endfunction
 
 function! VimWikiHelpers()
-    let g:lmap.w.r = 'Rename-link'
-    let g:lmap.w.d = 'Delete-link'
-    let g:lmap.w.h = 'to-Html'
-    let g:lmap.w.hh = 'toHtml-browse'
-    let g:lmap.w.n = 'goto'
+  let g:lmap.w.r = 'Rename-link'
+  let g:lmap.w.d = 'Delete-link'
+  let g:lmap.w.h = 'to-Html'
+  let g:lmap.w.hh = 'toHtml-browse'
+  let g:lmap.w.n = 'goto'
 endfunction
 
 function! VimwikiIndexCd()
-    VimwikiIndex
-    cd %:h
-    call VimWikiHelpers()
+  VimwikiIndex
+  cd %:h
+  call VimWikiHelpers()
 endfunction
 
 function! VimwikiMakeDiaryNoteNew()
-    VimwikiMakeDiaryNote
-    cd %:h:h
-    call VimWikiHelpers()
+  VimwikiMakeDiaryNote
+  cd %:h:h
+  call VimWikiHelpers()
 endfunction
 
 let g:vimwiki_list = [{'path': '~/Notes/',
-            \ 'syntax': 'markdown', 'ext': '.md',
-            \ 'auto_toc': 1,
-            \ 'auto_diary_index': 1,
-            \ 'list_margin': 0,
-            \ 'custom_wiki2html': 'vimwiki-godown',
-            \ 'auto_tags': 1}]
+      \ 'syntax': 'markdown', 'ext': '.md',
+      \ 'auto_toc': 1,
+      \ 'auto_diary_index': 1,
+      \ 'list_margin': 0,
+      \ 'custom_wiki2html': 'vimwiki-godown',
+      \ 'auto_tags': 1}]
 
 let g:vimwiki_ext2syntax = {'.md': 'markdown',
-            \ '.mkd': 'markdown',
-            \ '.wiki': 'media'}
+      \ '.mkd': 'markdown',
+      \ '.wiki': 'media'}
 
 let g:vimwiki_folding = 'expr'
 let g:vimwiki_hl_headers = 1
@@ -1390,106 +1390,106 @@ let g:sessiondir = $HOME . "/.vim/sessions"
 
 function! MakeSession(file)
 
-    if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
-        exe ':tabdo NERDTreeClose'
-    endif
+  if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+    exe ':tabdo NERDTreeClose'
+  endif
 
-    if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
-        exe ':tabdo TagbarClose'
-    endif
+  if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
+    exe ':tabdo TagbarClose'
+  endif
 
-    exe ':lclose|cclose'
+  exe ':lclose|cclose'
 
-    let file = a:file
+  let file = a:file
 
-    if (file == "")
-        if (exists('g:sessionfile'))
-            let b:sessiondir = g:sessiondir
-            let file = g:sessionfile
-        else
-            let b:sessiondir = g:sessiondir . getcwd()
-            let file = "session"
-        endif
+  if (file == "")
+    if (exists('g:sessionfile'))
+      let b:sessiondir = g:sessiondir
+      let file = g:sessionfile
     else
-        let b:sessiondir = g:sessiondir
-        let g:sessionfile = file
+      let b:sessiondir = g:sessiondir . getcwd()
+      let file = "session"
     endif
+  else
+    let b:sessiondir = g:sessiondir
+    let g:sessionfile = file
+  endif
 
-    if (filewritable(b:sessiondir) != 2)
-        exe 'silent !mkdir -p ' b:sessiondir
-        redraw!
-    endif
-    let b:filename = b:sessiondir . '/' . file . '.vim'
+  if (filewritable(b:sessiondir) != 2)
+    exe 'silent !mkdir -p ' b:sessiondir
+    redraw!
+  endif
+  let b:filename = b:sessiondir . '/' . file . '.vim'
 
-    exe "silent mksession! " . b:filename
+  exe "silent mksession! " . b:filename
 endfunction
 
 function! LoadSession(file)
 
-    let file = a:file
+  let file = a:file
 
-    if (file == "")
-        if (exists('g:sessionfile'))
-            let b:sessiondir = g:sessiondir
-            let file = g:sessionfile
-        else
-            let b:sessiondir = g:sessiondir . getcwd()
-            let file = "session"
-        endif
+  if (file == "")
+    if (exists('g:sessionfile'))
+      let b:sessiondir = g:sessiondir
+      let file = g:sessionfile
     else
-        let b:sessiondir = g:sessiondir
-        let g:sessionfile = file
+      let b:sessiondir = g:sessiondir . getcwd()
+      let file = "session"
     endif
+  else
+    let b:sessiondir = g:sessiondir
+    let g:sessionfile = file
+  endif
 
-    let b:sessionfile = b:sessiondir . '/' . file . '.vim'
-    if (filereadable(b:sessionfile))
-        exe 'silent source ' b:sessionfile
-    else
-        echo "No session loaded."
-    endif
+  let b:sessionfile = b:sessiondir . '/' . file . '.vim'
+  if (filereadable(b:sessionfile))
+    exe 'silent source ' b:sessionfile
+  else
+    echo "No session loaded."
+  endif
 endfunction
 
 function! DeleteSession(file)
 
-    let file = a:file
+  let file = a:file
 
-    if (file == "")
-        if (exists('g:sessionfile'))
-            let b:sessiondir = g:sessiondir
-            let file = g:sessionfile
-        else
-            let b:sessiondir = g:sessiondir . getcwd()
-            let file = "session"
-        endif
+  if (file == "")
+    if (exists('g:sessionfile'))
+      let b:sessiondir = g:sessiondir
+      let file = g:sessionfile
     else
-        let b:sessiondir = g:sessiondir
+      let b:sessiondir = g:sessiondir . getcwd()
+      let file = "session"
     endif
+  else
+    let b:sessiondir = g:sessiondir
+  endif
 
-    let b:sessionfile = b:sessiondir . '/' . file . '.vim'
-    if (filereadable(b:sessionfile))
-        exe 'silent !rm -f ' b:sessionfile
-    else
-        echo "No session loaded."
-    endif
+  let b:sessionfile = b:sessiondir . '/' . file . '.vim'
+  if (filereadable(b:sessionfile))
+    exe 'silent !rm -f ' b:sessionfile
+  else
+    echo "No session loaded."
+  endif
 endfunction
 
 function! CloseSession()
-    if (exists('g:sessionfile'))
-        call MakeSession(g:sessionfile)
-        unlet g:sessionfile
-    else
-        call MakeSession("")
-    endif
-    exe 'silent wa | %bd!'
+  if (exists('g:sessionfile'))
+    call MakeSession(g:sessionfile)
+    unlet g:sessionfile
+  else
+    call MakeSession("")
+  endif
+  exe 'silent wa | %bd!'
 endfunction
 
 function! CloseSessionAndExit()
-    call CloseSession()
-    exe 'silent qa'
+  call CloseSession()
+  exe 'silent qa'
 endfunction
 
 fun! ListSessions(A,L,P)
-    return system("ls " . g:sessiondir . ' | grep .vim | sed s/\.vim$//')
+  return system("ls " . g:sessiondir . ' | grep .vim | sed s/\.vim$//')
 endfun
 
 command! -nargs=1 -range -complete=custom,ListSessions MakeSession :call MakeSession("<args>")
@@ -1534,19 +1534,19 @@ set foldlevelstart=0
 " This mapping wipes out the z mark, which I never use.
 "
 function! MyFoldText() " {{{
-    let line = getline(v:foldstart)
+  let line = getline(v:foldstart)
 
-    let nucolwidth = &fdc + &number * &numberwidth
-    let windowwidth = winwidth(0) - nucolwidth - 3
-    let foldedlinecount = v:foldend - v:foldstart
+  let nucolwidth = &fdc + &number * &numberwidth
+  let windowwidth = winwidth(0) - nucolwidth - 3
+  let foldedlinecount = v:foldend - v:foldstart
 
-    " expand tabs into spaces
-    let onetab = strpart('          ', 0, &tabstop)
-    let line = substitute(line, '\t', onetab, 'g')
+  " expand tabs into spaces
+  let onetab = strpart('          ', 0, &tabstop)
+  let line = substitute(line, '\t', onetab, 'g')
 
-    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+  let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+  let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+  return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction " }}}
 set foldtext=MyFoldText()
 
@@ -1559,9 +1559,9 @@ set foldtext=MyFoldText()
 au! FileType vim,python,golang,go,yaml.ansible,puppet,json,sh,vimwiki,rust,yaml call DefaultOn()
 
 function! DefaultOn()
-    if !exists("b:auto_save")
-        let b:auto_save = 1
-    endif
+  if !exists("b:auto_save")
+    let b:auto_save = 1
+  endif
 endfunction
 
 set updatetime=4000
@@ -1570,77 +1570,77 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 if !exists("g:auto_save_silent")
-    let g:auto_save_silent = 0
+  let g:auto_save_silent = 0
 endif
 
 if !exists("g:auto_save_events")
-    let g:auto_save_events = ["CursorHold","CursorHoldI","BufLeave","FocusLost","WinLeave"]
+  let g:auto_save_events = ["CursorHold","CursorHoldI","BufLeave","FocusLost","WinLeave"]
 endif
 
 " Check all used events exist
 for event in g:auto_save_events
-    if !exists("##" . event)
-        let eventIndex = index(g:auto_save_events, event)
-        if (eventIndex >= 0)
-            call remove(g:auto_save_events, eventIndex)
-            echo "(AutoSave) Save on " . event . " event is not supported for your Vim version!"
-            echo "(AutoSave) " . event . " was removed from g:auto_save_events variable."
-            echo "(AutoSave) Please, upgrade your Vim to a newer version or use other events in g:auto_save_events!"
-        endif
+  if !exists("##" . event)
+    let eventIndex = index(g:auto_save_events, event)
+    if (eventIndex >= 0)
+      call remove(g:auto_save_events, eventIndex)
+      echo "(AutoSave) Save on " . event . " event is not supported for your Vim version!"
+      echo "(AutoSave) " . event . " was removed from g:auto_save_events variable."
+      echo "(AutoSave) Please, upgrade your Vim to a newer version or use other events in g:auto_save_events!"
     endif
+  endif
 endfor
 
 augroup auto_save
-    au!
-    for event in g:auto_save_events
-        execute "au " . event . " * nested call AutoSave()"
-    endfor
+  au!
+  for event in g:auto_save_events
+    execute "au " . event . " * nested call AutoSave()"
+  endfor
 augroup END
 
 function! AutoSave()
-    if &modified > 0
-        if !exists("b:auto_save")
-            let b:auto_save = 0
-        endif
-
-        if b:auto_save == 0
-            return
-        end
-
-        let was_modified = &modified
-
-        " Preserve marks that are used to remember start and
-        " end position of the last changed or yanked text (`:h '[`).
-        let first_char_pos = getpos("'[")
-        let last_char_pos = getpos("']")
-
-        call DoSave()
-
-        call setpos("'[", first_char_pos)
-        call setpos("']", last_char_pos)
-
-        if was_modified && !&modified
-            if g:auto_save_silent == 0
-                echo "(AutoSave) saved at " . strftime("%H:%M:%S")
-            endif
-        endif
-    endif
-endfunction
-
-function! DoSave()
-    silent! w
-endfunction
-
-function! ToggleAutoSave()
+  if &modified > 0
     if !exists("b:auto_save")
-        let b:auto_save = 0
+      let b:auto_save = 0
     endif
 
     if b:auto_save == 0
-        let b:auto_save = 1
-    else
-        let b:auto_save = 0
+      return
     end
+
+    let was_modified = &modified
+
+    " Preserve marks that are used to remember start and
+    " end position of the last changed or yanked text (`:h '[`).
+    let first_char_pos = getpos("'[")
+    let last_char_pos = getpos("']")
+
+    call DoSave()
+
+    call setpos("'[", first_char_pos)
+    call setpos("']", last_char_pos)
+
+    if was_modified && !&modified
+      if g:auto_save_silent == 0
+        echo "(AutoSave) saved at " . strftime("%H:%M:%S")
+      endif
+    endif
+  endif
+endfunction
+
+function! DoSave()
+  silent! w
+endfunction
+
+function! ToggleAutoSave()
+  if !exists("b:auto_save")
+    let b:auto_save = 0
+  endif
+
+  if b:auto_save == 0
+    let b:auto_save = 1
+  else
+    let b:auto_save = 0
+  end
 endfunction
 
 command! ToggleAutoSave :call ToggleAutoSave()
@@ -1650,51 +1650,51 @@ unlet s:save_cpo
 " }}}
 " Quickfix {{{
 function! GetBufferList()
-    redir =>buflist
-    silent! ls!
-    redir END
-    return buflist
+  redir =>buflist
+  silent! ls!
+  redir END
+  return buflist
 endfunction
 
 function! ToggleList(bufname, pfx)
-    let buflist = GetBufferList()
-    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-        if bufwinnr(bufnum) != -1
-            exec(a:pfx.'close')
-            return
-        endif
-    endfor
-    if a:pfx == 'l' && len(getloclist(0)) == 0
-        echohl ErrorMsg
-        echo "Location List is Empty."
-        return
+  let buflist = GetBufferList()
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    if bufwinnr(bufnum) != -1
+      exec(a:pfx.'close')
+      return
     endif
-    let winnr = winnr()
-    exec(a:pfx.'open')
-    if winnr() != winnr
-        wincmd p
-    endif
+  endfor
+  if a:pfx == 'l' && len(getloclist(0)) == 0
+    echohl ErrorMsg
+    echo "Location List is Empty."
+    return
+  endif
+  let winnr = winnr()
+  exec(a:pfx.'open')
+  if winnr() != winnr
+    wincmd p
+  endif
 endfunction
 
 function! QFixSwitch(direction)
-    exec('copen')
-    if a:direction == 'next'
-        try
-            cnext
-        catch E42
-        catch E553
-            echom "No more items"
-        endtry
-    elseif a:direction == 'prev'
-        try
-            cprevious
-        catch E42
-        catch E553
-            echom "No more items"
-        endtry
-    else
-        echom "Unknown direction"
-    endif
+  exec('copen')
+  if a:direction == 'next'
+    try
+      cnext
+    catch E42
+    catch E553
+      echom "No more items"
+    endtry
+  elseif a:direction == 'prev'
+    try
+      cprevious
+    catch E42
+    catch E553
+      echom "No more items"
+    endtry
+  else
+    echom "Unknown direction"
+  endif
 endfunction
 
 nnoremap <Plug>(qfix_Toggle) :call ToggleList("Quickfix List", 'c')<CR>
@@ -1741,25 +1741,25 @@ nnoremap <leader>td O<C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R
 let g:lmap.o.t = 'To-do'
 nnoremap <leader>ot :call OpenToDo()<CR>
 function! OpenToDo()
-    vsplit TODO.md
-    nnoremap <buffer> q :x<CR>
-    hi TODO guifg=Yellow ctermfg=Yellow term=Bold
-    hi FIXME guifg=Red ctermfg=Red term=Bold
-    hi P1 guifg=Red ctermfg=Red term=Bold
-    hi P2 guifg=LightRed ctermfg=LightRed term=Bold
-    hi P3 guifg=LightYellow ctermfg=LightYellow term=Bold
-    hi P4 guifg=LightGrey ctermfg=Grey term=Italic
-    hi DONE guifg=DarkGreen ctermfg=Grey term=Italic
+  vsplit TODO.md
+  nnoremap <buffer> q :x<CR>
+  hi TODO guifg=Yellow ctermfg=Yellow term=Bold
+  hi FIXME guifg=Red ctermfg=Red term=Bold
+  hi P1 guifg=Red ctermfg=Red term=Bold
+  hi P2 guifg=LightRed ctermfg=LightRed term=Bold
+  hi P3 guifg=LightYellow ctermfg=LightYellow term=Bold
+  hi P4 guifg=LightGrey ctermfg=Grey term=Italic
+  hi DONE guifg=DarkGreen ctermfg=Grey term=Italic
 
-    call matchadd('TODO', 'TODO')
-    call matchadd('TODO', '@todo')
-    call matchadd('FIXME', 'FIXME')
-    call matchadd('FIXME', '@fixme')
-    syn match P1 ".*\[[^X]\]\s\+[pP]1.*$"
-    syn match P2 ".*\[[^X]\]\s\+[pP]2.*$"
-    syn match P3 ".*\[[^X]\]\s\+[pP]3.*$"
-    syn match P4 ".*\[[^X]\]\s\+[pP]4.*$"
-    syn match DONE ".*\[[X]\]\s.*$"
+  call matchadd('TODO', 'TODO')
+  call matchadd('TODO', '@todo')
+  call matchadd('FIXME', 'FIXME')
+  call matchadd('FIXME', '@fixme')
+  syn match P1 ".*\[[^X]\]\s\+[pP]1.*$"
+  syn match P2 ".*\[[^X]\]\s\+[pP]2.*$"
+  syn match P3 ".*\[[^X]\]\s\+[pP]3.*$"
+  syn match P4 ".*\[[^X]\]\s\+[pP]4.*$"
+  syn match DONE ".*\[[X]\]\s.*$"
 endfunction
 
 let g:lmap.t.h = 'To-Html'
@@ -1809,19 +1809,19 @@ call which_key#register('<Space>', "g:lmap")
 " Start {{{
 au! VimEnter * call AfterVimEnter()
 function! AfterVimEnter()
-    if g:largefile != 1
-        exe ":IndentGuidesEnable"
-    endif
+  if g:largefile != 1
+    exe ":IndentGuidesEnable"
+  endif
 
-    call LoadVimwiki()
+  call LoadVimwiki()
 endfunction
 " }}}
 
 " Load local vars {{{
 "
 try
-    source ~/.vimrc.local
+  source ~/.vimrc.local
 catch
-    " Ignoring
+  " Ignoring
 endtry
 " }}}
