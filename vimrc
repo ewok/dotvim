@@ -1,3 +1,4 @@
+" vim: ts=2 sts=2 sw=2
 " Basic options {{{
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ","
@@ -517,6 +518,7 @@ augroup ft_python
     au FileType python call LoadPythonFT()
     function! LoadPythonFT()
 
+      if !has('ivim')
         packadd jedi
         let g:jedi#goto_command = ""
         let g:jedi#goto_assignments_command = "gA"
@@ -532,6 +534,7 @@ augroup ft_python
         packadd vim-virtualenv
         let g:virtualenv_directory = $PWD
 
+      endif
         packadd pep8-ind
 
         setlocal foldmethod=indent
