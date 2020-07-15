@@ -50,6 +50,7 @@ set softtabstop=4
 set splitbelow
 set splitright
 set switchbuf=useopen
+set synmaxcol=120
 set tabstop=4
 set timeoutlen=500
 set title
