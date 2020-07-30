@@ -518,7 +518,7 @@ augroup ft_markdown
       nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
 
       packadd medieval
-      let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
+      let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash', 'perl']
 
       command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>)
       nmap <buffer> <leader>rb "":EvalBlock<CR>
@@ -707,7 +707,7 @@ augroup ft_vimwiki
 
     if !has('ivim')
       packadd medieval
-      let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash']
+      let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash', 'perl']
     endif
 
   endfunction
@@ -731,7 +731,27 @@ augroup END
 " Mail {{{
 augroup ft_mail
   au!
-  au FileType mail map <buffer> <leader>rr :%!pandoc -f markdown_mmd -t html<CR>
+  au FileType mail call LoadMailFT()
+
+  function! LoadMailFT()
+
+    map <buffer> <leader>ry :%!pandoc -f markdown_mmd -t html<CR>
+
+    if !has('ivim')
+
+      packadd livedown
+
+      let g:livedown_browser = 'firefox'
+      let g:livedown_port = 14545
+
+      nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>
+      nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
+      nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
+
+    endif
+
+  endfunction
+
 augroup END
 " }}}
 " Helm {{{
