@@ -1,5 +1,6 @@
 " vim: ts=2 sts=2 sw=2
 " Basic options {{{
+set shell=/bin/bash
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ","
 
@@ -532,6 +533,19 @@ augroup ft_markdown
 
 augroup END
 " }}}
+" Mustache {{{
+" inst: https://github.com/mustache/vim-mustache-handlebars.git filetypes opt mustache
+augroup ft_mustache
+  au!
+
+  au FileType mustache call LoadMustacheFT()
+  function! LoadMustacheFT()
+    packadd mustache
+    let g:mustache_abbreviations = 1
+  endfunction
+
+augroup END
+" }}}
 " Python {{{
 " inst: https://github.com/jmcantrell/vim-virtualenv filetypes opt vim-virtualenv
 " inst: https://github.com/Vimjas/vim-python-pep8-indent filetypes opt pep8-ind
@@ -763,6 +777,13 @@ augroup ft_helm
   au FileType helm call LoadHelmFT()
   function! LoadHelmFT()
     packadd helm
+
+    function! RenderHelm()
+      write
+      silent exe '!helm template ./ --output-dir .out'
+    endfunction
+
+    nmap <buffer> <silent> <leader>rr :call RenderHelm()<CR>
   endfunction
 
 augroup END
