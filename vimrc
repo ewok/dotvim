@@ -796,7 +796,7 @@ augroup ft_helm
 
   function! RenderHelm()
     write
-    silent exe '!helm template ./ --output-dir .out'
+    exe '!helm template ./ --output-dir .out'
   endfunction
 
   au FileType helm call LoadHelmFT()
