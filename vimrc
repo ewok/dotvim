@@ -308,7 +308,16 @@ nmap zk zkmzzMzvzz15<c-e>`z
 nmap <expr>  MR  ':%s/\(' . @/ . '\)//g<LEFT><LEFT>'
 vmap <expr>  MR  ':s/\(' . @/ . '\)//g<LEFT><LEFT>'
 
-if has('unix') && executable('win32yank.exe')
+let uname = substitute(system('uname'),'\n','','')
+if uname == 'Linux'
+    if system('$PATH')=~ '/mnt/c/WINDOWS'
+      if executable('win32yank.exe')
+        let g:win32yank = 1
+      endif
+    endif
+endif
+
+if exists('g:win32yank')
 
   set clipboard=unnamed
 
@@ -325,7 +334,10 @@ if has('unix') && executable('win32yank.exe')
   vmap <expr> p Paste('p').'gv"'.v:register.'y`>'
   vmap <expr> P Paste('P').'gv"'.v:register.'y`>'
 
-  let g:win32yank = 1
+else
+
+  " Replace without yanking
+  vnoremap p :<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>
 
 endif
 " }}}
@@ -340,11 +352,6 @@ xnoremap c "xc
 " Don't cancel visual select when shifting
 xnoremap <  <gv
 xnoremap >  >gv
-
-" Replace without yanking
-if !exists('g:win32yank')
-  vnoremap p :<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>
-endif
 
 " Keep the cursor in place while joining lines
 nnoremap J mzJ`z
@@ -1836,6 +1843,9 @@ vnoremap <leader>th :TOhtml<CR>
 let g:peekaboo_delay = 1000
 " inst: https://github.com/chaoren/vim-wordmotion other start wordmotion
 " inst: https://github.com/tpope/vim-repeat other start repeat
+" inst: https://github.com/lyokha/vim-xkbswitch other start xkbswitch
+let g:XkbSwitchEnabled = 1
+let g:XkbSwitchSkipFt = [ 'nerdtree' ]
 
 " if !has('ivim')
 " inst: https://github.com/powerline/fonts other opt fonts
