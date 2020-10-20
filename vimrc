@@ -1397,6 +1397,8 @@ function! LoadVimwiki()
   let g:lmap.w.w = 'Index'
   nunmap <Leader>ww
   noremap <Leader>ww :call VimwikiIndexCd()<CR>
+  noremap <Leader>wj :VimwikiDiaryNextDay<CR>
+  noremap <Leader>wk :VimwikiDiaryPrevDay<CR>
 
   nunmap <Leader>w<Space>i
   nunmap <Leader>w<Space>t
