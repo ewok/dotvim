@@ -1392,6 +1392,7 @@ map sh <Plug>(easymotion-linebackward)
 " Additional {{{
 " VimWiki {{{
 " inst: https://github.com/vimwiki/vimwiki ui opt vimwiki "branch dev"
+" inst: https://github.com/dhruvasagar/vim-dotoo ui opt dotoo
 function! LoadVimwiki()
 
   let g:lmap.w.w = 'Index'
@@ -1456,6 +1457,7 @@ let g:vimwiki_hl_cb_checked = 2
 "let g:vimwiki_markdown_link_ext = 1
 
 PackAdd vimwiki
+PackAdd dotoo
 " }}}
 " Sessions {{{
 let g:sessiondir = $HOME . "/.vim_sessions"
