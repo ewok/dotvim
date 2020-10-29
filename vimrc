@@ -135,7 +135,7 @@ augroup END
 " }}}
 " -> NeoVim settings  {{{
 "
-if has('neovim')
+if has('nvim')
   set shada='50,<1000,s100,"10,:10,n~/.viminfo
   set inccommand=nosplit
 
@@ -267,7 +267,7 @@ if exists('$TMUX')
   nmap <silent><C-W>V <Plug>(window_vsplit-tmux)
 
 else
-  if has('neovim')
+  if has('nvim')
     nmap <silent><C-W>S :split +terminal<CR>i
     nmap <silent><C-W>V :vsplit +terminal<CR>i
   else
@@ -682,6 +682,47 @@ augroup ft_rust
     nmap <buffer> <silent> <leader>rr :RustRun<CR>
     nmap <buffer> <silent> <leader>rt :RustTest<CR>
     nmap <buffer> <silent> <leader>rf :RustFmt<CR>
+
+  endfunction
+
+augroup END
+" }}}
+" TODO {{{
+augroup ft_todo
+  au!
+
+  au FileType todo call LoadTODOFT()
+  function! LoadTODOFT()
+
+    hi TASK guifg=Yellow ctermfg=Yellow term=Bold
+    syn match TASK "\s\w\+-\d\+:\s"
+
+    hi P1 guifg=Red ctermfg=Red term=Bold
+    hi P2 guifg=LightRed ctermfg=LightRed term=Bold
+    hi P3 guifg=LightYellow ctermfg=LightYellow term=Bold
+    syn match P1 " !!! "
+    syn match P2 " !! "
+    syn match P3 " ! "
+
+    hi DT guifg=DarkMagenta ctermfg=DarkMagenta term=Bold
+    syn match DT "\d\{4}-\d\{2}-\d\{2}"
+
+    hi H1 guifg=LightGreen ctermfg=Grey term=Bold
+    hi H2 guifg=DarkGreen ctermfg=DarkGreen term=Bold
+    hi H3 guifg=Magenta ctermfg=Magenta term=Bold
+    syn match H1 "^[#] .*$"
+    syn match H2 "^[#]\{2} .*$"
+    syn match H3 "^[#]\{3} .*$"
+
+    hi DONE guifg=Grey ctermfg=Grey term=Italic
+    syn match DONE ".*\[[X]\]\s.*$"
+
+    hi TEXT guifg=LightGrey ctermfg=LightGrey
+    syn match TEXT "^\s*[-*] .*$" contains=TASK,P1,P2,P3,DONE,DT
+
+    hi Block guifg=Black ctermbg=Black
+    syn region Block start="```" end="```" contains=TEXT,DONE,H1,H2,H3
+    syn region Block start="<" end=">" contains=TEXT,DONE,H1,H2,H3
 
   endfunction
 
@@ -1110,7 +1151,7 @@ nnoremap <silent> <leader>tt :call StartGoyo()<CR>
 " inst: https://github.com/christoomey/vim-tmux-navigator ui start tmux-navigator
 " inst: https://github.com/benmills/vimux ui opt vimux
 if exists('$TMUX')
-  if has('neovim')
+  if has('nvim')
     nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
   endif
 
@@ -1392,7 +1433,6 @@ map sh <Plug>(easymotion-linebackward)
 " Additional {{{
 " VimWiki {{{
 " inst: https://github.com/vimwiki/vimwiki ui opt vimwiki "branch dev"
-" inst: https://github.com/dhruvasagar/vim-dotoo ui opt dotoo
 function! LoadVimwiki()
 
   let g:lmap.w.w = 'Index'
@@ -1457,7 +1497,6 @@ let g:vimwiki_hl_cb_checked = 2
 "let g:vimwiki_markdown_link_ext = 1
 
 PackAdd vimwiki
-PackAdd dotoo
 " }}}
 " Sessions {{{
 let g:sessiondir = $HOME . "/.vim_sessions"
@@ -1805,7 +1844,9 @@ nmap <leader>lp <Plug>(qfix_LPrev)
 " }}}
 " TODOs {{{
 inoremap \td <C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
-inoremap \dts <C-R>=strftime("%Y-%m-%d %H:%M:%S") . " "<CR>
+inoremap \dts <C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
+inoremap \dtm <C-R>=strftime("%Y-%m-%d %H:%M")<CR>
+inoremap \dtd <C-R>=strftime("%Y-%m-%d")<CR>
 inoremap \fl <C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR>
 inoremap \fp <C-R>=expand("%:h") . '/' . expand("%:t")<CR>
 
@@ -1847,9 +1888,6 @@ vnoremap <leader>th :TOhtml<CR>
 let g:peekaboo_delay = 1000
 " inst: https://github.com/chaoren/vim-wordmotion other start wordmotion
 " inst: https://github.com/tpope/vim-repeat other start repeat
-" inst: https://github.com/lyokha/vim-xkbswitch other start xkbswitch
-let g:XkbSwitchEnabled = 1
-let g:XkbSwitchSkipFt = [ 'nerdtree' ]
 
 " if !has('ivim')
 " inst: https://github.com/powerline/fonts other opt fonts
@@ -1857,27 +1895,10 @@ let g:XkbSwitchSkipFt = [ 'nerdtree' ]
 " }}}
 " }}}
 
-" ToFix {{{
-"""""" " -> Xkb {{{
-"""""" Plug 'lyokha/vim-xkbswitch'
-"""""" 
-"""""" " OSX
-"""""" " git clone https://github.com/vovkasm/input-source-switcher.git
-"""""" " cd input-source-switcher
-"""""" " mkdir build && cd build
-"""""" " cmake ..
-"""""" " make
-"""""" " make install
-"""""" "
-"""""" " Arch:
-"""""" " yay -S xkb-switch
-"""""" "
-"""""" " let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
-"""""" 
-"""""" let g:XkbSwitchEnabled = 1
-"""""" let g:XkbSwitchSkipFt = [ 'nerdtree' ]
-"""""" 
-"""""" " }}}
+" -> Xkb {{{
+" inst: https://github.com/lyokha/vim-xkbswitch other start xkbswitch
+let g:XkbSwitchEnabled = 1
+let g:XkbSwitchSkipFt = [ 'nerdtree' ]
 " }}}
 
 " Leader end
