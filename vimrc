@@ -232,7 +232,14 @@ let g:lmap.z = { 'name': '+Zoom' }
 
 " Helpers {{{
 " Idempotent packs loading
-function PackAddId(packname)
+function PackAddId(packname, ...)
+
+  if a:0 > 0
+      let reload = a:1
+    else
+      let reload = 0
+  endif
+
   let l:packnamenorm = substitute(a:packname, "[-.]", "_", "")
 
   if ! exists('g:loaded' . l:packnamenorm)
@@ -244,10 +251,14 @@ function PackAddId(packname)
       echom a:packname . ' loaded'
     endif
 
+    if reload != 0
+      exe 'e %'
+    endif
+
   endif
 endfunction
 
-command! -nargs=1 PackAdd call PackAddId(<f-args>)
+command! -nargs=* PackAdd call PackAddId(<f-args>)
 " }}}
 
 " Keymaps {{{
@@ -396,7 +407,7 @@ augroup ft_ansible
           \   'callback': 'ale_linters#ansible#ansible_lint#Handle',
           \})
 
-    PackAdd ansible
+    PackAdd ansible 1
 
     let g:ansible_template_syntaxes = { '*.rb.j2': 'ruby', '*.py.j2': 'python' }
     let g:ansible_unindent_after_newline = 1
@@ -417,7 +428,7 @@ augroup ft_csv
 
   au FileType csv call LoadCSVFT()
   function! LoadCSVFT()
-    PackAdd csv
+    PackAdd csv 1
   endfunction
 
 augroup END
@@ -458,7 +469,7 @@ augroup ft_go
   au FileType go call LoadGoFT()
   function! LoadGoFT()
 
-    PackAdd vim-go
+    PackAdd vim-go 1
 
     let g:go_highlight_functions = 1
     let g:go_highlight_methods = 1
@@ -515,7 +526,7 @@ augroup ft_logstash
   au FileType logstash call LoadLogstashFT()
   function! LoadLogstashFT()
 
-    PackAdd logstash
+    PackAdd logstash 1
 
     setlocal foldmethod=marker
     setlocal foldmarker={,}
@@ -567,7 +578,7 @@ augroup ft_mustache
 
   au FileType mustache call LoadMustacheFT()
   function! LoadMustacheFT()
-    PackAdd mustache
+    PackAdd mustache 1
     let g:mustache_abbreviations = 1
   endfunction
 
@@ -654,7 +665,7 @@ augroup ft_puppet
     nmap <buffer> <leader>rt :w\|call RunCmd("puppet parser validate")<CR>
     nmap <buffer> <leader>rL :!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>
 
-    PackAdd puppet
+    PackAdd puppet 1
     let g:puppet_align_hashes = 0
 
     " let b:ale_linters = ['puppet', 'puppetlint']
@@ -671,7 +682,7 @@ augroup ft_rust
   au FileType rust call LoadRustFT()
   function! LoadRustFT()
 
-    PackAdd rust
+    PackAdd rust 1
     PackAdd rust-racer
     let g:racer_experimental_completer = 1
 
@@ -691,11 +702,13 @@ augroup END
 augroup ft_todo
   au!
 
+  au BufRead,BufNewFile *.todo setf todo
+
   au FileType todo call LoadTODOFT()
   function! LoadTODOFT()
 
     hi TASK guifg=Yellow ctermfg=Yellow term=Bold
-    syn match TASK "\s\w\+-\d\+:\s"
+    syn match TASK "\s\w\{1,10}-\d\{1,6}[ :]"
 
     hi P1 guifg=Red ctermfg=Red term=Bold
     hi P2 guifg=LightRed ctermfg=LightRed term=Bold
@@ -849,7 +862,7 @@ augroup ft_helm
 
   au FileType helm call LoadHelmFT()
   function! LoadHelmFT()
-    PackAdd helm
+    PackAdd helm 1
 
     nmap <buffer> <silent> <leader>rr :call RenderHelm()<CR>
   endfunction
@@ -864,7 +877,7 @@ augroup ft_log
 
   au FileType log call LoadLogFT()
   function! LoadLogFT()
-    PackAdd log
+    PackAdd log 1
   endfunction
 
 augroup END
@@ -877,7 +890,7 @@ augroup ft_terraform
   au FileType terraform call LoadTerraformFT()
   function! LoadTerraformFT()
 
-    PackAdd terraform
+    PackAdd terraform 1
     let g:terraform_align=1
     let g:terraform_fmt_on_save=1
 
@@ -920,7 +933,7 @@ augroup ft_xml
 
   au FileType xml call LoadXMLFT()
   function! LoadXMLFT()
-    PackAdd xml
+    PackAdd xml 1
   endfunction
 
 augroup END
