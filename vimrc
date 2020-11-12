@@ -185,20 +185,23 @@ if !exists("my_auto_commands_loaded")
 endif
 " }}}
 " -> Number Toggle  {{{
-function! NumberToggle()
-  if(&relativenumber == 1)
-    set nornu
-  else
+function! NumberOn()
+  if(&showcmd == 1)
     set rnu
   endif
 endfunction
 
-set rnu
+function! NumberOff()
+  if(&showcmd == 1)
+    set nornu
+  endif
+endfunction
 
+set rnu
 augroup rnu
   au!
-  au InsertEnter * :set nornu
-  au InsertLeave * :set rnu
+  au InsertEnter * :call NumberOff()
+  au InsertLeave * :call NumberOn()
 augroup END
 " }}}
 " -> RunCmd {{{
@@ -383,6 +386,9 @@ nnoremap N Nzzzv
 
 nnoremap H ^
 nnoremap L $
+
+vnoremap H ^
+vnoremap L $
 " }}}
 " }}}
 
@@ -413,6 +419,7 @@ augroup ft_ansible
           \})
 
     PackAdd ansible 1
+    PackAdd rooter
 
     let g:ansible_template_syntaxes = { '*.rb.j2': 'ruby', '*.py.j2': 'python' }
     let g:ansible_unindent_after_newline = 1
@@ -449,6 +456,9 @@ augroup ft_yaml
     PackAdd ale
     let b:ale_yaml_yamllint_executable = 'yamllint_custom'
     let b:ale_linters = ['yamllint']
+
+    PackAdd speeddating
+    PackAdd rooter
 
   endfunction
 
@@ -508,6 +518,8 @@ augroup ft_go
 
     let g:lmap.r.d.i = 'Info'
     nmap <buffer> <Leader>rdi <Plug>(go-info)
+
+    PackAdd rooter
 
   endfunction
 
@@ -574,6 +586,9 @@ augroup ft_markdown
     PackAdd ale
     let b:ale_linters = ['vale', 'markdownlint']
 
+    PackAdd speeddating
+    PackAdd rooter
+
   endfunction
 
 augroup END
@@ -586,8 +601,12 @@ augroup ft_mustache
 
   au FileType mustache call LoadMustacheFT()
   function! LoadMustacheFT()
+
     PackAdd mustache 1
     let g:mustache_abbreviations = 1
+
+    PackAdd rooter
+
   endfunction
 
 augroup END
@@ -654,6 +673,7 @@ augroup ft_python
     let b:ale_python_vulture_executable = 'vulture'
 
     PackAdd textobj-python
+    PackAdd rooter
 
   endfunction
 
@@ -679,6 +699,9 @@ augroup ft_puppet
     let g:puppet_align_hashes = 0
 
     " let b:ale_linters = ['puppet', 'puppetlint']
+
+    PackAdd rooter
+
   endfunction
 
 augroup END
@@ -705,6 +728,8 @@ augroup ft_rust
     nmap <buffer> <silent> <leader>rr :RustRun<CR>
     nmap <buffer> <silent> <leader>rt :RustTest<CR>
     nmap <buffer> <silent> <leader>rf :RustFmt<CR>
+
+    PackAdd rooter
 
   endfunction
 
@@ -748,6 +773,8 @@ augroup ft_todo
     hi Block guifg=Black ctermbg=Black
     syn region Block start="```" end="```" contains=TEXT,DONE,H1,H2,H3
     syn region Block start="<" end=">" contains=TEXT,DONE,H1,H2,H3
+
+    PackAdd speeddating
 
   endfunction
 
@@ -796,6 +823,8 @@ augroup ft_sh
     PackAdd ale
     let b:ale_linters = ['shellcheck', 'language_server']
 
+    PackAdd speeddating
+
   endfunction
 
 augroup END
@@ -814,6 +843,9 @@ augroup ft_vimwiki
 
     PackAdd medieval
     let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash', 'perl']
+
+    PackAdd speeddating
+    PackAdd rooter
 
   endfunction
 
@@ -851,6 +883,8 @@ augroup ft_mail
     nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
     nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
 
+    PackAdd speeddating
+
   endfunction
 
 augroup END
@@ -869,9 +903,13 @@ augroup ft_helm
 
   au FileType helm call LoadHelmFT()
   function! LoadHelmFT()
+
     PackAdd helm 1
 
     nmap <buffer> <silent> <leader>rr :call RenderHelm()<CR>
+
+    PackAdd rooter
+
   endfunction
 
 augroup END
@@ -912,6 +950,8 @@ augroup ft_terraform
           \   'project_root': getcwd(),
           \})
 
+    PackAdd rooter
+
   endfunction
 
 augroup END
@@ -951,33 +991,17 @@ augroup END
 " }}}
 
 " UI {{{
+" Autoread {{{
+" inst: https://github.com/djoshea/vim-autoread ui start autoread
+call minpac#add('djoshea/vim-autoread', {'type': 'start', 'name': 'autoread'})
+let autoreadargs={'autoread':1}
+" }}}
 " Colorscheme {{{
 " inst: https://github.com/KeitaNakamura/neodark.vim ui opt neodark
 call minpac#add('KeitaNakamura/neodark.vim', {'type': 'opt', 'name': 'neodark'})
 PackAdd neodark
 let g:neodark#background = '#282c34'
 colorscheme neodark
-" }}}
-" Lightline {{{
-" inst: https://github.com/itchyny/lightline.vim ui start lightline
-call minpac#add('itchyny/lightline.vim', {'type': 'opt', 'name': 'lightline'})
-if !has('gui_running')
-  set t_Co=256
-endif
-
-let g:lightline = {
-      \ 'colorscheme': 'neodark',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ,
-      \             [ 'venv', 'readonly'] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
-      \   'venv': 'virtualenv#statusline'
-      \ },
-      \ }
-
 " }}}
 " Fuzzy {{{
 " inst: https://github.com/junegunn/fzf ui opt fzf
@@ -995,7 +1019,8 @@ command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : 
 let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
 
 nnoremap <silent> <leader>pp :Files<CR>
-nnoremap <silent> <leader>pm :Marks<CR>
+" TODO: To remove
+" nnoremap <silent> <leader>pm :Marks<CR>
 nnoremap <silent> <leader>pb :Buffers<CR>
 nnoremap <silent> <leader>pf :Filetypes<CR>
 
@@ -1021,14 +1046,63 @@ let g:fzf_action = {
 let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
 " }}}
+" Indent-guides {{{
+" inst: https://github.com/nathanaelkane/vim-indent-guides ui opt indent-guides
+call minpac#add('nathanaelkane/vim-indent-guides', {'type': 'opt', 'name': 'indent-guides'})
+PackAdd indent-guides
+
+let g:indent_guides_auto_colors = 0
+hi IndentGuidesOdd  ctermbg=237
+hi IndentGuidesEven ctermbg=236
+
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_default_mapping = 0
+" }}}
+" Lightline {{{
+" inst: https://github.com/itchyny/lightline.vim ui start lightline
+call minpac#add('itchyny/lightline.vim', {'type': 'opt', 'name': 'lightline'})
+if !has('gui_running')
+  set t_Co=256
+endif
+
+let g:lightline = {
+      \ 'colorscheme': 'neodark',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ,
+      \             [ 'venv', 'readonly'] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \   'venv': 'virtualenv#statusline'
+      \ },
+      \ }
+
+" }}}
+" Marks {{{
+" inst: https://github.com/kshenoy/vim-signature ui start marks
+call minpac#add('kshenoy/vim-signature', {'type': 'start', 'name': 'marks'})
+" }}}
 " NERTree {{{
 " inst: https://github.com/preservim/nerdtree ui start nerdtree
 call minpac#add('preservim/nerdtree', {'type': 'start', 'name': 'nerdtree'})
 " inst: https://github.com/Xuyuanp/nerdtree-git-plugin ui start nerdtree-git
 call minpac#add('Xuyuanp/nerdtree-git-plugin', {'type': 'start', 'name': 'nerdtree-git'})
 
-nnoremap <leader>pn :NERDTreeToggle<Bar>wincmd p<CR>
+nnoremap <leader>pn :call NERDTreeToggleCWD()<CR>
 nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
+
+function! NERDTreeToggleCWD()
+  let currentfile = expand('%')
+  if (currentfile == "") || !(currentfile !~? 'NERD')
+    NERDTreeToggle
+    wincmd p
+  else
+    NERDTreeToggle
+    NERDTreeCWD
+  endif
+endfunction
 
 function! FindPathOrShowNERDTree()
   let currentfile = expand('%')
@@ -1036,6 +1110,7 @@ function! FindPathOrShowNERDTree()
     NERDTreeToggle
   else
     NERDTreeFind
+    NERDTreeCWD
   endif
 endfunction
 
@@ -1063,29 +1138,9 @@ let NERDTreeMapJumpPrevSibling=''
 " Close vim if the only NERDTree window left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " }}}
-" Which-Key {{{
-" inst: https://github.com/liuchengxu/vim-which-key ui opt which-key
-call minpac#add('liuchengxu/vim-which-key', {'type': 'opt', 'name': 'which-key'})
-PackAdd which-key
-
-nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
-
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
-" }}}
-" Indent-guides {{{
-" inst: https://github.com/nathanaelkane/vim-indent-guides ui opt indent-guides
-call minpac#add('nathanaelkane/vim-indent-guides', {'type': 'opt', 'name': 'indent-guides'})
-PackAdd indent-guides
-
-let g:indent_guides_auto_colors = 0
-hi IndentGuidesOdd  ctermbg=237
-hi IndentGuidesEven ctermbg=236
-
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-let g:indent_guides_default_mapping = 0
+" Rooter {{{
+" inst: https://github.com/airblade/vim-rooter ui opt rooter
+call minpac#add('airblade/vim-rooter', {'type': 'opt', 'name': 'rooter'})
 " }}}
 " Texting {{{
 " inst: https://github.com/junegunn/goyo.vim ui opt goyo
@@ -1210,10 +1265,27 @@ if exists('$TMUX')
   let g:VimuxUseNearest = 0
 endif
 " }}}
-" Autoread {{{
-" inst: https://github.com/djoshea/vim-autoread ui start autoread
-call minpac#add('djoshea/vim-autoread', {'type': 'start', 'name': 'autoread'})
-let autoreadargs={'autoread':1}
+" Undo {{{
+" inst: https://github.com/mbbill/undotree ui start undo
+call minpac#add('mbbill/undotree', {'type': 'start', 'name': 'undo'})
+nnoremap <silent> <leader>u :UndotreeToggle<CR>
+" }}}
+" Which-Key {{{
+" inst: https://github.com/liuchengxu/vim-which-key ui opt which-key
+call minpac#add('liuchengxu/vim-which-key', {'type': 'opt', 'name': 'which-key'})
+PackAdd which-key
+
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
+" }}}
+" Xkb {{{
+" inst: https://github.com/lyokha/vim-xkbswitch other start xkbswitch
+call minpac#add('lyokha/vim-xkbswitch', {'type': 'start', 'name': 'xkbswitch'})
+let g:XkbSwitchEnabled = 1
+let g:XkbSwitchSkipFt = [ 'nerdtree' ]
 " }}}
 " Zoom {{{
 " inst: https://github.com/dhruvasagar/vim-zoom ui start vim-zoom
@@ -1260,6 +1332,15 @@ let g:ale_sign_warning = '..'
 " let g:ale_lint_on_insert_leave = 0
 let g:ale_completion_enabled = 0
 " }}}
+" AutoIndent {{{
+" inst: https://github.com/tpope/vim-sleuth code start auto-indent
+call minpac#add('tpope/vim-sleuth', {'type': 'start', 'name': 'auto-indent'})
+" }}}
+" Commentary {{{
+" inst: https://github.com/tpope/vim-commentary code start commentary
+call minpac#add('tpope/vim-commentary', {'type': 'start', 'name': 'commentary'})
+set commentstring=#\ %s
+" }}}
 " Completor {{{
 " inst: https://github.com/maralla/completor.vim  code opt completor
 call minpac#add('maralla/completor.vim', {'type': 'opt', 'name': 'completor'})
@@ -1271,28 +1352,6 @@ inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 
 " let g:asyncomplete_auto_completeopt = 0
 " set completeopt=menuone,noinsert,noselect,preview
-" }}}
-" Text objects {{{
-" inst: https://github.com/kana/vim-textobj-user code start textobj
-call minpac#add('kana/vim-textobj-user', {'type': 'start', 'name': 'textobj'})
-
-" adds: f - function
-" inst: https://github.com/bps/vim-textobj-python code opt textobj-python
-call minpac#add('bps/vim-textobj-python', {'type': 'opt', 'name': 'textobj-python'})
-
-let g:textobj_python_no_default_key_mappings = 1
-xmap af <Plug>(textobj-python-function-a)
-omap af <Plug>(textobj-python-function-a)
-xmap if <Plug>(textobj-python-function-i)
-omap if <Plug>(textobj-python-function-i)
-
-" Adds: i - indent, I - the same indent
-" inst: https://github.com/kana/vim-textobj-indent code start textobj-indent
-call minpac#add('kana/vim-textobj-indent', {'type': 'start', 'name': 'textobj-indent'})
-
-" Adds: c - comment, C - whole comment
-" inst: https://github.com/glts/vim-textobj-comment code start textobj-comment
-call minpac#add('glts/vim-textobj-comment', {'type': 'start', 'name': 'textobj-comment'})
 " }}}
 " Easyalign {{{
 " inst: https://github.com/junegunn/vim-easy-align code start easy-align
@@ -1312,47 +1371,7 @@ nnoremap <leader>fr :Far<space>
 vnoremap <leader>fr :Far<space>
 
 " }}}
-" Surround {{{
-" inst: https://github.com/tpope/vim-surround code start surround
-call minpac#add('tpope/vim-surround', {'type': 'start', 'name': 'surround'})
-let g:surround_113="#{\r}"       " v
-let g:surround_35="#{\r}"        " #
-let g:surround_45="{%- \r -%}"   " -
-let g:surround_61="{%= \r =%}"   " =
-
-" div
-let g:surround_{char2nr("d")} = "<div\1id: \r..*\r id=\"&\"\1>\r</div>"
-" xml
-let g:surround_{char2nr("x")} = "<\1id: \r..*\r&\1>\r</\1\1>"
-
-let g:surround_{char2nr("%")} = "{% \r %}"
-
-" }}}
-" AnyJump {{{
-" inst: https://github.com/pechorin/any-jump.vim code opt anyjump
-call minpac#add('pechorin/any-jump.vim', {'type': 'opt', 'name': 'anyjump'})
-PackAdd anyjump
-let g:any_jump_search_prefered_engine = 'rg'
-" }}}
-" Commentary {{{
-" inst: https://github.com/tpope/vim-commentary code start commentary
-call minpac#add('tpope/vim-commentary', {'type': 'start', 'name': 'commentary'})
-set commentstring=#\ %s
-" }}}
-" Snippets {{{
-" inst: https://github.com/Shougo/neosnippet.vim code start neosnippet
-call minpac#add('Shougo/neosnippet.vim', {'type': 'start', 'name': 'neosnippet'})
-" inst: https://github.com/Shougo/neosnippet-snippets code start neosnippet-snippets
-call minpac#add('Shougo/neosnippet-snippets', {'type': 'start', 'name': 'neosnippet-snippets'})
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-" }}}
-" AutoIndent {{{
-" inst: https://github.com/tpope/vim-sleuth code start auto-indent
-call minpac#add('tpope/vim-sleuth', {'type': 'start', 'name': 'auto-indent'})
-" }}}
-" -> Git {{{
+" Git {{{
 " inst: https://github.com/tpope/vim-fugitive code opt fugitive
 call minpac#add('tpope/vim-fugitive', {'type': 'opt', 'name': 'fugitive'})
 " inst: https://github.com/tpope/vim-rhubarb code opt rhubarb
@@ -1440,9 +1459,44 @@ let g:git_messenger_no_default_mappings = v:true
 let g:git_messenger_always_into_popup = v:true
 nmap <Leader>gbb <Plug>(git-messenger)
 " }}}
+" Snippets {{{
+" inst: https://github.com/Shougo/neosnippet.vim code start neosnippet
+call minpac#add('Shougo/neosnippet.vim', {'type': 'start', 'name': 'neosnippet'})
+" inst: https://github.com/Shougo/neosnippet-snippets code start neosnippet-snippets
+call minpac#add('Shougo/neosnippet-snippets', {'type': 'start', 'name': 'neosnippet-snippets'})
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+" }}}
+" SpeedDating {{{
+" inst: https://github.com/tpope/vim-speeddating code opt speeddating
+call minpac#add('tpope/vim-speeddating', {'type': 'opt', 'name': 'speeddating'})
+" }}}
+" Surround {{{
+" inst: https://github.com/tpope/vim-surround code start surround
+call minpac#add('tpope/vim-surround', {'type': 'start', 'name': 'surround'})
+let g:surround_113="#{\r}"       " v
+let g:surround_35="#{\r}"        " #
+let g:surround_45="{%- \r -%}"   " -
+let g:surround_61="{%= \r =%}"   " =
+
+" div
+let g:surround_{char2nr("d")} = "<div\1id: \r..*\r id=\"&\"\1>\r</div>"
+" xml
+let g:surround_{char2nr("x")} = "<\1id: \r..*\r&\1>\r</\1\1>"
+
+let g:surround_{char2nr("%")} = "{% \r %}"
+
+" }}}
 " }}}
 
 " Motion {{{
+" AnyJump {{{
+" inst: https://github.com/pechorin/any-jump.vim code opt anyjump
+call minpac#add('pechorin/any-jump.vim', {'type': 'opt', 'name': 'anyjump'})
+PackAdd anyjump
+let g:any_jump_search_prefered_engine = 'rg'
+" }}}
 " Easymotion {{{
 " inst: https://github.com/easymotion/vim-easymotion ui start easymotion
 call minpac#add('easymotion/vim-easymotion', {'type': 'start', 'name': 'easymotion'})
@@ -1459,6 +1513,28 @@ map sl <Plug>(easymotion-lineforward)
 map sj <Plug>(easymotion-j)
 map sk <Plug>(easymotion-k)
 map sh <Plug>(easymotion-linebackward)
+" }}}
+" Text objects {{{
+" inst: https://github.com/kana/vim-textobj-user code start textobj
+call minpac#add('kana/vim-textobj-user', {'type': 'start', 'name': 'textobj'})
+
+" adds: f - function
+" inst: https://github.com/bps/vim-textobj-python code opt textobj-python
+call minpac#add('bps/vim-textobj-python', {'type': 'opt', 'name': 'textobj-python'})
+
+let g:textobj_python_no_default_key_mappings = 1
+xmap af <Plug>(textobj-python-function-a)
+omap af <Plug>(textobj-python-function-a)
+xmap if <Plug>(textobj-python-function-i)
+omap if <Plug>(textobj-python-function-i)
+
+" Adds: i - indent, I - the same indent
+" inst: https://github.com/kana/vim-textobj-indent code start textobj-indent
+call minpac#add('kana/vim-textobj-indent', {'type': 'start', 'name': 'textobj-indent'})
+
+" Adds: c - comment, C - whole comment
+" inst: https://github.com/glts/vim-textobj-comment code start textobj-comment
+call minpac#add('glts/vim-textobj-comment', {'type': 'start', 'name': 'textobj-comment'})
 " }}}
 " }}}
 
@@ -1931,13 +2007,6 @@ call minpac#add('tpope/vim-repeat', {'type': 'start', 'name': 'repeat'})
 " inst: https://github.com/powerline/fonts other opt fonts
 call minpac#add('powerline/fonts', {'type': 'opt', 'name': 'fonts'})
 " }}}
-" }}}
-
-" -> Xkb {{{
-" inst: https://github.com/lyokha/vim-xkbswitch other start xkbswitch
-call minpac#add('lyokha/vim-xkbswitch', {'type': 'start', 'name': 'xkbswitch'})
-let g:XkbSwitchEnabled = 1
-let g:XkbSwitchSkipFt = [ 'nerdtree' ]
 " }}}
 
 " Leader end
