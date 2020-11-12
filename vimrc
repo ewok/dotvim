@@ -40,11 +40,7 @@ set secure
 set shiftwidth=4
 set shortmess=aOtT
 set showmode
-if has('ivim')
-  set showtabline=2
-else
-  set showtabline=1
-endif
+set showtabline=1
 set smartcase
 set smarttab
 set softtabstop=4
@@ -231,6 +227,14 @@ let g:lmap.z = { 'name': '+Zoom' }
 " }}}
 
 " Helpers {{{
+" minpac
+packadd minpac
+
+call minpac#init()
+command! PackUpdate call minpac#update()
+command! PackClean  call minpac#clean()
+command! PackStatus call minpac#status()
+
 " Idempotent packs loading
 function PackAddId(packname, ...)
 
@@ -385,6 +389,7 @@ nnoremap L $
 " Filetypes {{{
 " Ansible/Yaml {{{
 " inst: https://github.com/pearofducks/ansible-vim filetypes opt ansible
+call minpac#add('pearofducks/ansible-vim', {'type': 'opt', 'name': 'ansible'})
 augroup ft_ansible
   au!
   au BufNewFile,BufRead */\(playbooks\|roles\|tasks\|handlers\|defaults\|vars\)/*.\(yaml\|yml\) set filetype=yaml.ansible
@@ -422,6 +427,7 @@ augroup END
 " }}}
 " CSV {{{
 " inst: https://github.com/chrisbra/csv.vim filetypes opt csv
+call minpac#add('chrisbra/csv.vim', {'type': 'opt', 'name': 'csv'})
 augroup ft_csv
   au!
   au BufNewFile,BufRead *.csv set filetype=csv
@@ -463,6 +469,7 @@ augroup END
 " }}}
 " Go {{{
 " inst: https://github.com/fatih/vim-go filetypes opt vim-go
+call minpac#add('fatih/vim-go', {'type': 'opt', 'name': 'vim-go'})
 augroup ft_go
   au!
 
@@ -520,6 +527,7 @@ augroup END
 " }}}
 " Logstash {{{
 " inst: https://github.com/robbles/logstash.vim filetypes opt logstash
+call minpac#add('robbles/logstash.vim', {'type': 'opt', 'name': 'logstash'})
 augroup ft_logstash
   au!
 
@@ -538,7 +546,9 @@ augroup END
 " }}}
 " Markdown {{{
 " inst: https://github.com/shime/vim-livedown filetypes opt livedown
+call minpac#add('shime/vim-livedown', {'type': 'opt', 'name': 'livedown'})
 " inst: https://github.com/gpanders/vim-medieval filetypes opt medieval
+call minpac#add('gpanders/vim-medieval', {'type': 'opt', 'name': 'medieval'})
 augroup ft_markdown
   au!
 
@@ -547,22 +557,19 @@ augroup ft_markdown
     setlocal foldlevel=2
     setlocal conceallevel=2
 
-    if !has('ivim')
-      PackAdd livedown
-      let g:livedown_browser = 'firefox'
-      let g:livedown_port = 14545
+    PackAdd livedown
+    let g:livedown_browser = 'firefox'
+    let g:livedown_port = 14545
 
-      nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>
-      nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
-      nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
+    nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>
+    nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
+    nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
 
-      PackAdd medieval
-      let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash', 'perl']
+    PackAdd medieval
+    let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash', 'perl']
 
-      command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>)
-      nmap <buffer> <leader>rb "":EvalBlock<CR>
-
-    endif
+    command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>)
+    nmap <buffer> <leader>rb "":EvalBlock<CR>
 
     PackAdd ale
     let b:ale_linters = ['vale', 'markdownlint']
@@ -573,6 +580,7 @@ augroup END
 " }}}
 " Mustache {{{
 " inst: https://github.com/mustache/vim-mustache-handlebars.git filetypes opt mustache
+call minpac#add('mustache/vim-mustache-handlebars', {'type': 'opt', 'name': 'mustache'})
 augroup ft_mustache
   au!
 
@@ -586,31 +594,32 @@ augroup END
 " }}}
 " Python {{{
 " inst: https://github.com/jmcantrell/vim-virtualenv filetypes opt vim-virtualenv
+call minpac#add('jmcantrell/vim-virtualenv', {'type': 'opt', 'name': 'vim-virtualenv'})
 " inst: https://github.com/Vimjas/vim-python-pep8-indent filetypes opt pep8-ind
+call minpac#add('Vimjas/vim-python-pep8-indent', {'type': 'opt', 'name': 'pep8-ind'})
 " inst: https://github.com/davidhalter/jedi-vim filetypes opt jedi
+call minpac#add('davidhalter/jedi-vim', {'type': 'opt', 'name': 'jedi'})
 augroup ft_python
   au!
 
   au FileType python call LoadPythonFT()
   function! LoadPythonFT()
 
-    if !has('ivim')
-      PackAdd jedi
-      let g:jedi#goto_command = ""
-      let g:jedi#goto_assignments_command = "gA"
-      let g:jedi#goto_definitions_command = "gd"
-      let g:jedi#documentation_command = "K"
-      let g:jedi#usages_command = "gr"
-      let g:jedi#completions_command = ""
-      let g:jedi#rename_command = "<leader>rR"
-      let g:jedi#completions_enabled = 0
-      let g:jedi#use_splits_not_buffers = "right"
-      let g:jedi#goto_stubs_command = ""
+    PackAdd jedi
+    let g:jedi#goto_command = ""
+    let g:jedi#goto_assignments_command = "gA"
+    let g:jedi#goto_definitions_command = "gd"
+    let g:jedi#documentation_command = "K"
+    let g:jedi#usages_command = "gr"
+    let g:jedi#completions_command = ""
+    let g:jedi#rename_command = "<leader>rR"
+    let g:jedi#completions_enabled = 0
+    let g:jedi#use_splits_not_buffers = "right"
+    let g:jedi#goto_stubs_command = ""
 
-      PackAdd vim-virtualenv
-      let g:virtualenv_directory = $PWD
+    PackAdd vim-virtualenv
+    let g:virtualenv_directory = $PWD
 
-    endif
     PackAdd pep8-ind
 
     setlocal foldmethod=indent
@@ -652,6 +661,7 @@ augroup END
 " }}}
 " Puppet {{{
 " inst: https://github.com/rodjek/vim-puppet filetypes opt puppet
+call minpac#add('rodjek/vim-puppet', {'type': 'opt', 'name': 'puppet'})
 augroup ft_puppet
   au!
 
@@ -675,7 +685,9 @@ augroup END
 " }}}
 " Rust {{{
 " inst: https://github.com/rust-lang/rust.vim filetypes opt rust
+call minpac#add('rust-lang/rust.vim', {'type': 'opt', 'name': 'rust'})
 " inst: https://github.com/racer-rust/vim-racer filetypes opt rust-racer
+call minpac#add('racer-rust/vim-racer', {'type': 'opt', 'name': 'rust-racer'})
 augroup ft_rust
   au!
 
@@ -800,10 +812,8 @@ augroup ft_vimwiki
     PackAdd ale
     let b:ale_linters = ['vale', 'markdownlint']
 
-    if !has('ivim')
-      PackAdd medieval
-      let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash', 'perl']
-    endif
+    PackAdd medieval
+    let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash', 'perl']
 
   endfunction
 
@@ -832,18 +842,14 @@ augroup ft_mail
 
     map <buffer> <leader>ry :%!pandoc -f markdown_mmd -t html<CR>
 
-    if !has('ivim')
+    PackAdd livedown
 
-      PackAdd livedown
+    let g:livedown_browser = 'firefox'
+    let g:livedown_port = 14545
 
-      let g:livedown_browser = 'firefox'
-      let g:livedown_port = 14545
-
-      nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>
-      nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
-      nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
-
-    endif
+    nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>
+    nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
+    nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
 
   endfunction
 
@@ -851,6 +857,7 @@ augroup END
 " }}}
 " Helm {{{
 " inst: https://github.com/towolf/vim-helm filetypes opt helm
+call minpac#add('towolf/vim-helm', {'type': 'opt', 'name': 'helm'})
 augroup ft_helm
   au!
   au BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl,Chart.yaml,values.yaml set ft=helm
@@ -871,6 +878,7 @@ augroup END
 "  }}}
 " Log {{{
 " inst: https://github.com/mtdl9/vim-log-highlighting filetypes opt log
+call minpac#add('mtdl9/vim-log-highlighting', {'type': 'opt', 'name': 'log'})
 augroup ft_log
   au!
   au BufNewFile,BufRead *.log set filetype=log
@@ -884,6 +892,7 @@ augroup END
 "  }}}
 " Terraform {{{
 " inst: https://github.com/hashivim/vim-terraform filetypes opt terraform
+call minpac#add('hashivim/vim-terraform', {'type': 'opt', 'name': 'terraform'})
 augroup ft_terraform
   au!
 
@@ -928,6 +937,7 @@ augroup END
 " }}}
 " XML {{{
 " inst: https://github.com/sukima/xmledit filetypes opt xml "make"
+call minpac#add('sukima/xmledit', {'type': 'opt', 'name': 'make'})
 augroup ft_xml
   au!
 
@@ -943,12 +953,14 @@ augroup END
 " UI {{{
 " Colorscheme {{{
 " inst: https://github.com/KeitaNakamura/neodark.vim ui opt neodark
+call minpac#add('KeitaNakamura/neodark.vim', {'type': 'opt', 'name': 'neodark'})
 PackAdd neodark
 let g:neodark#background = '#282c34'
 colorscheme neodark
 " }}}
 " Lightline {{{
 " inst: https://github.com/itchyny/lightline.vim ui start lightline
+call minpac#add('itchyny/lightline.vim', {'type': 'opt', 'name': 'lightline'})
 if !has('gui_running')
   set t_Co=256
 endif
@@ -969,63 +981,51 @@ let g:lightline = {
 " }}}
 " Fuzzy {{{
 " inst: https://github.com/junegunn/fzf ui opt fzf
+call minpac#add('junegunn/fzf', {'type': 'opt', 'name': 'fzf'})
 " inst: https://github.com/junegunn/fzf.vim ui opt fzf.vim
-" inst: https://github.com/ctrlpvim/ctrlp.vim.git ui opt ctrlp.vim
+call minpac#add('junegunn/fzf.vim', {'type': 'opt', 'name': 'fzf.vim'})
 
-if has('ivim')
+PackAdd fzf
+PackAdd fzf.vim
 
-  let g:ctrlp_map = '<leader>p1'
-  let g:ctrlp_cmd = 'CtrlP'
+tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..',
+      \ 'source': 'ag --hidden --ignore .git -U -p ~/.gitexcludes --nogroup --column --color "^(?=.)"'}, <bang>0)
 
-  PackAdd ctrlp.vim
+let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
 
-  nnoremap <silent> <leader>pp :CtrlP<CR>
-  nnoremap <silent> <leader>pb :CtrlPBuffer<CR>
-  nnoremap <silent> <leader>ff :CtrlPLine<CR>
+nnoremap <silent> <leader>pp :Files<CR>
+nnoremap <silent> <leader>pm :Marks<CR>
+nnoremap <silent> <leader>pb :Buffers<CR>
+nnoremap <silent> <leader>pf :Filetypes<CR>
 
-else
+let g:lmap.g.f = { 'name': '+File' }
+let g:lmap.g.f.h = 'file-History'
+nmap <silent> <leader>gfh :BCommits<CR>
 
-  PackAdd fzf
-  PackAdd fzf.vim
+let g:lmap.f.f = 'in-File'
+nmap <silent> <leader>ff :Ag<CR>
 
-  tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
-  command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..',
-        \ 'source': 'ag --hidden --ignore .git -U -p ~/.gitexcludes --nogroup --column --color "^(?=.)"'}, <bang>0)
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
 
-  let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
+let g:fzf_action = {
+      \ 'ctrl-q': function('s:build_quickfix_list'),
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-x': 'split',
+      \ 'ctrl-v': 'vsplit' }
 
-  nnoremap <silent> <leader>pp :Files<CR>
-  nnoremap <silent> <leader>pm :Marks<CR>
-  nnoremap <silent> <leader>pb :Buffers<CR>
-  nnoremap <silent> <leader>pf :Filetypes<CR>
-
-  let g:lmap.g.f = { 'name': '+File' }
-  let g:lmap.g.f.h = 'file-History'
-  nmap <silent> <leader>gfh :BCommits<CR>
-
-  let g:lmap.f.f = 'in-File'
-  nmap <silent> <leader>ff :Ag<CR>
-
-  function! s:build_quickfix_list(lines)
-    call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-    copen
-    cc
-  endfunction
-
-  let g:fzf_action = {
-        \ 'ctrl-q': function('s:build_quickfix_list'),
-        \ 'ctrl-t': 'tab split',
-        \ 'ctrl-x': 'split',
-        \ 'ctrl-v': 'vsplit' }
-
-  let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
-  let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
-
-endif
+let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
 " }}}
 " NERTree {{{
 " inst: https://github.com/preservim/nerdtree ui start nerdtree
+call minpac#add('preservim/nerdtree', {'type': 'start', 'name': 'nerdtree'})
 " inst: https://github.com/Xuyuanp/nerdtree-git-plugin ui start nerdtree-git
+call minpac#add('Xuyuanp/nerdtree-git-plugin', {'type': 'start', 'name': 'nerdtree-git'})
 
 nnoremap <leader>pn :NERDTreeToggle<Bar>wincmd p<CR>
 nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
@@ -1065,6 +1065,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " }}}
 " Which-Key {{{
 " inst: https://github.com/liuchengxu/vim-which-key ui opt which-key
+call minpac#add('liuchengxu/vim-which-key', {'type': 'opt', 'name': 'which-key'})
 PackAdd which-key
 
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
@@ -1075,6 +1076,7 @@ vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 " }}}
 " Indent-guides {{{
 " inst: https://github.com/nathanaelkane/vim-indent-guides ui opt indent-guides
+call minpac#add('nathanaelkane/vim-indent-guides', {'type': 'opt', 'name': 'indent-guides'})
 PackAdd indent-guides
 
 let g:indent_guides_auto_colors = 0
@@ -1087,7 +1089,9 @@ let g:indent_guides_default_mapping = 0
 " }}}
 " Texting {{{
 " inst: https://github.com/junegunn/goyo.vim ui opt goyo
+call minpac#add('junegunn/goyo.vim', {'type': 'opt', 'name': 'goyo'})
 " inst: https://github.com/junegunn/limelight.vim ui opt limelight
+call minpac#add('junegunn/limelight.vim', {'type': 'opt', 'name': 'limelight'})
 
 " Spell Check
 let g:myLangList=["nospell","en_us", "ru_ru"]
@@ -1162,7 +1166,9 @@ nnoremap <silent> <leader>tt :call StartGoyo()<CR>
 " }}}
 " Tmux {{{
 " inst: https://github.com/christoomey/vim-tmux-navigator ui start tmux-navigator
+call minpac#add('christoomey/vim-tmux-navigator', {'type': 'start', 'name': 'tmux-navigator'})
 " inst: https://github.com/benmills/vimux ui opt vimux
+call minpac#add('benmills/vimux', {'type': 'opt', 'name': 'vimux'})
 if exists('$TMUX')
   if has('nvim')
     nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
@@ -1206,10 +1212,12 @@ endif
 " }}}
 " Autoread {{{
 " inst: https://github.com/djoshea/vim-autoread ui start autoread
+call minpac#add('djoshea/vim-autoread', {'type': 'start', 'name': 'autoread'})
 let autoreadargs={'autoread':1}
 " }}}
 " Zoom {{{
 " inst: https://github.com/dhruvasagar/vim-zoom ui start vim-zoom
+call minpac#add('dhruvasagar/vim-zoom', {'type': 'start', 'name': 'vim-zoom'})
 
 let g:lmap.z = 'Zoom'
 nmap <leader>z :call ZoomToggle()<CR>
@@ -1239,11 +1247,20 @@ function! ZoomToggle()
   endif
 endfunction
 " }}}
+" DoToo {{{
+call minpac#add('dhruvasagar/vim-dotoo', {'type': 'start', 'name': 'dotoo'})
+let g:dotoo#agenda#files = ['~/Notes/**/*.dotoo']
+let g:dotoo#capture#refile = expand('~/Notes/refile.dotoo')
+let g:dotoo#capture#clock = 0
+nmap <leader>dd <Plug>(dotoo-capture)
+nmap <leader>da <Plug>(dotoo-agenda)
+" }}}
 " }}}
 
 " Code {{{
 " Ale {{{
 " inst: https://github.com/w0rp/ale code opt ale
+call minpac#add('w0rp/ale', {'type': 'opt', 'name': 'ale'})
 " let g:ale_sign_column_always = 1
 let g:ale_sign_error = '!!'
 let g:ale_sign_warning = '..'
@@ -1253,6 +1270,7 @@ let g:ale_completion_enabled = 0
 " }}}
 " Completor {{{
 " inst: https://github.com/maralla/completor.vim  code opt completor
+call minpac#add('maralla/completor.vim', {'type': 'opt', 'name': 'completor'})
 PackAdd completor
 
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -1264,9 +1282,11 @@ inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 " }}}
 " Text objects {{{
 " inst: https://github.com/kana/vim-textobj-user code start textobj
+call minpac#add('kana/vim-textobj-user', {'type': 'start', 'name': 'textobj'})
 
 " adds: f - function
 " inst: https://github.com/bps/vim-textobj-python code opt textobj-python
+call minpac#add('bps/vim-textobj-python', {'type': 'opt', 'name': 'textobj-python'})
 
 let g:textobj_python_no_default_key_mappings = 1
 xmap af <Plug>(textobj-python-function-a)
@@ -1276,17 +1296,21 @@ omap if <Plug>(textobj-python-function-i)
 
 " Adds: i - indent, I - the same indent
 " inst: https://github.com/kana/vim-textobj-indent code start textobj-indent
+call minpac#add('kana/vim-textobj-indent', {'type': 'start', 'name': 'textobj-indent'})
 
 " Adds: c - comment, C - whole comment
 " inst: https://github.com/glts/vim-textobj-comment code start textobj-comment
+call minpac#add('glts/vim-textobj-comment', {'type': 'start', 'name': 'textobj-comment'})
 " }}}
 " Easyalign {{{
 " inst: https://github.com/junegunn/vim-easy-align code start easy-align
+call minpac#add('junegunn/vim-easy-align', {'type': 'start', 'name': 'easy-align'})
 nmap ga <Plug>(LiveEasyAlign)
 xmap ga <Plug>(LiveEasyAlign)
 " }}}
 " Find and Replace {{{
 " inst: https://github.com/brooth/far.vim code start far
+call minpac#add('brooth/far.vim', {'type': 'start', 'name': 'far'})
 
 let g:far#source = 'agnvim'
 let g:far#file_mask_favorites = ['%', '.*', '\.py$', '\.go$']
@@ -1298,6 +1322,7 @@ vnoremap <leader>fr :Far<space>
 " }}}
 " Surround {{{
 " inst: https://github.com/tpope/vim-surround code start surround
+call minpac#add('tpope/vim-surround', {'type': 'start', 'name': 'surround'})
 let g:surround_113="#{\r}"       " v
 let g:surround_35="#{\r}"        " #
 let g:surround_45="{%- \r -%}"   " -
@@ -1312,121 +1337,123 @@ let g:surround_{char2nr("%")} = "{% \r %}"
 
 " }}}
 " AnyJump {{{
-if has('ivim')
-  " inst: https://github.com/dkprice/vim-easygrep.git code opt easygrep
-  PackAdd easygrep
-  let g:EasyGrepOptionPrefix=''
-  map <silent> <Leader>j <plug>EgMapGrepCurrentWord_v
-else
-  " inst: https://github.com/pechorin/any-jump.vim code opt anyjump
-  PackAdd anyjump
-  let g:any_jump_search_prefered_engine = 'rg'
-endif
+" inst: https://github.com/pechorin/any-jump.vim code opt anyjump
+call minpac#add('pechorin/any-jump.vim', {'type': 'opt', 'name': 'anyjump'})
+PackAdd anyjump
+let g:any_jump_search_prefered_engine = 'rg'
 " }}}
 " Commentary {{{
 " inst: https://github.com/tpope/vim-commentary code start commentary
+call minpac#add('tpope/vim-commentary', {'type': 'start', 'name': 'commentary'})
 set commentstring=#\ %s
 " }}}
 " Snippets {{{
 " inst: https://github.com/Shougo/neosnippet.vim code start neosnippet
+call minpac#add('Shougo/neosnippet.vim', {'type': 'start', 'name': 'neosnippet'})
 " inst: https://github.com/Shougo/neosnippet-snippets code start neosnippet-snippets
+call minpac#add('Shougo/neosnippet-snippets', {'type': 'start', 'name': 'neosnippet-snippets'})
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 " }}}
 " AutoIndent {{{
 " inst: https://github.com/tpope/vim-sleuth code start auto-indent
+call minpac#add('tpope/vim-sleuth', {'type': 'start', 'name': 'auto-indent'})
 " }}}
 " -> Git {{{
 " inst: https://github.com/tpope/vim-fugitive code opt fugitive
+call minpac#add('tpope/vim-fugitive', {'type': 'opt', 'name': 'fugitive'})
 " inst: https://github.com/tpope/vim-rhubarb code opt rhubarb
+call minpac#add('tpope/vim-rhubarb', {'type': 'opt', 'name': 'rhubarb'})
 " inst: https://github.com/shumphrey/fugitive-gitlab.vim code opt gitlab
+call minpac#add('shumphrey/fugitive-gitlab.vim', {'type': 'opt', 'name': 'gitlab'})
 
-if !has('ivim')
+PackAdd fugitive
+PackAdd rhubarb
+PackAdd gitlab
 
-  PackAdd fugitive
-  PackAdd rhubarb
-  PackAdd gitlab
+" Helper
+function! GitShowBlockHistory()
+  exe ":G log -L " . string(getpos("'<'")[1]) . "," . string(getpos("'>'")[1]) . ":%"
+endfunction
 
-  " Helper
-  function! GitShowBlockHistory()
-    exe ":G log -L " . string(getpos("'<'")[1]) . "," . string(getpos("'>'")[1]) . ":%"
-  endfunction
+" Fugitive options
+au BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>
+au BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>
+au BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>
+"
+" shortcuts mapping
+let g:lmap.g.s = 'Status'
+nmap <silent> <leader>gs :Gstatus<CR>
+let g:lmap.g.d = 'Diff'
+nmap <silent> <leader>gd :Gdiff<CR>
+let g:lmap.g.C = 'Commit'
+nmap <silent> <leader>gC :Gcommit<CR>
+let g:lmap.g.W = 'Write'
+nmap <silent> <leader>gW :Gwrite<CR>
+let g:lmap.g.R = 'Read'
+nmap <silent> <leader>gR :Gread<CR>
 
-  " Fugitive options
-  au BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>
-  au BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>
-  au BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>
-  "
-  " shortcuts mapping
-  let g:lmap.g.s = 'Status'
-  nmap <silent> <leader>gs :Gstatus<CR>
-  let g:lmap.g.d = 'Diff'
-  nmap <silent> <leader>gd :Gdiff<CR>
-  let g:lmap.g.C = 'Commit'
-  nmap <silent> <leader>gC :Gcommit<CR>
-  let g:lmap.g.W = 'Write'
-  nmap <silent> <leader>gW :Gwrite<CR>
-  let g:lmap.g.R = 'Read'
-  nmap <silent> <leader>gR :Gread<CR>
+let g:lmap.g.b = { 'name': '+Blame' }
+let g:lmap.g.b.l = 'bLame'
+nmap <silent> <leader>gbl :Gblame<CR>
 
-  let g:lmap.g.b = { 'name': '+Blame' }
-  let g:lmap.g.b.l = 'bLame'
-  nmap <silent> <leader>gbl :Gblame<CR>
+let g:lmap.g.p = { 'name': '+Push-pull' }
+let g:lmap.g.p.s = 'Push'
+nmap <silent> <leader>gps :G push<CR>
+let g:lmap.g.p.l = { 'name': '+Pull' }
+let g:lmap.g.p.l.r = 'Rebase'
+nmap <silent> <leader>gplr :G pull --rebase<CR>
+let g:lmap.g.p.l.m = 'Merge'
+nmap <silent> <leader>gplm :G pull<CR>
+let g:lmap.g.g = 'Browse'
+nmap <silent> <leader>gg :.Gbrowse %<CR>
+vmap <silent> <leader>gg :'<,'>Gbrowse %<CR>
+let g:lmap.g.v = { 'name': '+Visual' }
+vmap <silent> <leader>gvh :<C-U>call GitShowBlockHistory()<CR>
 
-  let g:lmap.g.p = { 'name': '+Push-pull' }
-  let g:lmap.g.p.s = 'Push'
-  nmap <silent> <leader>gps :G push<CR>
-  let g:lmap.g.p.l = { 'name': '+Pull' }
-  let g:lmap.g.p.l.r = 'Rebase'
-  nmap <silent> <leader>gplr :G pull --rebase<CR>
-  let g:lmap.g.p.l.m = 'Merge'
-  nmap <silent> <leader>gplm :G pull<CR>
-  let g:lmap.g.g = 'Browse'
-  nmap <silent> <leader>gg :.Gbrowse %<CR>
-  vmap <silent> <leader>gg :'<,'>Gbrowse %<CR>
-  let g:lmap.g.v = { 'name': '+Visual' }
-  vmap <silent> <leader>gvh :<C-U>call GitShowBlockHistory()<CR>
+" Gitgutter options
+" inst: https://github.com/airblade/vim-gitgutter code opt gitgutter
+call minpac#add('airblade/vim-gitgutter', {'type': 'opt', 'name': 'gitgutter'})
+PackAdd gitgutter
+let g:gitgutter_map_keys = 0
 
-  " Gitgutter options
-  " inst: https://github.com/airblade/vim-gitgutter code opt gitgutter
-  PackAdd gitgutter
-  let g:gitgutter_map_keys = 0
+nmap [g <Plug>(GitGutterPrevHunk)
+nmap ]g <Plug>(GitGutterNextHunk)
 
-  nmap [g <Plug>(GitGutterPrevHunk)
-  nmap ]g <Plug>(GitGutterNextHunk)
+let g:gitgutter_override_sign_column_highlight = 0
 
-  let g:gitgutter_override_sign_column_highlight = 0
+let g:lmap.g.hs = 'Hunk-Stage'
+nmap <leader>ghs :GitGutterStageHunk<CR>
+let g:lmap.g.hr = 'Hunk-Revert'
+nmap <leader>ghr :GitGutterUndoHunk<CR>
+let g:lmap.g.hp = 'Hunk-Preview'
+nmap <leader>ghp :GitGutterPreviewHunk<CR>
 
-  let g:lmap.g.hs = 'Hunk-Stage'
-  nmap <leader>ghs :GitGutterStageHunk<CR>
-  let g:lmap.g.hr = 'Hunk-Revert'
-  nmap <leader>ghr :GitGutterUndoHunk<CR>
-  let g:lmap.g.hp = 'Hunk-Preview'
-  nmap <leader>ghp :GitGutterPreviewHunk<CR>
+" Gitv options
+" inst: https://github.com/junegunn/gv.vim code opt gv
+call minpac#add('junegunn/gv.vim', {'type': 'opt', 'name': 'gv'})
+PackAdd gv
 
-  " Gitv options
-  " inst: https://github.com/junegunn/gv.vim code opt gv
-  PackAdd gv
+let g:lmap.g.h = 'History'
+let g:Gitv_DoNotMapCtrlKey = 1
+nmap <silent> <leader>gh :GV<CR>
 
-  let g:lmap.g.h = 'History'
-  let g:Gitv_DoNotMapCtrlKey = 1
-  nmap <silent> <leader>gh :GV<CR>
+" Git messages in popup
+" inst: https://github.com/rhysd/git-messenger.vim code opt git-messenger
+call minpac#add('rhysd/git-messenger.vim', {'type': 'opt', 'name': 'git-messenger'})
+PackAdd git-messenger
 
-  " Git messages in popup
-  " inst: https://github.com/rhysd/git-messenger.vim code opt git-messenger
-  PackAdd git-messenger
-
-  let g:git_messenger_no_default_mappings = v:true
-  let g:git_messenger_always_into_popup = v:true
-  nmap <Leader>gbb <Plug>(git-messenger)
-endif
+let g:git_messenger_no_default_mappings = v:true
+let g:git_messenger_always_into_popup = v:true
+nmap <Leader>gbb <Plug>(git-messenger)
 " }}}
 " }}}
 
 " Motion {{{
 " Easymotion {{{
 " inst: https://github.com/easymotion/vim-easymotion ui start easymotion
+call minpac#add('easymotion/vim-easymotion', {'type': 'start', 'name': 'easymotion'})
 "
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
@@ -1446,6 +1473,7 @@ map sh <Plug>(easymotion-linebackward)
 " Additional {{{
 " VimWiki {{{
 " inst: https://github.com/vimwiki/vimwiki ui opt vimwiki "branch dev"
+call minpac#add('vimwiki/vimwiki', {'type': 'opt', 'name': 'vimwiki', 'branch': 'dev'})
 function! LoadVimwiki()
 
   let g:lmap.w.w = 'Index'
@@ -1896,20 +1924,26 @@ vnoremap <leader>th :TOhtml<CR>
 " }}}
 " Small plugins {{{
 " inst: https://github.com/bronson/vim-trailing-whitespace other start whitespace
+call minpac#add('bronson/vim-trailing-whitespace', {'type': 'start', 'name': 'whitespace'})
+let g:extra_whitespace_ignored_filetypes = ['dotooagenda', 'dotoo']
 " inst: https://github.com/jiangmiao/auto-pairs other start auto-pairs
+call minpac#add('jiangmiao/auto-pairs', {'type': 'start', 'name': 'auto-pairs'})
 " inst: https://github.com/junegunn/vim-peekaboo other start peekaboo
+call minpac#add('junegunn/vim-peekaboo', {'type': 'start', 'name': 'peekaboo'})
 let g:peekaboo_delay = 1000
 " inst: https://github.com/chaoren/vim-wordmotion other start wordmotion
+call minpac#add('chaoren/vim-wordmotion', {'type': 'start', 'name': 'wordmotion'})
 " inst: https://github.com/tpope/vim-repeat other start repeat
+call minpac#add('tpope/vim-repeat', {'type': 'start', 'name': 'repeat'})
 
-" if !has('ivim')
 " inst: https://github.com/powerline/fonts other opt fonts
-" endif
+call minpac#add('powerline/fonts', {'type': 'opt', 'name': 'fonts'})
 " }}}
 " }}}
 
 " -> Xkb {{{
 " inst: https://github.com/lyokha/vim-xkbswitch other start xkbswitch
+call minpac#add('lyokha/vim-xkbswitch', {'type': 'start', 'name': 'xkbswitch'})
 let g:XkbSwitchEnabled = 1
 let g:XkbSwitchSkipFt = [ 'nerdtree' ]
 " }}}
