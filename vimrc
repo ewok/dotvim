@@ -1247,14 +1247,6 @@ function! ZoomToggle()
   endif
 endfunction
 " }}}
-" DoToo {{{
-call minpac#add('dhruvasagar/vim-dotoo', {'type': 'start', 'name': 'dotoo'})
-let g:dotoo#agenda#files = ['~/Notes/**/*.dotoo']
-let g:dotoo#capture#refile = expand('~/Notes/refile.dotoo')
-let g:dotoo#capture#clock = 0
-nmap <leader>dd <Plug>(dotoo-capture)
-nmap <leader>da <Plug>(dotoo-agenda)
-" }}}
 " }}}
 
 " Code {{{
