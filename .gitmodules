@@ -1,0 +1,186 @@
+[submodule "pack/filetypes/opt/ansible"]
+	path = pack/filetypes/opt/ansible
+	url = https://github.com/pearofducks/ansible-vim
+[submodule "pack/filetypes/opt/csv"]
+	path = pack/filetypes/opt/csv
+	url = https://github.com/chrisbra/csv.vim
+[submodule "pack/filetypes/opt/vim-go"]
+	path = pack/filetypes/opt/vim-go
+	url = https://github.com/fatih/vim-go
+[submodule "pack/filetypes/opt/logstash"]
+	path = pack/filetypes/opt/logstash
+	url = https://github.com/robbles/logstash.vim
+[submodule "pack/filetypes/opt/livedown"]
+	path = pack/filetypes/opt/livedown
+	url = https://github.com/shime/vim-livedown
+[submodule "pack/filetypes/opt/medieval"]
+	path = pack/filetypes/opt/medieval
+	url = https://github.com/gpanders/vim-medieval
+[submodule "pack/filetypes/opt/mustache"]
+	path = pack/filetypes/opt/mustache
+	url = https://github.com/mustache/vim-mustache-handlebars.git
+[submodule "pack/filetypes/opt/vim-virtualenv"]
+	path = pack/filetypes/opt/vim-virtualenv
+	url = https://github.com/jmcantrell/vim-virtualenv
+[submodule "pack/filetypes/opt/pep8-ind"]
+	path = pack/filetypes/opt/pep8-ind
+	url = https://github.com/Vimjas/vim-python-pep8-indent
+[submodule "pack/filetypes/opt/jedi"]
+	path = pack/filetypes/opt/jedi
+	url = https://github.com/davidhalter/jedi-vim
+[submodule "pack/filetypes/opt/puppet"]
+	path = pack/filetypes/opt/puppet
+	url = https://github.com/rodjek/vim-puppet
+[submodule "pack/filetypes/opt/rust"]
+	path = pack/filetypes/opt/rust
+	url = https://github.com/rust-lang/rust.vim
+[submodule "pack/filetypes/opt/rust-racer"]
+	path = pack/filetypes/opt/rust-racer
+	url = https://github.com/racer-rust/vim-racer
+[submodule "pack/filetypes/opt/helm"]
+	path = pack/filetypes/opt/helm
+	url = https://github.com/towolf/vim-helm
+[submodule "pack/filetypes/opt/log"]
+	path = pack/filetypes/opt/log
+	url = https://github.com/mtdl9/vim-log-highlighting
+[submodule "pack/filetypes/opt/terraform"]
+	path = pack/filetypes/opt/terraform
+	url = https://github.com/hashivim/vim-terraform
+[submodule "pack/filetypes/opt/xml"]
+	path = pack/filetypes/opt/xml
+	url = https://github.com/sukima/xmledit
+[submodule "pack/ui/opt/neodark"]
+	path = pack/ui/opt/neodark
+	url = https://github.com/KeitaNakamura/neodark.vim
+[submodule "pack/ui/start/lightline"]
+	path = pack/ui/start/lightline
+	url = https://github.com/itchyny/lightline.vim
+[submodule "pack/ui/opt/fzf"]
+	path = pack/ui/opt/fzf
+	url = https://github.com/junegunn/fzf
+[submodule "pack/ui/opt/fzf.vim"]
+	path = pack/ui/opt/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
+[submodule "pack/ui/opt/ctrlp.vim"]
+	path = pack/ui/opt/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim.git
+[submodule "pack/ui/start/nerdtree"]
+	path = pack/ui/start/nerdtree
+	url = https://github.com/preservim/nerdtree
+[submodule "pack/ui/start/nerdtree-git"]
+	path = pack/ui/start/nerdtree-git
+	url = https://github.com/Xuyuanp/nerdtree-git-plugin
+[submodule "pack/ui/opt/which-key"]
+	path = pack/ui/opt/which-key
+	url = https://github.com/liuchengxu/vim-which-key
+[submodule "pack/ui/opt/indent-guides"]
+	path = pack/ui/opt/indent-guides
+	url = https://github.com/nathanaelkane/vim-indent-guides
+[submodule "pack/ui/opt/goyo"]
+	path = pack/ui/opt/goyo
+	url = https://github.com/junegunn/goyo.vim
+[submodule "pack/ui/opt/limelight"]
+	path = pack/ui/opt/limelight
+	url = https://github.com/junegunn/limelight.vim
+[submodule "pack/ui/start/tmux-navigator"]
+	path = pack/ui/start/tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator
+[submodule "pack/ui/opt/vimux"]
+	path = pack/ui/opt/vimux
+	url = https://github.com/benmills/vimux
+[submodule "pack/ui/start/autoread"]
+	path = pack/ui/start/autoread
+	url = https://github.com/djoshea/vim-autoread
+[submodule "pack/ui/start/vim-zoom"]
+	path = pack/ui/start/vim-zoom
+	url = https://github.com/dhruvasagar/vim-zoom
+[submodule "pack/code/opt/ale"]
+	path = pack/code/opt/ale
+	url = https://github.com/w0rp/ale
+[submodule "pack/code/opt/completor"]
+	path = pack/code/opt/completor
+	url = https://github.com/maralla/completor.vim
+[submodule "pack/code/start/textobj"]
+	path = pack/code/start/textobj
+	url = https://github.com/kana/vim-textobj-user
+[submodule "pack/code/opt/textobj-python"]
+	path = pack/code/opt/textobj-python
+	url = https://github.com/bps/vim-textobj-python
+[submodule "pack/code/start/textobj-indent"]
+	path = pack/code/start/textobj-indent
+	url = https://github.com/kana/vim-textobj-indent
+[submodule "pack/code/start/textobj-comment"]
+	path = pack/code/start/textobj-comment
+	url = https://github.com/glts/vim-textobj-comment
+[submodule "pack/code/start/easy-align"]
+	path = pack/code/start/easy-align
+	url = https://github.com/junegunn/vim-easy-align
+[submodule "pack/code/start/far"]
+	path = pack/code/start/far
+	url = https://github.com/brooth/far.vim
+[submodule "pack/code/start/surround"]
+	path = pack/code/start/surround
+	url = https://github.com/tpope/vim-surround
+[submodule "pack/code/opt/easygrep"]
+	path = pack/code/opt/easygrep
+	url = https://github.com/dkprice/vim-easygrep.git
+[submodule "pack/code/opt/anyjump"]
+	path = pack/code/opt/anyjump
+	url = https://github.com/pechorin/any-jump.vim
+[submodule "pack/code/start/commentary"]
+	path = pack/code/start/commentary
+	url = https://github.com/tpope/vim-commentary
+[submodule "pack/code/start/neosnippet"]
+	path = pack/code/start/neosnippet
+	url = https://github.com/Shougo/neosnippet.vim
+[submodule "pack/code/start/neosnippet-snippets"]
+	path = pack/code/start/neosnippet-snippets
+	url = https://github.com/Shougo/neosnippet-snippets
+[submodule "pack/code/start/auto-indent"]
+	path = pack/code/start/auto-indent
+	url = https://github.com/tpope/vim-sleuth
+[submodule "pack/code/opt/fugitive"]
+	path = pack/code/opt/fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "pack/code/opt/rhubarb"]
+	path = pack/code/opt/rhubarb
+	url = https://github.com/tpope/vim-rhubarb
+[submodule "pack/code/opt/gitlab"]
+	path = pack/code/opt/gitlab
+	url = https://github.com/shumphrey/fugitive-gitlab.vim
+[submodule "pack/code/opt/gitgutter"]
+	path = pack/code/opt/gitgutter
+	url = https://github.com/airblade/vim-gitgutter
+[submodule "pack/code/opt/gv"]
+	path = pack/code/opt/gv
+	url = https://github.com/junegunn/gv.vim
+[submodule "pack/code/opt/git-messenger"]
+	path = pack/code/opt/git-messenger
+	url = https://github.com/rhysd/git-messenger.vim
+[submodule "pack/ui/start/easymotion"]
+	path = pack/ui/start/easymotion
+	url = https://github.com/easymotion/vim-easymotion
+[submodule "pack/ui/opt/vimwiki"]
+	path = pack/ui/opt/vimwiki
+	url = https://github.com/vimwiki/vimwiki
+[submodule "pack/other/start/whitespace"]
+	path = pack/other/start/whitespace
+	url = https://github.com/bronson/vim-trailing-whitespace
+[submodule "pack/other/start/auto-pairs"]
+	path = pack/other/start/auto-pairs
+	url = https://github.com/jiangmiao/auto-pairs
+[submodule "pack/other/start/peekaboo"]
+	path = pack/other/start/peekaboo
+	url = https://github.com/junegunn/vim-peekaboo
+[submodule "pack/other/start/wordmotion"]
+	path = pack/other/start/wordmotion
+	url = https://github.com/chaoren/vim-wordmotion
+[submodule "pack/other/start/repeat"]
+	path = pack/other/start/repeat
+	url = https://github.com/tpope/vim-repeat
+[submodule "pack/other/opt/fonts"]
+	path = pack/other/opt/fonts
+	url = https://github.com/powerline/fonts
+[submodule "pack/other/start/xkbswitch"]
+	path = pack/other/start/xkbswitch
+	url = https://github.com/lyokha/vim-xkbswitch
