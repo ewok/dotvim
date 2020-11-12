@@ -1924,8 +1924,8 @@ vnoremap <leader>th :TOhtml<CR>
 " }}}
 " Small plugins {{{
 " inst: https://github.com/bronson/vim-trailing-whitespace other start whitespace
-call minpac#add('bronson/vim-trailing-whitespace', {'type': 'start', 'name': 'whitespace'})
-let g:extra_whitespace_ignored_filetypes = ['dotooagenda', 'dotoo']
+call minpac#add('ntpeters/vim-better-whitespace', {'type': 'start', 'name': 'better-whitespace'})
+let g:better_whitespace_filetypes_blacklist=['gitcommit', 'unite', 'qf', 'help','dotooagenda','dotoo']
 " inst: https://github.com/jiangmiao/auto-pairs other start auto-pairs
 call minpac#add('jiangmiao/auto-pairs', {'type': 'start', 'name': 'auto-pairs'})
 " inst: https://github.com/junegunn/vim-peekaboo other start peekaboo
