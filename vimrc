@@ -231,6 +231,10 @@ let g:lmap.z = { 'name': '+Zoom' }
 
 " Helpers {{{
 " minpac
+if ! isdirectory($HOME . '/.vim/pack/minpac/opt/minpac/')
+  execute "!git clone https://github.com/k-takata/minpac.git ~/.vim/pack/minpac/opt/minpac"
+endif
+
 packadd minpac
 
 call minpac#init()
@@ -326,38 +330,8 @@ nmap zk zkmzzMzvzz15<c-e>`z
 nmap <expr>  MR  ':%s/\(' . @/ . '\)//g<LEFT><LEFT>'
 vmap <expr>  MR  ':s/\(' . @/ . '\)//g<LEFT><LEFT>'
 
-let uname = substitute(system('uname'),'\n','','')
-if uname == 'Linux'
-    if system('$PATH')=~ '/mnt/c/WINDOWS'
-      if executable('win32yank.exe')
-        let g:win32yank = 1
-      endif
-    endif
-endif
-
-if exists('g:win32yank')
-
-  set clipboard=unnamed
-
-  autocmd TextYankPost * call system('win32yank.exe -i --crlf', @")
-
-  function! Paste(mode)
-    let @" = system('win32yank.exe -o --lf')
-    return a:mode
-  endfunction
-
-  map <expr> p Paste('p')
-  map <expr> P Paste('P')
-
-  vmap <expr> p Paste('p').'gv"'.v:register.'y`>'
-  vmap <expr> P Paste('P').'gv"'.v:register.'y`>'
-
-else
-
-  " Replace without yanking
-  vnoremap p :<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>
-
-endif
+" Replace without yanking
+vnoremap p :<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>
 " }}}
 " Some vim tunings {{{
 nnoremap Y y$
@@ -1020,7 +994,7 @@ let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
 
 nnoremap <silent> <leader>pp :Files<CR>
 " TODO: To remove
-" nnoremap <silent> <leader>pm :Marks<CR>
+nnoremap <silent> <leader>pm :call MarksOnList()<CR>
 nnoremap <silent> <leader>pb :Buffers<CR>
 nnoremap <silent> <leader>pf :Filetypes<CR>
 
@@ -1061,7 +1035,7 @@ let g:indent_guides_default_mapping = 0
 " }}}
 " Lightline {{{
 " inst: https://github.com/itchyny/lightline.vim ui start lightline
-call minpac#add('itchyny/lightline.vim', {'type': 'opt', 'name': 'lightline'})
+call minpac#add('itchyny/lightline.vim', {'type': 'start', 'name': 'lightline'})
 if !has('gui_running')
   set t_Co=256
 endif
@@ -1083,6 +1057,23 @@ let g:lightline = {
 " Marks {{{
 " inst: https://github.com/kshenoy/vim-signature ui start marks
 call minpac#add('kshenoy/vim-signature', {'type': 'start', 'name': 'marks'})
+
+nnoremap <leader>mm :call MarksOnList()<CR>
+function! MarksOnList()
+  call signature#mark#List(0)
+  call signature#sign#Refresh(1)
+  nnoremap <buffer> q :x<CR>
+endfunction
+
+nnoremap <leader>md :call MarksPurgeGlobaly()<CR>
+nnoremap m<Space> :call MarksPurgeGlobaly()<CR>
+function! MarksPurgeGlobaly()
+  call signature#mark#Purge('all')
+  call signature#marker#Purge()
+  call signature#mark#List(0)
+  wincmd q
+  wshada!
+endfunction
 " }}}
 " NERTree {{{
 " inst: https://github.com/preservim/nerdtree ui start nerdtree
@@ -1134,6 +1125,7 @@ let NERDTreeMapOpenVSplit='v'
 let NERDTreeMapOpenSplit='s'
 let NERDTreeMapJumpNextSibling=''
 let NERDTreeMapJumpPrevSibling=''
+let g:NERDTreeMapMenu='M'
 
 " Close vim if the only NERDTree window left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -1141,6 +1133,8 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " Rooter {{{
 " inst: https://github.com/airblade/vim-rooter ui opt rooter
 call minpac#add('airblade/vim-rooter', {'type': 'opt', 'name': 'rooter'})
+let g:rooter_silent_chdir = 1
+let g:rooter_resolve_links = 1
 " }}}
 " Texting {{{
 " inst: https://github.com/junegunn/goyo.vim ui opt goyo
@@ -1180,8 +1174,10 @@ imap <silent> <F7> <ESC>:call ToggleSpell()<CR>a
 " Focus on the process
 "
 function! s:goyo_enter()
-  silent !tmux set status off
-  silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status off
+    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  endif
   set noshowmode
   set noshowcmd
   set scrolloff=999
@@ -1191,8 +1187,10 @@ function! s:goyo_enter()
 endfunction
 
 function! s:goyo_leave()
-  silent !tmux set status on
-  silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status on
+    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  endif
   set showmode
   set showcmd
   set scrolloff=5
@@ -1208,6 +1206,8 @@ function! StartGoyo()
 
   if !exists("g:goyo_loaded")
     let g:goyo_loaded = 1
+    let g:goyo_width = 120
+    let g:goyo_height = "90%"
     PackAdd goyo
     PackAdd limelight
   endif
@@ -1497,23 +1497,6 @@ call minpac#add('pechorin/any-jump.vim', {'type': 'opt', 'name': 'anyjump'})
 PackAdd anyjump
 let g:any_jump_search_prefered_engine = 'rg'
 " }}}
-" Easymotion {{{
-" inst: https://github.com/easymotion/vim-easymotion ui start easymotion
-call minpac#add('easymotion/vim-easymotion', {'type': 'start', 'name': 'easymotion'})
-"
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-
-" Jump to anywhere you want with minimal keystrokes, with just one key binding.
-nmap ss <Plug>(easymotion-overwin-f)
-
-" Turn on case insensitive feature
-let g:EasyMotion_smartcase = 1
-
-map sl <Plug>(easymotion-lineforward)
-map sj <Plug>(easymotion-j)
-map sk <Plug>(easymotion-k)
-map sh <Plug>(easymotion-linebackward)
-" }}}
 " Text objects {{{
 " inst: https://github.com/kana/vim-textobj-user code start textobj
 call minpac#add('kana/vim-textobj-user', {'type': 'start', 'name': 'textobj'})
@@ -1535,6 +1518,12 @@ call minpac#add('kana/vim-textobj-indent', {'type': 'start', 'name': 'textobj-in
 " Adds: c - comment, C - whole comment
 " inst: https://github.com/glts/vim-textobj-comment code start textobj-comment
 call minpac#add('glts/vim-textobj-comment', {'type': 'start', 'name': 'textobj-comment'})
+" }}}
+" Quick Scope {{{
+" inst: https://github.com/unblevable/quick-scope ui start quickscope
+call minpac#add('unblevable/quick-scope', {'type': 'start', 'name': 'quickscope'})
+let g:qs_buftype_blacklist = ['terminal', 'nofile', 'nerdtree']
+" let g:qs_lazy_highlight = 1
 " }}}
 " }}}
 
