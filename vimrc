@@ -215,10 +215,11 @@ endfunction
 " Leader Initialisation {{{
 " Define prefix dictionary
 let g:lmap =  {}
-let g:lmap.b = { 'name': '+Buffer' }
 let g:lmap.f = { 'name': '+Find' }
 let g:lmap.g = { 'name': '+Git'}
+let g:lmap.g.h = { 'name': 'History' }
 let g:lmap.l = { 'name': '+Location' }
+let g:lmap.m = { 'name': '+Marks' }
 let g:lmap.o = { 'name': '+Open'}
 let g:lmap.p = { 'name': '+CtrlP'}
 let g:lmap.q = { 'name': '+QFix' }
@@ -329,6 +330,9 @@ nmap zk zkmzzMzvzz15<c-e>`z
 " Yank {{{
 nmap <expr>  MR  ':%s/\(' . @/ . '\)//g<LEFT><LEFT>'
 vmap <expr>  MR  ':s/\(' . @/ . '\)//g<LEFT><LEFT>'
+
+nmap <expr>  MY  ':%Yankitute/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
+vmap <expr>  MY  ':Yankitute/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
 
 " Replace without yanking
 vnoremap p :<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>
@@ -497,6 +501,18 @@ augroup ft_go
 
   endfunction
 
+augroup END
+" }}}
+" jrnl {{{
+augroup ft_jrnl
+  au!
+  au BufRead,BufNewFile /tmp/jrnl* setlocal filetype=jrnl
+  au FileType config setlocal commentstring=#\ %s
+
+  au FileType jrnl call LoadJrnlFT()
+  function! LoadJrnlFT()
+    PackAdd jrnl 1
+  endfunction
 augroup END
 " }}}
 " JSON {{{
@@ -998,9 +1014,8 @@ nnoremap <silent> <leader>pm :call MarksOnList()<CR>
 nnoremap <silent> <leader>pb :Buffers<CR>
 nnoremap <silent> <leader>pf :Filetypes<CR>
 
-let g:lmap.g.f = { 'name': '+File' }
-let g:lmap.g.f.h = 'file-History'
-nmap <silent> <leader>gfh :BCommits<CR>
+let g:lmap.g.h.f = '+File'
+nmap <silent> <leader>ghf :BCommits<CR>
 
 let g:lmap.f.f = 'in-File'
 nmap <silent> <leader>ff :Ag<CR>
@@ -1420,8 +1435,8 @@ nmap <silent> <leader>gplm :G pull<CR>
 let g:lmap.g.g = 'Browse'
 nmap <silent> <leader>gg :.Gbrowse %<CR>
 vmap <silent> <leader>gg :'<,'>Gbrowse %<CR>
-let g:lmap.g.v = { 'name': '+Visual' }
-vmap <silent> <leader>gvh :<C-U>call GitShowBlockHistory()<CR>
+let g:lmap.g.h.v = { 'name': '+Visual' }
+vmap <silent> <leader>ghv :<C-U>call GitShowBlockHistory()<CR>
 
 " Gitgutter options
 " inst: https://github.com/airblade/vim-gitgutter code opt gitgutter
@@ -1434,11 +1449,11 @@ nmap ]g <Plug>(GitGutterNextHunk)
 
 let g:gitgutter_override_sign_column_highlight = 0
 
-let g:lmap.g.hs = 'Hunk-Stage'
+let g:lmap.g.h.s = 'Hunk-Stage'
 nmap <leader>ghs :GitGutterStageHunk<CR>
-let g:lmap.g.hr = 'Hunk-Revert'
+let g:lmap.g.h.r = 'Hunk-Revert'
 nmap <leader>ghr :GitGutterUndoHunk<CR>
-let g:lmap.g.hp = 'Hunk-Preview'
+let g:lmap.g.h.p = 'Hunk-Preview'
 nmap <leader>ghp :GitGutterPreviewHunk<CR>
 
 " Gitv options
@@ -1446,9 +1461,9 @@ nmap <leader>ghp :GitGutterPreviewHunk<CR>
 call minpac#add('junegunn/gv.vim', {'type': 'opt', 'name': 'gv'})
 PackAdd gv
 
-let g:lmap.g.h = 'History'
+let g:lmap.g.h.h = '+All'
 let g:Gitv_DoNotMapCtrlKey = 1
-nmap <silent> <leader>gh :GV<CR>
+nmap <silent> <leader>ghh :GV<CR>
 
 " Git messages in popup
 " inst: https://github.com/rhysd/git-messenger.vim code opt git-messenger
@@ -1592,7 +1607,9 @@ let g:vimwiki_ext2syntax = {'.md': 'markdown',
 let g:vimwiki_folding = 'expr'
 let g:vimwiki_hl_headers = 1
 let g:vimwiki_hl_cb_checked = 2
-"let g:vimwiki_markdown_link_ext = 1
+let g:vimwiki_markdown_link_ext = 1
+let g:vimwiki_commentstring = '<!--%s-->'
+let g:vimwiki_auto_header = 1
 
 PackAdd vimwiki
 " }}}
@@ -1995,6 +2012,9 @@ call minpac#add('tpope/vim-repeat', {'type': 'start', 'name': 'repeat'})
 
 " inst: https://github.com/powerline/fonts other opt fonts
 call minpac#add('powerline/fonts', {'type': 'opt', 'name': 'fonts'})
+
+" inst: https://github.com/idanarye/vim-yankitute other start yankitute
+call minpac#add('idanarye/vim-yankitute', {'type': 'start', 'name': 'yankitute'})
 " }}}
 " }}}
 
