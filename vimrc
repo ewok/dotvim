@@ -561,6 +561,8 @@ augroup ft_markdown
     nmap <buffer> <silent> <leader>rt :LivedownToggle<CR>
     nmap <buffer> <silent> <leader>rk :LivedownKill<CR>
 
+    nmap <buffer> <silent> <leader>oT :silent ! typora "%" &<CR>
+
     PackAdd medieval
     let g:medieval_langs = ['python=python3', 'ruby', 'sh', 'console=bash', 'bash', 'perl']
 
